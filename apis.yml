@@ -1,17 +1,15 @@
 aid: microsoft-azure-cdn
-url: 
-  https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cdn/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cdn/refs/heads/main/apis.yml
 apis:
   - aid: microsoft-azure-cdn:rest-api
     name: Azure CDN REST API
     tags:
+      - Caching
       - CDN
       - Content Delivery
       - Edge
-      - Caching
       - Performance
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://management.azure.com/
     humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
     properties:
