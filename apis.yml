@@ -13,6 +13,8 @@ apis:
     baseURL: https://management.azure.com/
     humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
     properties:
+      - url: openapi/microsoft-azure-cdn-openapi.yml
+        type: OpenAPI
       - url: https://learn.microsoft.com/en-us/rest/api/cdn/
         type: Documentation
     description: >-
