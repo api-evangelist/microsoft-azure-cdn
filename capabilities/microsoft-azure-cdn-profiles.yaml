@@ -1,0 +1,229 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Azure CDN REST API — Profiles
+  description: 'Azure CDN REST API — Profiles. 6 operations. Lead operation: Azure CDN REST API List by subscription. Self-contained
+    Naftiko capability covering one Microsoft Azure Cdn business surface.'
+  tags:
+  - Microsoft Azure Cdn
+  - Profiles
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_AZURE_CDN_API_KEY: MICROSOFT_AZURE_CDN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-azure-cdn-profiles
+    baseUri: https://management.azure.com
+    description: Azure CDN REST API — Profiles business capability. Self-contained, no shared references.
+    resources:
+    - name: subscriptions-subscriptionId-providers-Microsoft.Cdn-profiles
+      path: /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles
+      operations:
+      - name: listprofilesbysubscription
+        method: GET
+        description: Azure CDN REST API List by subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles
+      operations:
+      - name: listprofilesbyresourcegroup
+        method: GET
+        description: Azure CDN REST API List by resource group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{name}
+      operations:
+      - name: getprofiles
+        method: GET
+        description: Azure CDN REST API Get resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createorupdateprofiles
+        method: PUT
+        description: Azure CDN REST API Create or update resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: updateprofiles
+        method: PATCH
+        description: Azure CDN REST API Update resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteprofiles
+        method: DELETE
+        description: Azure CDN REST API Delete resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MICROSOFT_AZURE_CDN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: microsoft-azure-cdn-profiles-rest
+    port: 8080
+    description: REST adapter for Azure CDN REST API — Profiles. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/subscriptions/{subscriptionid}/providers/microsoft-cdn/profiles
+      name: subscriptions-subscriptionid-providers-microsoft-cdn-profiles
+      description: REST surface for subscriptions-subscriptionId-providers-Microsoft.Cdn-profiles.
+      operations:
+      - method: GET
+        name: listprofilesbysubscription
+        description: Azure CDN REST API List by subscription
+        call: microsoft-azure-cdn-profiles.listprofilesbysubscription
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-cdn/profiles
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: GET
+        name: listprofilesbyresourcegroup
+        description: Azure CDN REST API List by resource group
+        call: microsoft-azure-cdn-profiles.listprofilesbyresourcegroup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-cdn/profiles/{name}
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourceGroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: GET
+        name: getprofiles
+        description: Azure CDN REST API Get resource
+        call: microsoft-azure-cdn-profiles.getprofiles
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: createorupdateprofiles
+        description: Azure CDN REST API Create or update resource
+        call: microsoft-azure-cdn-profiles.createorupdateprofiles
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateprofiles
+        description: Azure CDN REST API Update resource
+        call: microsoft-azure-cdn-profiles.updateprofiles
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteprofiles
+        description: Azure CDN REST API Delete resource
+        call: microsoft-azure-cdn-profiles.deleteprofiles
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-azure-cdn-profiles-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Azure CDN REST API — Profiles. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: azure-cdn-rest-api-list
+      description: Azure CDN REST API List by subscription
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-cdn-profiles.listprofilesbysubscription
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-cdn-rest-api-list-2
+      description: Azure CDN REST API List by resource group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-cdn-profiles.listprofilesbyresourcegroup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-cdn-rest-api-get
+      description: Azure CDN REST API Get resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-cdn-profiles.getprofiles
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-cdn-rest-api-create
+      description: Azure CDN REST API Create or update resource
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-cdn-profiles.createorupdateprofiles
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-cdn-rest-api-update
+      description: Azure CDN REST API Update resource
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-azure-cdn-profiles.updateprofiles
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: azure-cdn-rest-api-delete
+      description: Azure CDN REST API Delete resource
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-azure-cdn-profiles.deleteprofiles
+      outputParameters:
+      - type: object
+        mapping: $.
