@@ -4,26 +4,23 @@ apis:
   - aid: microsoft-azure-cdn:rest-api
     name: Azure CDN REST API
     tags:
-    - Caching
-    - CDN
-    - Content Delivery
-    - Edge
-    - Performance
+      - Caching
+      - CDN
+      - Content Delivery
+      - Edge
+      - Performance
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://management.azure.com/
     humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
     properties:
-    - url: openapi/microsoft-azure-cdn-openapi.yml
-      type: OpenAPI
-    - url: https://learn.microsoft.com/en-us/rest/api/cdn/
-      type: Documentation
-    - type: NaftikoCapability
-      url: capabilities/microsoft-azure-cdn-operations.yaml
-    - type: NaftikoCapability
-      url: capabilities/microsoft-azure-cdn-profiles.yaml
-    description: Azure CDN REST API enables management of content delivery network profiles, endpoints, and custom domains.
-      It supports configuring caching rules, compression, geo-filtering, custom HTTPS, and purging cached content across global
-      edge locations.
+      - url: openapi/microsoft-azure-cdn-openapi.yml
+        type: OpenAPI
+      - url: https://learn.microsoft.com/en-us/rest/api/cdn/
+        type: Documentation
+    description: >-
+      Azure CDN REST API enables management of content delivery network profiles, endpoints, and custom domains. It
+      supports configuring caching rules, compression, geo-filtering, custom HTTPS, and purging cached content across
+      global edge locations.
 common:
   - type: GitHubOrganization
     url: https://github.com/Azure
@@ -44,5 +41,6 @@ modified: '2026-05-19'
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
-description: The Azure Content Delivery Network (CDN) caches static web content at strategically placed locations to provide
+description: >-
+  The Azure Content Delivery Network (CDN) caches static web content at strategically placed locations to provide
   maximum throughput for delivering content to users.
