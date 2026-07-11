@@ -22,6 +22,10 @@ apis:
       supports configuring caching rules, compression, geo-filtering, custom HTTPS, and purging cached content across
       global edge locations.
 common:
+  - type: DomainSecurity
+    url: security/microsoft-azure-cdn-domain-security.yml
+  - type: Authentication
+    url: authentication/microsoft-azure-cdn-authentication.yml
   - type: OAuthScopes
     url: scopes/microsoft-azure-cdn-scopes.yml
   - type: GitHubOrganization

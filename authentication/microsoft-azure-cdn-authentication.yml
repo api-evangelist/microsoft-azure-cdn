@@ -1,0 +1,18 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/microsoft-azure-cdn-openapi.yml
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - implicit
+schemes:
+- name: azure_auth
+  type: oauth2
+  flows:
+  - flow: implicit
+    authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+    scopes: 1
+  description: Azure Active Directory OAuth2 Flow.
+  sources:
+  - openapi/microsoft-azure-cdn-openapi.yml
