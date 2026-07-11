@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/microsoft-azure-cdn-openapi.yml
+schemes:
+- name: azure_auth
+  source: openapi/microsoft-azure-cdn-openapi.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+  description: Azure Active Directory OAuth2 Flow.
+scopes:
+- scope: user_impersonation
+  description: Impersonate your user account
+  flows:
+  - implicit
+  sources:
+  - openapi/microsoft-azure-cdn-openapi.yml

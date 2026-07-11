@@ -22,6 +22,8 @@ apis:
       supports configuring caching rules, compression, geo-filtering, custom HTTPS, and purging cached content across
       global edge locations.
 common:
+  - type: OAuthScopes
+    url: scopes/microsoft-azure-cdn-scopes.yml
   - type: GitHubOrganization
     url: https://github.com/Azure
   - type: Portal
@@ -36,6 +38,8 @@ common:
     url: https://support.microsoft.com/
   - type: LlmsText
     url: https://portal.azure.com/llms.txt
+  - url: https://azure.microsoft.com/en-us/blog/feed/
+    type: Blog
 created: '2026-03-13'
 modified: '2026-05-19'
 maintainers:
