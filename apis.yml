@@ -22,6 +22,8 @@ apis:
       supports configuring caching rules, compression, geo-filtering, custom HTTPS, and purging cached content across
       global edge locations.
 common:
+  - type: AgenticAccess
+    url: agentic-access/microsoft-azure-cdn-agentic-access.yml
   - type: DomainSecurity
     url: security/microsoft-azure-cdn-domain-security.yml
   - type: Authentication
