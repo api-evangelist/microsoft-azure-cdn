@@ -1,0 +1,100 @@
+openapi: 3.1.0
+info:
+  title: Azure CDN REST Operations API
+  description: Azure Content Delivery Network (CDN) provides global content delivery from strategically placed edge locations. The REST API manages CDN profiles, endpoints, custom domains, and origins.
+  version: '2024-01-01'
+servers:
+- url: https://management.azure.com
+  description: Azure Resource Manager
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: Operations
+  description: Operations operations
+paths:
+  /providers/Microsoft.Cdn/operations:
+    get:
+      operationId: listOperations
+      summary: Azure CDN REST API List operations
+      description: Lists all available REST API operations for Microsoft.Cdn.
+      tags:
+      - Operations
+      parameters:
+      - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: Operations list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationList'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Operation:
+      type: object
+      properties:
+        name:
+          type: string
+        display:
+          type: object
+          properties:
+            provider:
+              type: string
+            resource:
+              type: string
+            operation:
+              type: string
+            description:
+              type: string
+        isDataAction:
+          type: boolean
+    OperationList:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation'
+        nextLink:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            target:
+              type: string
+  parameters:
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: The API version to use for this operation.
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      description: Azure Active Directory OAuth2 Flow.
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: Impersonate your user account
+externalDocs:
+  description: Azure CDN REST API Documentation
+  url: https://learn.microsoft.com/en-us/rest/api/cdn/
+x-generated-from: https://learn.microsoft.com/en-us/rest/api/cdn/
+x-generated-by: claude-crawl-2026-05-08
