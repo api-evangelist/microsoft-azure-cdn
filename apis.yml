@@ -1,26 +1,44 @@
 aid: microsoft-azure-cdn
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-cdn.png
 url: https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cdn/refs/heads/main/apis.yml
 apis:
-  - aid: microsoft-azure-cdn:rest-api
-    name: Azure CDN REST API
-    tags:
-      - Caching
-      - CDN
-      - Content Delivery
-      - Edge
-      - Performance
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://management.azure.com/
-    humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
-    properties:
-      - url: openapi/microsoft-azure-cdn-openapi.yml
-        type: OpenAPI
-      - url: https://learn.microsoft.com/en-us/rest/api/cdn/
-        type: Documentation
-    description: >-
-      Azure CDN REST API enables management of content delivery network profiles, endpoints, and custom domains. It
-      supports configuring caching rules, compression, geo-filtering, custom HTTPS, and purging cached content across
-      global edge locations.
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-operations-api
+  name: microsoft-azure-cdn Operations API
+  description: Operations operations
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Operations
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-operations-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-profiles-api
+  name: microsoft-azure-cdn Profiles API
+  description: Profiles operations
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-profiles-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
 common:
   - type: AgenticAccess
     url: agentic-access/microsoft-azure-cdn-agentic-access.yml
