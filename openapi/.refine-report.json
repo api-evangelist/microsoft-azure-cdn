@@ -1,0 +1,16 @@
+{
+  "provider": "microsoft-azure-cdn",
+  "sources": [
+    "microsoft-azure-cdn-operations-api-openapi.yml",
+    "microsoft-azure-cdn-profiles-api-openapi.yml"
+  ],
+  "outputs": [
+    "microsoft-azure-cdn-operations-api-openapi.yml",
+    "microsoft-azure-cdn-profiles-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
