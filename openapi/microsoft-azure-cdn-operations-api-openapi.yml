@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Azure CDN REST Operations API
   description: Azure Content Delivery Network (CDN) provides global content delivery from strategically placed edge locations. The REST API manages CDN profiles, endpoints, custom domains, and origins.
@@ -37,6 +37,27 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            target:
+              type: string
+    OperationList:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation'
+        nextLink:
+          type: string
     Operation:
       type: object
       properties:
@@ -55,27 +76,6 @@ components:
               type: string
         isDataAction:
           type: boolean
-    OperationList:
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/Operation'
-        nextLink:
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            target:
-              type: string
   parameters:
     apiVersion:
       name: api-version

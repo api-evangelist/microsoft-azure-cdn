@@ -55,6 +55,8 @@ apis:
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/cdn/
 common:
+  - type: Website
+    url: https://www.microsoft.com/
   - type: AgenticAccess
     url: agentic-access/microsoft-azure-cdn-agentic-access.yml
   - type: DomainSecurity
@@ -87,3 +89,5 @@ maintainers:
 description: >-
   The Azure Content Delivery Network (CDN) caches static web content at strategically placed locations to provide
   maximum throughput for delivering content to users.
+x-parent: microsoft-azure
+x-relationship: product
