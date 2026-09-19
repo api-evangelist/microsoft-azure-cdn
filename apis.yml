@@ -1,5 +1,40 @@
 name: Microsoft Azure Cdn
 aid: microsoft-azure-cdn
+description: 'Azure Content Delivery Network (CDN) caches static web content at strategically placed edge
+  locations to deliver it to users with maximum throughput and minimum latency. The product is operated
+  through the Microsoft.Cdn Azure Resource Manager resource provider, a 115-operation REST contract on
+  management.azure.com that manages CDN profiles, delivery endpoints, origins, origin groups, custom domains
+  and web application firewall policies, and that also serves the Azure Front Door Standard and Premium
+  resource family. Authentication is Microsoft Entra ID OAuth 2.0 with authorization decided by Azure
+  RBAC. Azure CDN Standard from Microsoft (classic) is on a published retirement path: it stopped accepting
+  new instances in 2025 and retires on 30 September 2027, with Microsoft directing customers to Azure
+  Front Door and shipping a validate/migrate/commit API path for the move.'
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-cdn.png
+url: https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cdn/refs/heads/main/apis.yml
+tags:
+- CDN
+- Edge
+- Caching
+- Cloud Infrastructure
+- Networking
+- Web Performance
+- Azure
+- Content Delivery
+- Web Application Firewall
+tags_raw:
+- Content Delivery Network
+- CDN
+- Edge
+- Caching
+- Cloud Infrastructure
+- Networking
+- Web Performance
+- Azure
+- Content Delivery
+- Web Application Firewall
+created: '2026-03-13'
+modified: '2026-09-17'
+specificationVersion: '0.23'
 deliveryModel:
   model: saas
   open_source: false
@@ -12,7 +47,6 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
-specificationVersion: '0.23'
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -26,9 +60,55 @@ accessModel:
   - authentication
   generated: '2026-07-22'
   method: derived
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-cdn.png
-url: https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cdn/refs/heads/main/apis.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
 apis:
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-management-api
+  name: Azure CDN Management API (Microsoft.Cdn)
+  description: The contract Microsoft publishes for the Microsoft.Cdn resource provider, harvested verbatim
+    from Azure/azure-rest-api-specs at api-version 2026-07-01. Swagger 2.0, 73 paths, 115 operations,
+    387 definitions, 16 tags, 56 long-running operations, 26 paged operations, and 123 provider-published
+    request/response examples.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Profiles
+  - Origins
+  - Custom Domains
+  - Routes
+  - Rules
+  - Security Policies
+  - Web Application Firewall
+  tags_raw:
+  - Profiles
+  - Endpoints
+  - Origins
+  - Custom Domains
+  - Routes
+  - Rules
+  - Security Policies
+  - Web Application Firewall
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-management-openapi.json
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted, as published)
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01/openapi.json
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: Overlay
+    url: overlays/microsoft-azure-cdn-management-overlay.yaml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
 - aid: microsoft-azure-cdn:microsoft-azure-cdn-operations-api
   name: microsoft-azure-cdn Operations API
   description: Operations operations
@@ -42,6 +122,8 @@ apis:
     url: openapi/microsoft-azure-cdn-operations-api-openapi.yml
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
 - aid: microsoft-azure-cdn:microsoft-azure-cdn-profiles-api
   name: microsoft-azure-cdn Profiles API
   description: Profiles operations
@@ -54,40 +136,103 @@ apis:
     url: openapi/microsoft-azure-cdn-profiles-api-openapi.yml
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
 common:
-  - type: Website
-    url: https://www.microsoft.com/
-  - type: AgenticAccess
-    url: agentic-access/microsoft-azure-cdn-agentic-access.yml
-  - type: DomainSecurity
-    url: security/microsoft-azure-cdn-domain-security.yml
-  - type: Authentication
-    url: authentication/microsoft-azure-cdn-authentication.yml
-  - type: OAuthScopes
-    url: scopes/microsoft-azure-cdn-scopes.yml
-  - type: GitHubOrganization
-    url: https://github.com/Azure
-  - type: Portal
-    url: https://portal.azure.com/
-  - type: Pricing
-    url: https://azure.microsoft.com/en-us/pricing/
-  - type: TermsOfService
-    url: https://www.microsoft.com/en-us/legal/terms-of-use
-  - type: PrivacyPolicy
-    url: https://privacy.microsoft.com/en-us/privacystatement
-  - type: Support
-    url: https://support.microsoft.com/
-  - type: LlmsText
-    url: https://portal.azure.com/llms.txt
-  - url: https://azure.microsoft.com/en-us/blog/feed/
-    type: Blog
-created: '2026-03-13'
-modified: '2026-05-19'
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
-description: >-
-  The Azure Content Delivery Network (CDN) caches static web content at strategically placed locations to provide
-  maximum throughput for delivering content to users.
+- type: TrustCenter
+  url: security/microsoft-azure-cdn-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/microsoft-azure-cdn-vulnerability-disclosure.yml
+- type: Website
+  url: https://www.microsoft.com/
+- type: AgenticAccess
+  url: agentic-access/microsoft-azure-cdn-agentic-access.yml
+- type: DomainSecurity
+  url: security/microsoft-azure-cdn-domain-security.yml
+- type: Authentication
+  url: authentication/microsoft-azure-cdn-authentication.yml
+- type: OAuthScopes
+  url: scopes/microsoft-azure-cdn-scopes.yml
+- type: GitHubOrganization
+  url: https://github.com/Azure
+- type: Portal
+  url: https://portal.azure.com/
+- type: Pricing
+  url: https://azure.microsoft.com/en-us/pricing/
+- type: TermsOfService
+  url: https://www.microsoft.com/en-us/legal/terms-of-use
+- type: PrivacyPolicy
+  url: https://privacy.microsoft.com/en-us/privacystatement
+- type: Support
+  url: https://support.microsoft.com/
+- url: https://azure.microsoft.com/en-us/blog/feed/
+  type: Blog
+- type: DeveloperPortal
+  url: https://learn.microsoft.com/en-us/rest/api/cdn/
+- type: Documentation
+  url: https://learn.microsoft.com/en-us/azure/frontdoor/
+- type: APIReference
+  url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+- type: GettingStarted
+  url: https://learn.microsoft.com/en-us/azure/frontdoor/create-front-door-portal
+- type: SignUp
+  url: https://azure.microsoft.com/en-us/free/
+- type: StatusPage
+  url: https://azure.status.microsoft/en-us/status
+- type: Deprecation
+  url: lifecycle/microsoft-azure-cdn-lifecycle.yml
+- type: Lifecycle
+  url: lifecycle/microsoft-azure-cdn-lifecycle.yml
+- type: ChangeLog
+  url: changelog/microsoft-azure-cdn-changelog.yml
+- type: CLI
+  url: cli/microsoft-azure-cdn-cli.yml
+- type: Packages
+  url: packages/microsoft-azure-cdn-packages.yml
+- type: SDKs
+  url: packages/microsoft-azure-cdn-packages.yml
+- type: Conventions
+  url: conventions/microsoft-azure-cdn-conventions.yml
+- type: Idempotency
+  url: conventions/microsoft-azure-cdn-conventions.yml
+- type: Conformance
+  url: conformance/microsoft-azure-cdn-conformance.yml
+- type: Compliance
+  url: https://learn.microsoft.com/en-us/azure/compliance/
+- type: Security
+  url: security/microsoft-azure-cdn-vulnerability-disclosure.yml
+- type: SecurityTxt
+  url: well-known/microsoft-azure-cdn-security.txt
+- type: WellKnown
+  url: well-known/microsoft-azure-cdn-well-known.yml
+- type: MCPServer
+  url: mcp/microsoft-azure-cdn-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/microsoft-azure-cdn-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/microsoft-azure-cdn-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: ErrorCatalog
+  url: errors/microsoft-azure-cdn-problem-types.yml
+- type: DataModel
+  url: data-model/microsoft-azure-cdn-data-model.yml
+- type: Plans
+  url: plans/microsoft-azure-cdn-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/microsoft-azure-cdn-rate-limits.yml
+- type: FinOps
+  url: finops/microsoft-azure-cdn-finops.yml
+- type: Examples
+  url: examples/microsoft-azure-cdn-examples.yml
+- type: Overlay
+  url: overlays/microsoft-azure-cdn-management-overlay.yaml
+- type: Support
+  url: https://azure.microsoft.com/en-us/support/options/
 x-parent: microsoft-azure
 x-relationship: product
+x-enrichment:
+  date: '2026-09-17'
+  status: enriched
+  artifacts_added: 150
+  pass: local-v3
