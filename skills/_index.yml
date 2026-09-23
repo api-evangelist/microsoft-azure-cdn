@@ -1,0 +1,33 @@
+generated: '2026-09-17'
+method: generated
+source: >-
+  openapi/microsoft-azure-cdn-management-openapi.json (api-version 2026-07-01),
+  conventions/microsoft-azure-cdn-conventions.yml, errors/microsoft-azure-cdn-problem-types.yml,
+  lifecycle/microsoft-azure-cdn-lifecycle.yml
+provider: microsoft-azure-cdn
+note: >-
+  Four packaged Agent Skills for the marquee Azure CDN flows. Every operationId referenced was grepped
+  out of the harvested Microsoft contract — none is invented. Microsoft publishes no AGENTS.md or
+  skills/ directory of its own for this product (searched 2026-09-17); these are API Evangelist
+  generations grounded in the real contract.
+skills:
+- name: provision-cdn-profile-and-endpoint
+  file: microsoft-azure-cdn-provision-cdn-profile-and-endpoint.md
+  description: Stand up a CDN profile and delivery endpoint, name-check first, poll every long-running step.
+  operations: [CheckNameAvailabilityWithSubscription, Profiles_Create, Profiles_Get, Endpoints_Create, Endpoints_Get, Origins_ListByEndpoint]
+  write: true
+- name: purge-cached-content
+  file: microsoft-azure-cdn-purge-cached-content.md
+  description: Evict stale edge content safely — purge is neither idempotent nor reversible.
+  operations: [Endpoints_ListByProfile, Endpoints_PurgeContent, Endpoints_LoadContent, AFDEndpoints_PurgeContent]
+  write: true
+- name: migrate-to-front-door
+  file: microsoft-azure-cdn-migrate-to-front-door.md
+  description: Move a retiring classic CDN profile to Front Door via validate / migrate / commit, abortable until commit.
+  operations: [Profiles_Get, Profiles_CanMigrate, Profiles_CdnCanMigrateToAfd, Profiles_Migrate, Profiles_CdnMigrateToAfd, Profiles_MigrationCommit, Profiles_MigrationAbort]
+  write: true
+- name: audit-profiles-and-usage
+  file: microsoft-azure-cdn-audit-profiles-and-usage.md
+  description: Read-only inventory of every profile, endpoint, custom domain, quota and WAF policy in a subscription.
+  operations: [Profiles_List, Profiles_ListByResourceGroup, Profiles_ListResourceUsage, Endpoints_ListByProfile, AFDEndpoints_ListByProfile, CustomDomains_ListByEndpoint, AFDCustomDomains_ListByProfile, Policies_List, ResourceUsage_List, Operations_List]
+  write: false

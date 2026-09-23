@@ -1,0 +1,103 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/microsoft-azure-cdn-management-openapi.json (api-version 2026-07-01),
+  openapi/_original/common-types/resource-management-v6-types.json, enriched from
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors
+  and https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+provider: microsoft-azure-cdn
+format: arm-error-response
+rfc9457: false
+note: >-
+  Azure Resource Manager does NOT use RFC 9457 application/problem+json. It uses its own long-standing
+  envelope, declared once in the ARM common-types document every Microsoft.Cdn operation's `default`
+  response $refs (common-types/resource-management/v6/types.json#/definitions/ErrorResponse). All 115
+  operations in the contract declare exactly one error response — `default` — so the contract itself
+  names no individual status codes; the codes below are the ARM platform's documented behaviour, and
+  each carries the docs URL it was read from rather than being invented per-operation.
+envelope:
+  media_type: application/json
+  shape: '{ "error": { "code", "message", "target", "details": [ ... ], "additionalInfo": [ ... ] } }'
+  schema_ref: common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+  fields:
+  - name: error.code
+    type: string
+    description: Machine-readable error code (server-assigned, read-only).
+  - name: error.message
+    type: string
+    description: Human-readable message describing the failure.
+  - name: error.target
+    type: string
+    description: The request element the error is about (a property or parameter name).
+  - name: error.details
+    type: array
+    description: Nested ErrorDetail objects; ARM uses these for per-field validation failures.
+  - name: error.additionalInfo
+    type: array
+    description: ErrorAdditionalInfo objects — an arbitrary `type` plus an `info` payload.
+contract_observations:
+  operations: 115
+  operations_declaring_default_error: 115
+  operations_declaring_explicit_4xx: 0
+  operations_declaring_explicit_5xx: 0
+  note: >-
+    A real contract-quality gap worth reporting upstream: the Microsoft.Cdn contract declares 200/201/
+    202/204 success codes richly but collapses every failure into `default`. A generated client cannot
+    tell a 404 from a 409 from the contract alone.
+problem_types:
+- code: ResourceNotFound
+  status: 404
+  title: The requested resource does not exist
+  detail: The profile, endpoint, origin, route, rule set or secret named in the URI is not present in the subscription and resource group.
+  remediation: Verify subscriptionId, resourceGroupName and the resource name; list with Profiles_List or Endpoints_ListByProfile first.
+  source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors
+- code: ResourceGroupNotFound
+  status: 404
+  title: The resource group does not exist
+  detail: The resourceGroupName path parameter names a group that is absent from the subscription.
+  source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors
+- code: InvalidTemplateDeployment
+  status: 400
+  title: Request body failed validation
+  detail: The Profile, Endpoint, Origin, Route or Rule payload failed resource-provider validation.
+  source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors
+- code: InvalidResourceName
+  status: 400
+  title: Resource name is not valid
+  detail: CDN profile and endpoint names have a constrained character set and global-uniqueness rule for endpoint hostnames.
+  remediation: Call CheckNameAvailability or AFDProfiles_CheckEndpointNameAvailability before Endpoints_Create.
+  source: https://learn.microsoft.com/en-us/rest/api/cdn/
+- code: AuthorizationFailed
+  status: 403
+  title: The principal is not authorized for this action
+  detail: The Entra ID principal lacks the Microsoft.Cdn/* action required by the operation.
+  remediation: Assign CDN Profile Contributor or CDN Endpoint Contributor at the right scope; see scopes/microsoft-azure-cdn-scopes.yml.
+  source: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking
+- code: InvalidAuthenticationTokenTenant
+  status: 401
+  title: Bearer token is missing, expired, or issued for the wrong tenant
+  detail: ARM rejects a token whose audience is not https://management.azure.com/ or whose tenant does not own the subscription.
+  source: https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+- code: Conflict
+  status: 409
+  title: The resource is already being modified
+  detail: A long-running operation is in flight on the same resource; ARM serialises writes per resource.
+  remediation: Poll the Azure-AsyncOperation or Location URL from the prior 202 before retrying.
+  source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations
+- code: TooManyRequests
+  status: 429
+  title: Throttled by Azure Resource Manager
+  detail: The subscription, service-principal or tenant token bucket for this operation type is empty.
+  remediation: Honour the Retry-After response header; read x-ms-ratelimit-remaining-subscription-reads / -writes / -deletes to back off before exhaustion.
+  source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+- code: MissingSubscriptionRegistration
+  status: 409
+  title: The Microsoft.Cdn resource provider is not registered on the subscription
+  detail: ARM refuses Microsoft.Cdn operations until the provider namespace is registered.
+  remediation: 'az provider register --namespace Microsoft.Cdn'
+  source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/error-register-resource-provider
+- code: InternalServerError
+  status: 500
+  title: Unexpected resource-provider failure
+  detail: ARM surfaces resource-provider faults through the same envelope; treat as retryable with backoff.
+  source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors

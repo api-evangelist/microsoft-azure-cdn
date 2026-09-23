@@ -1,0 +1,59 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/cli/azure/cdn, https://pypi.org/project/azure-cli/,
+  https://www.powershellgallery.com/packages/Az.Cdn
+provider: microsoft-azure-cdn
+note: >-
+  Azure CDN has no standalone CLI. It is operated through the two first-party Azure command-line
+  surfaces — the cross-platform Azure CLI (`az cdn`, plus `az afd` for the Front Door Standard/Premium
+  resources the same resource provider serves) and Azure PowerShell (`Az.Cdn`). Both are generated from
+  the same Microsoft.Cdn contract this repo harvests, so the command surface tracks the api-version.
+clis:
+- name: Azure CLI
+  binary: az
+  command_group: az cdn
+  docs: https://learn.microsoft.com/en-us/cli/azure/cdn
+  http_status: 200
+  package: azure-cli
+  registry: pypi
+  version: 2.90.0
+  published: '2026-09-01'
+  install:
+  - 'brew install azure-cli'
+  - 'pip install azure-cli'
+  - 'curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash'
+  auth: az login (Microsoft Entra ID; the same token the REST contract requires)
+  command_surface:
+  - group: az cdn profile
+    maps_to: [Profiles_List, Profiles_ListByResourceGroup, Profiles_Get, Profiles_Create, Profiles_Update, Profiles_Delete]
+  - group: az cdn endpoint
+    maps_to: [Endpoints_ListByProfile, Endpoints_Get, Endpoints_Create, Endpoints_Update, Endpoints_Delete, Endpoints_Start, Endpoints_Stop, Endpoints_PurgeContent, Endpoints_LoadContent, Endpoints_ValidateCustomDomain]
+  - group: az cdn custom-domain
+    maps_to: [CustomDomains_ListByEndpoint, CustomDomains_Get, CustomDomains_Create, CustomDomains_Delete, CustomDomains_EnableCustomHttps, CustomDomains_DisableCustomHttps]
+  - group: az cdn origin
+    maps_to: [Origins_ListByEndpoint, Origins_Get, Origins_Create, Origins_Update, Origins_Delete]
+  - group: az cdn origin-group
+    maps_to: [OriginGroups_ListByEndpoint, OriginGroups_Get, OriginGroups_Create, OriginGroups_Update, OriginGroups_Delete]
+  - group: az cdn edge-node
+    maps_to: [EdgeNodes_List]
+  - group: az cdn name-exists
+    maps_to: [CheckNameAvailability, CheckNameAvailabilityWithSubscription]
+  - group: az cdn waf policy
+    maps_to: [Policies_List, Policies_Get, Policies_CreateOrUpdate, Policies_Update, Policies_Delete, ManagedRuleSets_List]
+  - group: az afd profile / endpoint / origin-group / origin / route / rule-set / rule / custom-domain / secret / security-policy
+    maps_to: [AFDEndpoints_ListByProfile, AFDOrigins_ListByOriginGroup, AFDOriginGroups_ListByProfile, AFDCustomDomains_ListByProfile, Routes_ListByEndpoint, RuleSets_ListByProfile, Rules_ListByRuleSet, Secrets_ListByProfile, SecurityPolicies_ListByProfile]
+    note: The az afd group covers the Azure Front Door Standard/Premium resources served by the same Microsoft.Cdn provider.
+  key_flows:
+  - 'az cdn profile create -g <rg> -n <profile> --sku Standard_Microsoft'
+  - 'az cdn endpoint create -g <rg> --profile-name <profile> -n <endpoint> --origin <host>'
+  - 'az cdn endpoint purge -g <rg> --profile-name <profile> -n <endpoint> --content-paths "/*"'
+- name: Azure PowerShell
+  module: Az.Cdn
+  registry: powershellgallery
+  version: 6.2.0
+  published: '2026-08-31'
+  url: https://www.powershellgallery.com/packages/Az.Cdn
+  install: 'Install-Module -Name Az.Cdn'
+  docs: https://learn.microsoft.com/en-us/powershell/module/az.cdn/
+  auth: Connect-AzAccount

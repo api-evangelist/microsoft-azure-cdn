@@ -1,0 +1,130 @@
+generated: '2026-09-17'
+method: probed
+source: live HTTPS probes of every host this record knows, 2026-09-17
+provider: microsoft-azure-cdn
+note: >-
+  Probed the registrable domain and www, the API baseURL host (management.azure.com), the OpenAPI
+  servers[] host (the same), the docs host (learn.microsoft.com), the marketing/product host
+  (azure.microsoft.com), the console host (portal.azure.com), and login.microsoftonline.com — the
+  authorization server the harvested contract's azure_auth securityScheme names, which is a different
+  host from every other one in the record. Two real documents were served: the Microsoft corporate
+  RFC 9116 security.txt on microsoft.com/www.microsoft.com, and the Microsoft Entra ID OpenID Connect
+  discovery document on login.microsoftonline.com. Every other path 404d or, on management.azure.com,
+  returned an ARM 400 (the resource manager answers only /subscriptions/... shaped paths). A 404 body
+  that is a full HTML marketing page is recorded as a miss, not a document.
+hosts:
+- host: www.microsoft.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: microsoft-azure-cdn-security.txt
+    content_type: text/plain; charset=utf-8
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: microsoft.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: microsoft-azure-cdn-security.txt
+    note: identical body to www.microsoft.com; the document's own Canonical is the www host.
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: login.microsoftonline.com
+  documents:
+  - path: /common/v2.0/.well-known/openid-configuration
+    status: 200
+    file: microsoft-azure-cdn-openid-configuration.json
+    content_type: application/json; charset=utf-8
+    note: >-
+      The Microsoft Entra ID v2.0 discovery document for the multi-tenant `common` authority. This is
+      the authorization server the harvested Microsoft.Cdn contract points at
+      (authorizationUrl https://login.microsoftonline.com/common/oauth2/authorize), so it is probed
+      here even though it is not a microsoft.com or azure.com host.
+  - path: /common/.well-known/openid-configuration
+    status: 200
+    note: the v1.0 authority document; the v2.0 one above is saved as the canonical copy.
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /common/v2.0/.well-known/oauth-authorization-server
+    status: 404
+- host: azure.microsoft.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: learn.microsoft.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: management.azure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 400
+    note: ARM rejects every non-resource path with a JSON 400; no discovery surface is served here.
+  - path: /.well-known/openid-configuration
+    status: 400
+  - path: /.well-known/api-catalog
+    status: 400
+  - path: /.well-known/agent-card.json
+    status: 400
+  - path: /.well-known/agent.json
+    status: 400
+- host: portal.azure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+summary:
+  hosts_probed: 7
+  paths_probed: 43
+  documents_served: 3
+  api_catalog_served: false
+  agent_card_served: false

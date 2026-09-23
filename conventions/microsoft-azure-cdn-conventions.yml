@@ -1,0 +1,241 @@
+generated: '2026-09-17'
+method: searched
+source: openapi/microsoft-azure-cdn-management-openapi.json (api-version 2026-07-01) + https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+  + https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations + https://learn.microsoft.com/en-us/rest/api/cdn/
+provider: microsoft-azure-cdn
+note: 'Azure CDN is an Azure Resource Manager resource provider (Microsoft.Cdn). Almost every cross-cutting
+  convention here belongs to ARM rather than to CDN, which is exactly what an agent needs to know: learn
+  ARM once and every Microsoft.Cdn operation behaves the same way.'
+auth:
+  style: OAuth 2.0 bearer token issued by Microsoft Entra ID
+  scheme: azure_auth (oauth2, implicit flow declared in the contract)
+  authorization_server: https://login.microsoftonline.com/common/v2.0
+  discovery: well-known/microsoft-azure-cdn-openid-configuration.json
+  resource_scope: https://management.azure.com/.default
+  header: 'Authorization: Bearer <token>'
+  authorization_model: Azure RBAC — see scopes/microsoft-azure-cdn-scopes.yml
+  cross_ref: authentication/microsoft-azure-cdn-authentication.yml
+versioning:
+  style: mandatory api-version query parameter on every request
+  parameter: api-version
+  current: '2026-07-01'
+  channel: dated stable versions; preview versions carry a -preview suffix
+  note: 'The api-version parameter is required on all 115 operations. Omitting it returns an ARM 400.
+    Stable versions published for Microsoft.Cdn: 2015-06-01 through 2026-07-01 (19 stable versions), listed
+    in changelog/microsoft-azure-cdn-changelog.yml.'
+  cross_ref: lifecycle/microsoft-azure-cdn-lifecycle.yml
+pagination:
+  style: next-link envelope (ARM x-ms-pageable)
+  response_fields:
+    items: value
+    next: nextLink
+  request_params: none — follow the absolute nextLink URL verbatim
+  operations_paged: 26
+  note: '26 of 115 operations declare x-ms-pageable with nextLinkName: nextLink. There is no page-size
+    or offset parameter; the client follows nextLink until it is absent.'
+async_operations:
+  style: ARM long-running operation (202 + polling header)
+  operations_long_running: 56
+  headers:
+  - Azure-AsyncOperation
+  - Location
+  - Retry-After
+  terminal_states:
+  - Succeeded
+  - Failed
+  - Canceled
+  docs: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations
+  note: 56 of 115 operations are marked x-ms-long-running-operation. They return 202 Accepted with a polling
+    URL; the resource is NOT in its final state when the call returns. An agent that treats a 202 as success
+    will act on a half-created profile.
+request_id_tracing:
+  request_header: x-ms-client-request-id (client-supplied, echoed back)
+  response_headers:
+  - x-ms-request-id
+  - x-ms-correlation-request-id
+  - x-ms-routing-request-id
+  note: ARM platform headers; not declared in the Microsoft.Cdn contract, documented by ARM.
+error_envelope:
+  format: ARM error envelope, not RFC 9457
+  shape: '{ "error": { "code", "message", "target", "details", "additionalInfo" } }'
+  cross_ref: errors/microsoft-azure-cdn-problem-types.yml
+rate_limit_signaling:
+  status: 429
+  headers:
+  - x-ms-ratelimit-remaining-subscription-reads
+  - x-ms-ratelimit-remaining-subscription-writes
+  - x-ms-ratelimit-remaining-subscription-deletes
+  - x-ms-ratelimit-remaining-tenant-reads
+  - x-ms-ratelimit-remaining-tenant-writes
+  - Retry-After
+  cross_ref: rate-limits/microsoft-azure-cdn-rate-limits.yml
+field_expansion:
+  supported: false
+  note: No $expand / $select / sparse-fieldset parameter is declared on any Microsoft.Cdn operation.
+metadata:
+  supported: true
+  field: tags
+  note: ARM TrackedResource tags — a free-form string map on profiles, endpoints and WAF policies.
+idempotency:
+  coverage: partial
+  mechanism: HTTP-method idempotency by client-chosen resource name (ARM PUT/DELETE semantics)
+  header: null
+  retention: null
+  note: 'There is NO Idempotency-Key header anywhere in the Microsoft.Cdn contract — zero header parameters
+    are declared on any of the 115 operations. Replay protection comes only from ARM resource semantics:
+    a PUT creates or replaces the resource at a client-chosen URI, so repeating it converges, and a DELETE
+    on an already-deleted resource returns 204. The 45 action-style POSTs and property PATCHes carry no
+    replay protection at all: repeating Endpoints_PurgeContent, Profiles_Migrate or AFDProfiles_Upgrade
+    fires the action again. That is why this is partial rather than full — the mechanism does not span
+    the mutating surface, it covers 30 of 75 mutating operations.'
+  scope:
+  - AFDCustomDomains_Create
+  - AFDCustomDomains_Delete
+  - AFDEndpoints_Create
+  - AFDEndpoints_Delete
+  - AFDOriginGroups_Create
+  - AFDOriginGroups_Delete
+  - AFDOrigins_Create
+  - AFDOrigins_Delete
+  - CustomDomains_Create
+  - CustomDomains_Delete
+  - Endpoints_Create
+  - Endpoints_Delete
+  - OriginGroups_Create
+  - OriginGroups_Delete
+  - Origins_Create
+  - Origins_Delete
+  - Policies_CreateOrUpdate
+  - Policies_Delete
+  - Profiles_Create
+  - Profiles_Delete
+  - Routes_Create
+  - Routes_Delete
+  - RuleSets_Create
+  - RuleSets_Delete
+  - Rules_Create
+  - Rules_Delete
+  - Secrets_Create
+  - Secrets_Delete
+  - SecurityPolicies_Create
+  - SecurityPolicies_Delete
+  unprotected:
+  - AFDCustomDomains_RefreshValidationToken
+  - AFDCustomDomains_Update
+  - AFDEndpoints_ListResourceUsage
+  - AFDEndpoints_PurgeContent
+  - AFDEndpoints_Update
+  - AFDEndpoints_ValidateCustomDomain
+  - AFDOriginGroups_ListResourceUsage
+  - AFDOriginGroups_Update
+  - AFDOrigins_Update
+  - AFDProfiles_CheckEndpointNameAvailability
+  - AFDProfiles_CheckHostNameAvailability
+  - AFDProfiles_ListResourceUsage
+  - AFDProfiles_Upgrade
+  - AFDProfiles_ValidateSecret
+  - CheckEndpointNameAvailability
+  - CheckNameAvailability
+  - CheckNameAvailabilityWithSubscription
+  - CustomDomains_DisableCustomHttps
+  - CustomDomains_EnableCustomHttps
+  - Endpoints_ListResourceUsage
+  - Endpoints_LoadContent
+  - Endpoints_PurgeContent
+  - Endpoints_Start
+  - Endpoints_Stop
+  - Endpoints_Update
+  - Endpoints_ValidateCustomDomain
+  - OriginGroups_Update
+  - Origins_Update
+  - Policies_Update
+  - Profiles_CanMigrate
+  - Profiles_CdnCanMigrateToAfd
+  - Profiles_CdnMigrateToAfd
+  - Profiles_GenerateSsoUri
+  - Profiles_ListResourceUsage
+  - Profiles_ListSupportedOptimizationTypes
+  - Profiles_Migrate
+  - Profiles_MigrationAbort
+  - Profiles_MigrationCommit
+  - Profiles_Update
+  - ResourceUsage_List
+  - Routes_Update
+  - RuleSets_ListResourceUsage
+  - Rules_Update
+  - SecurityPolicies_Patch
+  - ValidateProbe
+  mutating_operations: 75
+  protected_operations: 30
+dry_run_mode:
+  supported: true
+  grade: documented
+  note: 'Genuine pre-flight operations exist and are separate from the write they rehearse: CheckNameAvailability
+    and CheckNameAvailabilityWithSubscription before a create, AFDProfiles_CheckEndpointNameAvailability
+    and AFDProfiles_CheckHostNameAvailability before an endpoint or domain create, Endpoints_ValidateCustomDomain
+    and AFDEndpoints_ValidateCustomDomain before a custom-domain create, AFDProfiles_ValidateSecret before
+    Secrets_Create, and Profiles_CanMigrate / Profiles_CdnCanMigrateToAfd before a migration. There is
+    no generic ?validateOnly / dry-run flag on the write operations themselves.'
+  operations:
+  - CheckNameAvailability
+  - CheckNameAvailabilityWithSubscription
+  - CheckEndpointNameAvailability
+  - AFDProfiles_CheckEndpointNameAvailability
+  - AFDProfiles_CheckHostNameAvailability
+  - Endpoints_ValidateCustomDomain
+  - AFDEndpoints_ValidateCustomDomain
+  - AFDProfiles_ValidateSecret
+  - ValidateProbe
+  - Profiles_CanMigrate
+  - Profiles_CdnCanMigrateToAfd
+reversibility:
+  applicable: true
+  grade: verified
+  note: Graded verified because at least one write surface states both a reversal operation AND the window
+    it works in, in the provider's own contract text. Nothing below asserts a window the docs do not state.
+  surfaces:
+  - surface: CDN-to-Front-Door migration
+    write: Profiles_Migrate / Profiles_CdnMigrateToAfd
+    reversal: Profiles_MigrationAbort
+    window: before Profiles_MigrationCommit is called — the migration is staged and not final until commit
+    window_stated: true
+    evidence: 'Contract description, Profiles_Migrate: "Migrate the CDN profile to Azure Frontdoor(Standard/Premium)
+      profile. The change need to be committed after this."; Profiles_CdnMigrateToAfd: "This step prepares
+      the profile for migration and will be followed by Commit to finalize the migration."; Profiles_MigrationAbort:
+      "Abort the migration to Azure Frontdoor Premium/Standard."'
+    docs: https://learn.microsoft.com/en-us/azure/frontdoor/tier-migration
+    grade: verified
+  - surface: endpoint availability
+    write: Endpoints_Stop
+    reversal: Endpoints_Start
+    window: null
+    window_stated: false
+    evidence: 'Contract: Endpoints_Start "Starts an existing CDN endpoint that is on a stopped state."'
+    grade: documented
+  - surface: custom-domain HTTPS
+    write: CustomDomains_EnableCustomHttps
+    reversal: CustomDomains_DisableCustomHttps
+    window: null
+    window_stated: false
+    evidence: 'Contract: paired enable/disable operations on the same custom domain resource.'
+    grade: documented
+  - surface: resource configuration
+    write: Profiles_Update / Endpoints_Update / Origins_Update / Routes_Update / Rules_Update
+    reversal: re-PUT or re-PATCH the previous body
+    window: null
+    window_stated: false
+    evidence: ARM declarative PUT semantics; the contract keeps no prior-version history to restore from.
+    grade: documented
+  irreversible:
+  - operation: Profiles_Delete
+    note: 'Contract text: "Deleting a profile will result in the deletion of all of the sub-resources
+      including endpoints, origins and custom domains." No restore, undelete or soft-delete operation
+      exists anywhere in the 115-operation surface, and no retention window is stated. Treat as permanent.'
+  - operation: Endpoints_Delete / Origins_Delete / Routes_Delete / RuleSets_Delete / Rules_Delete / Secrets_Delete
+      / SecurityPolicies_Delete / CustomDomains_Delete / OriginGroups_Delete / Policies_Delete
+    note: 'Same: no restore path in the contract.'
+  - operation: Endpoints_PurgeContent
+    note: Cache eviction. Not undoable — content repopulates only on the next origin fetch.
+  - operation: AFDProfiles_Upgrade
+    note: Standard_AzureFrontDoor to Premium_AzureFrontDoor. The contract declares no downgrade operation.
+  cross_ref: agentic-access/microsoft-azure-cdn-agentic-access.yml

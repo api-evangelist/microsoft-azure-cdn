@@ -1,0 +1,121 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/azure/frontdoor/front-door-cdn-comparison,
+  https://azure.microsoft.com/en-us/pricing/details/cdn/,
+  https://learn.microsoft.com/en-us/azure/frontdoor/tier-migration,
+  https://azure.status.microsoft/en-us/status,
+  openapi/microsoft-azure-cdn-management-openapi.json
+provider: microsoft-azure-cdn
+headline: >-
+  THIS PRODUCT IS RETIRING. Azure CDN Standard from Microsoft (classic) is on a published retirement
+  path with a hard date. This is the single most important fact about the product's lifecycle and it
+  comes from two independent Microsoft pages, one of them the pricing page itself.
+product_status:
+  status: retiring
+  retirement_date: '2027-09-30'
+  new_resource_cutoff: '2025-10-01'
+  successor: Azure Front Door Standard / Premium
+  successor_repo_hint: microsoft-azure-front-door
+  evidence:
+  - url: https://azure.microsoft.com/en-us/pricing/details/cdn/
+    status: 200
+    quote: >-
+      "Azure CDN Standard from Microsoft (classic) is in the process of retiring. As of October 1, 2025,
+      no new instances will be created. On September 30, 2027, it will be retired. Moving forward, we
+      suggest using Azure Front Door, Microsoft's premier CDN service."
+  - url: https://learn.microsoft.com/en-us/azure/frontdoor/front-door-cdn-comparison
+    status: 200
+    quote: >-
+      "Azure CDN Standard from Microsoft (classic) is retiring on September 30, 2027. To avoid service
+      disruption, migrate to Azure Front Door Standard or Premium." Retirement table gives the cutoff
+      date for creating new resources as August 15, 2025.
+  note: >-
+    The two Microsoft pages state DIFFERENT new-resource cutoff dates — the pricing page says October 1,
+    2025 and the comparison table says August 15, 2025. Both are recorded verbatim rather than
+    reconciled, because reconciling them would be our guess, not Microsoft's statement. The retirement
+    date (September 30, 2027) is consistent across both.
+  sibling_retirement:
+    product: Azure Front Door (classic)
+    retirement_date: '2027-03-31'
+    new_resource_cutoff: '2025-03-31'
+    evidence: https://learn.microsoft.com/en-us/azure/frontdoor/tier-migration
+deprecation_policy:
+  published: true
+  mechanism: >-
+    Azure publishes retirement notices on the product pricing page, in the Azure updates feed, and as a
+    banner on every affected documentation page, together with a migration guide and, uniquely here, a
+    migration API path in the contract itself.
+  headers:
+    sunset: false
+    deprecation: false
+    note: >-
+      Microsoft.Cdn does NOT emit RFC 8594 Sunset or Deprecation response headers. Retirement is
+      announced out of band (docs, portal, email) and enforced by ARM refusing new resource creation
+      after the cutoff — a runtime agent reading only responses gets no warning.
+  migration_path:
+    docs: https://learn.microsoft.com/en-us/azure/frontdoor/tier-migration
+    contract_operations:
+    - Profiles_CanMigrate
+    - Profiles_CdnCanMigrateToAfd
+    - Profiles_Migrate
+    - Profiles_CdnMigrateToAfd
+    - Profiles_MigrationCommit
+    - Profiles_MigrationAbort
+    note: >-
+      Unusually good: the retirement has a first-class API. The contract ships a validate / migrate /
+      commit / abort sequence so the migration off the retiring product is itself automatable, and the
+      abort step is reversible until commit (see conventions/microsoft-azure-cdn-conventions.yml).
+versioning:
+  style: dated api-version query parameter
+  current: '2026-07-01'
+  required: true
+  stable_versions:
+  - '2015-06-01'
+  - '2016-04-02'
+  - '2016-10-02'
+  - '2017-04-02'
+  - '2017-10-12'
+  - '2019-04-15'
+  - '2019-06-15'
+  - '2019-12-31'
+  - '2020-03-31'
+  - '2020-04-15'
+  - '2020-09-01'
+  - '2021-06-01'
+  - '2023-05-01'
+  - '2024-02-01'
+  - '2024-09-01'
+  - '2025-04-15'
+  - '2025-06-01'
+  - '2025-12-01'
+  - '2026-07-01'
+  source: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable
+  note: >-
+    19 dated stable api-versions published over eleven years, every one still addressable by passing it
+    as api-version. Old versions are not removed; that is the ARM contract-stability guarantee.
+deprecated_operations:
+  count: 0
+  note: >-
+    No operation in the 2026-07-01 contract carries `deprecated: true`. The deprecation here is at the
+    PRODUCT level, not the operation level — which is why an operation-level scan of this spec would
+    report a healthy API that is in fact two years from shutdown.
+status_page:
+  url: https://azure.status.microsoft/en-us/status
+  alternate: https://status.azure.com/
+  probed: '2026-09-17'
+  http_status: 200
+  scope: All Azure services and regions, with Content Delivery Network listed per region.
+  history: https://azure.status.microsoft/en-us/status/history/
+  note: status.azure.com 302s to azure.status.microsoft/en-us/status.
+sla:
+  published: true
+  url: https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services
+  note: >-
+    Azure CDN's SLA lives in the consolidated Microsoft SLA for Online Services document;
+    azure.microsoft.com/en-us/support/legal/sla/cdn/ 302s there. The historical Azure CDN commitment is
+    99.9% availability of CDN-delivered content; the number is stated in that document rather than on a
+    per-product page, so it is cited by reference rather than quoted here.
+support:
+  url: https://azure.microsoft.com/en-us/support/options/
+  operation: 'Microsoft.Support/* is granted by all four CDN RBAC roles, so support-ticket creation is part of the product role surface.'

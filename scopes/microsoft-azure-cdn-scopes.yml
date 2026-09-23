@@ -1,17 +1,64 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/microsoft-azure-cdn-openapi.yml
+generated: '2026-09-17'
+method: searched
+source: >-
+  openapi/microsoft-azure-cdn-management-openapi.json,
+  https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking
+docs: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking
+provider: microsoft-azure-cdn
+note: >-
+  Two different things are called a "scope" on this API and conflating them is the usual integration
+  mistake. (1) The OAUTH SCOPE is coarse: the contract declares exactly one, user_impersonation, and
+  the real-world token request asks for https://management.azure.com/.default — neither expresses what
+  the caller may do. (2) The AUTHORIZATION SCOPE is an Azure RBAC role assigned at an ARM resource
+  scope, and that is what actually gates each of the 115 operations. Both are recorded below; the RBAC
+  block is the one that matters.
 schemes:
 - name: azure_auth
-  source: openapi/microsoft-azure-cdn-openapi.yml
+  source: openapi/microsoft-azure-cdn-management-openapi.json
   flows:
   - flow: implicit
     authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
   description: Azure Active Directory OAuth2 Flow.
 scopes:
 - scope: user_impersonation
-  description: Impersonate your user account
+  description: impersonate your user account
   flows:
   - implicit
+  declared_in: contract
   sources:
-  - openapi/microsoft-azure-cdn-openapi.yml
+  - openapi/microsoft-azure-cdn-management-openapi.json
+- scope: https://management.azure.com/.default
+  description: >-
+    The resource scope a service principal or managed identity requests for any Azure Resource Manager
+    call, Microsoft.Cdn included. Documented by Microsoft, not declared in the contract.
+  flows:
+  - client_credentials
+  declared_in: docs
+rbac_roles:
+- role: CDN Profile Contributor
+  id: ec156ff8-a8d1-4d15-830c-5b80698ca432
+  description: Can manage CDN profiles and their endpoints, but can't grant access to other users.
+  grants: [Microsoft.Cdn/*]
+- role: CDN Profile Reader
+  id: 8f96442b-4075-438f-813d-ad51ab4019af
+  description: Can view CDN profiles and their endpoints, but can't make changes.
+  grants: [Microsoft.Cdn/*/read]
+- role: CDN Endpoint Contributor
+  id: 426e0c7f-0c7e-4658-b36f-ff54d6c29b45
+  description: Can manage CDN endpoints, but can't grant access to other users.
+  grants:
+  - Microsoft.Cdn/edgenodes/read
+  - Microsoft.Cdn/operationresults/*
+  - Microsoft.Cdn/profiles/endpoints/*
+- role: CDN Endpoint Reader
+  id: 871e35f6-b5c1-49cc-a043-bde969a0f2cd
+  description: Can view CDN endpoints, but can't make changes.
+  grants:
+  - Microsoft.Cdn/edgenodes/read
+  - Microsoft.Cdn/operationresults/*
+  - Microsoft.Cdn/profiles/endpoints/*/read
+  - Microsoft.Cdn/profiles/afdendpoints/validateCustomDomain/action
+assignable_scopes:
+- /subscriptions/{subscriptionId}
+- /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}
+- /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Cdn/profiles/{profileName}

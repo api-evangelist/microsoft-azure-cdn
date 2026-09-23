@@ -1,0 +1,86 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Azure CDN (Microsoft.Cdn) contract
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-17'
+  method: generated
+  source: openapi/microsoft-azure-cdn-management-openapi.json
+  extends: openapi/microsoft-azure-cdn-management-openapi.json
+  note: >-
+    Non-destructive. The harvested Microsoft contract is never mutated; this overlay records what the
+    API Evangelist enrichment pass learned that the contract does not state. Three classes of
+    enhancement: (1) the product-level retirement, which the contract is silent about while the
+    pricing page and the Front Door comparison page both publish a hard 2027-09-30 date; (2) the
+    runtime semantics an agent needs — throttling headers, long-running-operation polling, the ARM
+    error envelope — none of which appear in the spec; (3) reversibility and idempotency facts derived
+    per operation.
+actions:
+- target: $.info
+  description: Record the product retirement and the runtime facts the contract omits.
+  update:
+    x-lifecycle-status: retiring
+    x-retirement-date: '2027-09-30'
+    x-new-resource-cutoff: '2025-10-01'
+    x-successor: Azure Front Door Standard / Premium
+    x-retirement-evidence:
+    - https://azure.microsoft.com/en-us/pricing/details/cdn/
+    - https://learn.microsoft.com/en-us/azure/frontdoor/front-door-cdn-comparison
+    x-error-envelope: 'ARM: { "error": { code, message, target, details, additionalInfo } } — not RFC 9457'
+    x-rate-limit-headers:
+    - x-ms-ratelimit-remaining-subscription-reads
+    - x-ms-ratelimit-remaining-subscription-writes
+    - x-ms-ratelimit-remaining-subscription-deletes
+    - Retry-After
+    x-rate-limit-status: 429
+    x-idempotency-coverage: partial
+    x-idempotency-mechanism: ARM PUT/DELETE resource semantics; no Idempotency-Key header exists
+    x-api-evangelist-artifacts:
+      conventions: conventions/microsoft-azure-cdn-conventions.yml
+      errors: errors/microsoft-azure-cdn-problem-types.yml
+      lifecycle: lifecycle/microsoft-azure-cdn-lifecycle.yml
+      rate_limits: rate-limits/microsoft-azure-cdn-rate-limits.yml
+      data_model: data-model/microsoft-azure-cdn-data-model.yml
+      examples: examples/microsoft-azure-cdn-examples.yml
+- target: $.paths.*.*[?(@.x-ms-long-running-operation == true)]
+  description: Flag every long-running operation so a client does not treat 202 as completion.
+  update:
+    x-agent-note: >-
+      Long-running. Returns 202 with an Azure-AsyncOperation or Location header; poll to a terminal
+      state (Succeeded, Failed, Canceled) before assuming the resource exists or changed.
+    x-completion: poll
+- target: $.paths['/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}'].delete
+  description: Mark the cascade delete as irreversible.
+  update:
+    x-reversible: false
+    x-consequence: destructive-cascade
+    x-agent-note: >-
+      Deletes every endpoint, origin and custom domain under the profile. No restore, undelete or
+      soft-delete operation exists anywhere in this contract and no retention window is published.
+- target: $.paths['/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/migrationAbort'].post
+  description: Record the reversal window for the migration surface.
+  update:
+    x-reverses: Profiles_Migrate
+    x-reversal-window: before Profiles_MigrationCommit
+    x-reversal-grade: verified
+- target: $.paths['/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge'].post
+  description: Purge is an unprotected, non-reversible action.
+  update:
+    x-reversible: false
+    x-idempotent: false
+    x-agent-note: >-
+      Cache eviction. Repeating this call fires the action again; content only repopulates on the next
+      origin fetch. There is no replay protection on this operation.
+- target: $.securityDefinitions.azure_auth
+  description: Correct the flow a generated client would otherwise implement.
+  update:
+    x-actual-flows:
+    - client_credentials
+    - authorization_code
+    x-token-endpoint: https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token
+    x-resource-scope: https://management.azure.com/.default
+    x-discovery: https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+    x-agent-note: >-
+      The declared implicit flow is a legacy Swagger 2.0 artifact. A service integration uses client
+      credentials against the token endpoint above, and authorization is then decided by Azure RBAC
+      role assignment, not by OAuth scope.

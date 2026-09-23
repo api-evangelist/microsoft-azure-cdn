@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Azure CDN REST Operations Profiles API
+  title: Azure CDN REST Profiles API
   description: Azure Content Delivery Network (CDN) provides global content delivery from strategically placed edge locations. The REST API manages CDN profiles, endpoints, custom domains, and origins.
   version: '2024-01-01'
 servers:
@@ -170,18 +170,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            target:
-              type: string
     ResourceList:
       type: object
       properties:
@@ -214,19 +202,31 @@ components:
         properties:
           type: object
           description: Resource-specific properties.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            target:
+              type: string
   parameters:
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: The API version to use for this operation.
-      schema:
-        type: string
     subscriptionId:
       name: subscriptionId
       in: path
       required: true
       description: The ID of the target subscription.
+      schema:
+        type: string
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: The API version to use for this operation.
       schema:
         type: string
     resourceGroupName:

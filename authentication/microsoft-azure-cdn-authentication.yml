@@ -1,18 +1,74 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/microsoft-azure-cdn-openapi.yml
+generated: '2026-09-17'
+method: searched
+source: >-
+  openapi/microsoft-azure-cdn-management-openapi.json (securityDefinitions),
+  well-known/microsoft-azure-cdn-openid-configuration.json (live fetch 2026-09-17),
+  https://learn.microsoft.com/en-us/rest/api/azure/,
+  https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking
+docs: https://learn.microsoft.com/en-us/rest/api/azure/
 summary:
   types:
   - oauth2
   oauth2_flows:
   - implicit
+  - client_credentials
+  - authorization_code
+  api_keys: false
+  mutual_tls: false
+  note: >-
+    The contract declares only the implicit flow, which is the legacy Swagger 2.0 representation Azure
+    has used since 2015 and is NOT how the API is actually called. The authorization server's own
+    discovery document (fetched live) advertises authorization_code, client_credentials, device_code and
+    refresh_token; the documented path for a service integration is client_credentials against
+    https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token with scope
+    https://management.azure.com/.default. Recorded here because a client generated straight from the
+    spec would implement the wrong flow.
 schemes:
 - name: azure_auth
   type: oauth2
+  in: header
+  header: 'Authorization: Bearer <token>'
+  description: Azure Active Directory (Microsoft Entra ID) OAuth2 Flow.
   flows:
   - flow: implicit
     authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
     scopes: 1
-  description: Azure Active Directory OAuth2 Flow.
+    declared_in: contract
+  - flow: client_credentials
+    tokenUrl: https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token
+    scope: https://management.azure.com/.default
+    declared_in: authorization server discovery + docs
+  - flow: authorization_code
+    authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+    tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+    declared_in: authorization server discovery
+  applied_to: all 115 operations, via the contract's global security block
   sources:
-  - openapi/microsoft-azure-cdn-openapi.yml
+  - openapi/microsoft-azure-cdn-management-openapi.json
+authorization_server:
+  issuer: https://login.microsoftonline.com/{tenantid}/v2.0
+  discovery: https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+  discovery_http_status: 200
+  discovery_file: well-known/microsoft-azure-cdn-openid-configuration.json
+  authorization_endpoint: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+  token_endpoint: https://login.microsoftonline.com/common/oauth2/v2.0/token
+  jwks_uri: https://login.microsoftonline.com/common/discovery/v2.0/keys
+  oidc_scopes: [openid, profile, email, offline_access]
+audience: https://management.azure.com/
+identity_types:
+- name: User principal
+  note: Interactive sign-in; az login or the portal.
+- name: Service principal (app registration)
+  note: Client credentials with a secret or certificate. The standard non-interactive integration.
+- name: Managed identity
+  note: >-
+    System- or user-assigned identity on an Azure resource; no secret to store. The recommended posture
+    for an agent running inside Azure.
+authorization_model:
+  style: Azure RBAC role assignment, evaluated per ARM resource scope
+  note: >-
+    OAuth scope alone grants nothing here. The token carries the coarse
+    https://management.azure.com/.default scope; what a caller may actually do is decided by RBAC role
+    assignments on the subscription, resource group or individual profile. See
+    scopes/microsoft-azure-cdn-scopes.yml.
+  docs: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking

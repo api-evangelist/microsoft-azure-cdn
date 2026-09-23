@@ -3,85 +3,127 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: microsoft-azure-cdn
 providerId: microsoft-azure-cdn
+generated: '2026-09-17'
+method: searched
+source: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-17'
 tags:
   - Rate Limiting
   - Quotas
   - Throttling
-description: Machine-readable rate limit definitions for the microsoft-azure-cdn API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
+description: >-
+  Published throttling limits for the Azure CDN management API. This REPLACES the 2026-05-04 API
+  Evangelist scaffold, which invented free/professional/enterprise request quotas and X-RateLimit-*
+  headers that Azure does not emit. The real mechanism is Azure Resource Manager's token-bucket
+  throttling, applied per region, per subscription, per service principal and per operation type — the
+  Microsoft.Cdn resource provider inherits it. Limits and header names below are read verbatim from the
+  Microsoft ARM throttling documentation.
+limit_count: 6
+algorithm: token bucket — a bucket size (maximum burst) plus a per-second refill rate, applied per region
+scope_note: >-
+  Subscription limits apply per subscription, per service principal, and per operation type. Global
+  subscription limits are 15x the individual service-principal limit for each operation type and apply
+  across all service principals; a request is throttled if the global, service-principal or tenant limit
+  is exceeded. Limits may be smaller for free or trial subscriptions.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
+  remaining:
+    - x-ms-ratelimit-remaining-subscription-reads
+    - x-ms-ratelimit-remaining-subscription-writes
+    - x-ms-ratelimit-remaining-subscription-deletes
+    - x-ms-ratelimit-remaining-subscription-resource-requests
+    - x-ms-ratelimit-remaining-subscription-resource-entities-read
+    - x-ms-ratelimit-remaining-tenant-reads
+    - x-ms-ratelimit-remaining-tenant-writes
+    - x-ms-ratelimit-remaining-tenant-resource-requests
+    - x-ms-ratelimit-remaining-tenant-resource-entities-read
   retryAfter: Retry-After
-  policy: RateLimit-Policy
+  note: >-
+    The remaining-count header returned depends on the operation: a read returns the reads header, a
+    write the writes header, a delete the deletes header. Azure emits NO X-RateLimit-Limit,
+    X-RateLimit-Reset or RateLimit-Policy header — an agent gets a remaining count and, on exhaustion,
+    a Retry-After, and nothing else.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  note: >-
+    "When you reach the limit, you receive the HTTP status code 429 Too many requests. The response
+    includes a Retry-After value, which specifies the number of seconds your application should wait
+    before sending the next request. If you send a request before the retry value elapses, your request
+    isn't processed and a new retry value is returned."
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
+  - name: Subscription reads
+    scope: subscription (per service principal, per region)
+    metric: requests
+    limit: 250
+    burst: 250
+    refill_per_second: 25
+    timeFrame: second
     applies:
-      - Azure CDN REST API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Azure CDN REST API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
+      - Azure CDN Management API (Microsoft.Cdn) — all GET operations
+  - name: Subscription writes
+    scope: subscription (per service principal, per region)
+    metric: requests
+    limit: 200
     burst: 200
-    timeFrame: minute
+    refill_per_second: 10
+    timeFrame: second
     applies:
-      - Azure CDN REST API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
+      - Azure CDN Management API (Microsoft.Cdn) — PUT, PATCH and action POST operations
+  - name: Subscription deletes
+    scope: subscription (per service principal, per region)
+    metric: requests
+    limit: 200
+    burst: 200
+    refill_per_second: 10
+    timeFrame: second
     applies:
-      - Azure CDN REST API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Azure CDN REST API
+      - Azure CDN Management API (Microsoft.Cdn) — DELETE operations
+  - name: Tenant reads
+    scope: tenant (per region)
+    metric: requests
+    limit: 250
+    burst: 250
+    refill_per_second: 25
+    timeFrame: second
+  - name: Tenant writes
+    scope: tenant (per region)
+    metric: requests
+    limit: 200
+    burst: 200
+    refill_per_second: 10
+    timeFrame: second
+  - name: Tenant deletes
+    scope: tenant (per region)
+    metric: requests
+    limit: 200
+    burst: 200
+    refill_per_second: 10
+    timeFrame: second
+resource_provider_limits:
+  microsoft_cdn:
+    published: false
+    note: >-
+      The ARM throttling document lists resource-provider-specific limits for Microsoft.Storage,
+      Microsoft.Network, Microsoft.Compute and Azure Resource Graph. Microsoft.Cdn publishes NO
+      provider-specific limit, so the ARM subscription and tenant limits above are the only documented
+      ceiling for Azure CDN management calls. Recorded as a checked absence.
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Backoff
+    description: >-
+      Honour Retry-After on a 429. Requests sent before the retry value elapses are not processed and a
+      new retry value is returned.
+  - name: Pre-emptive backoff
+    description: >-
+      Read the x-ms-ratelimit-remaining-* header on every response and slow down before the bucket
+      empties rather than after the 429.
+  - name: SDK auto-retry
+    description: >-
+      The first-party Azure SDKs in packages/microsoft-azure-cdn-packages.yml implement retry policies;
+      Microsoft directs clients to the Retry guidance for Azure services.
+  - name: Per-region accounting
+    description: >-
+      Throttling is applied per region rather than per ARM instance, so the same subscription has an
+      independent bucket in each region it addresses.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

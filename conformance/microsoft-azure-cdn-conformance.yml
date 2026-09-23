@@ -1,0 +1,102 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  openapi/microsoft-azure-cdn-management-openapi.json,
+  well-known/microsoft-azure-cdn-openid-configuration.json,
+  https://www.microsoft.com/en-us/trust-center, https://servicetrust.microsoft.com/,
+  https://learn.microsoft.com/en-us/azure/compliance/,
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+provider: microsoft-azure-cdn
+note: >-
+  Conformance is asserted only where a fetched artifact or a Microsoft page states it. Every `false`
+  below is a checked absence, not an unchecked field.
+conformance:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    The harvested contract declares securityDefinitions.azure_auth as type oauth2 with
+    authorizationUrl https://login.microsoftonline.com/common/oauth2/authorize and scope
+    user_impersonation; every operation inherits it via the global security block.
+- id: oidc
+  conforms: true
+  evidence: >-
+    https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration returned HTTP 200
+    on 2026-09-17 with issuer https://login.microsoftonline.com/{tenantid}/v2.0, authorization_endpoint,
+    token_endpoint and jwks_uri. Saved verbatim to
+    well-known/microsoft-azure-cdn-openid-configuration.json.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: >-
+    /common/v2.0/.well-known/oauth-authorization-server returned 404 on login.microsoftonline.com;
+    Microsoft Entra ID publishes OIDC discovery only.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Azure Resource Manager uses its own { "error": { code, message, target, details, additionalInfo } }
+    envelope, referenced from common-types/resource-management/v6/types.json#/definitions/ErrorResponse.
+    No operation declares application/problem+json.
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: >-
+    https://www.microsoft.com/.well-known/security.txt returned HTTP 200 text/plain on 2026-09-17 with
+    Contact, Policy, Encryption, Acknowledgments, Canonical, Expires and Preferred-Languages fields.
+    Saved to well-known/microsoft-azure-cdn-security.txt.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: >-
+    The product has a published 2027-09-30 retirement date but emits no Sunset or Deprecation response
+    header, and declares no header parameters at all across the 115 operations.
+- id: rfc9110-conditional-requests
+  conforms: false
+  evidence: No If-Match / If-None-Match / ETag parameter is declared on any Microsoft.Cdn operation.
+- id: idempotency
+  conforms: partial
+  evidence: >-
+    No Idempotency-Key header exists. Replay safety comes from ARM PUT/DELETE resource semantics and
+    covers 30 of 75 mutating operations; 45 action POSTs and PATCHes are unprotected. See
+    conventions/microsoft-azure-cdn-conventions.yml.
+- id: pagination
+  conforms: true
+  evidence: >-
+    26 operations declare x-ms-pageable with nextLinkName nextLink; responses carry value[] + nextLink.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface, no $filter/$select/$expand parameters anywhere in the contract.
+- id: json-schema
+  conforms: partial
+  evidence: >-
+    Swagger 2.0 schema objects (JSON Schema draft-4 subset). 387 definitions with heavy $ref reuse,
+    plus $refs into the shared ARM common-types document.
+- id: openapi
+  conforms: partial
+  evidence: >-
+    The provider publishes Swagger 2.0, not OpenAPI 3.x. Real and machine-readable, but a 3.x consumer
+    must convert it.
+- id: long-running-operations
+  conforms: true
+  evidence: >-
+    56 operations declare x-ms-long-running-operation with Azure-AsyncOperation / Location polling,
+    documented at
+    https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations.
+domain_standard:
+  applicable: false
+  note: >-
+    REWARD-ONLY check, deliberately left unclaimed. Content delivery has no cross-vendor contract
+    standard — no CDN equivalent of SCIM, FHIR, OpenRTB or ISO 20022 exists, and the nearest things
+    (RFC 9111 HTTP caching, RFC 8555 ACME for managed certificates) are protocols the product
+    implements at the data plane, not standards this MANAGEMENT contract declares. Nothing in the
+    Microsoft.Cdn spec carries a domain-standard URN, schema identifier or message type. Recorded as
+    not applicable rather than invented to fill the slot.
+compliance:
+  published: true
+  programs_source: https://learn.microsoft.com/en-us/azure/compliance/
+  trust_portal: https://servicetrust.microsoft.com/
+  trust_center: https://www.microsoft.com/en-us/trust-center
+  note: >-
+    Microsoft publishes Azure's certification set through the Service Trust Portal and the Azure
+    compliance documentation, covering the whole platform rather than per-service. Azure CDN inherits
+    the platform scope; the authoritative per-service scope statement is the audit report in the Service
+    Trust Portal, which requires sign-in, so no individual certification is asserted here beyond what
+    security/microsoft-azure-cdn-trust-center.yml recorded from the public page.
+  gated: true
+  gate: Service Trust Portal audit reports require a Microsoft account sign-in.

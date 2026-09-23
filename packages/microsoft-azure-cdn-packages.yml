@@ -1,0 +1,93 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  Registry metadata endpoints (registry.npmjs.org, pypi.org, api.nuget.org, search.maven.org,
+  proxy.golang.org, rubygems.org, powershellgallery.com) probed 2026-09-17, cross-checked against
+  https://learn.microsoft.com/en-us/rest/api/cdn/ and https://github.com/Azure
+provider: microsoft-azure-cdn
+note: >-
+  Azure CDN has no product-specific SDK. Microsoft ships the Microsoft.Cdn resource provider as a
+  per-language Azure management-plane package inside the Azure SDK family — one package per language,
+  each generated from the same azure-rest-api-specs contract this repo harvests. All entries below are
+  first-party (published by the Azure/Microsoft org). Version currency is a live decay signal here: the
+  REST contract is at api-version 2026-07-01, the TypeScript, Python, .NET, Java and PowerShell packages
+  track it within months, and the Go and Ruby packages have not shipped in years.
+packages:
+- name: '@azure/arm-cdn'
+  registry: npm
+  language: JavaScript/TypeScript
+  official: true
+  url: https://www.npmjs.com/package/@azure/arm-cdn
+  repository: https://github.com/Azure/azure-sdk-for-js
+  version: 10.0.0
+  published: '2026-07-29'
+  note: Azure Front Door / CDN management client for Node and browsers.
+- name: azure-mgmt-cdn
+  registry: pypi
+  language: Python
+  official: true
+  url: https://pypi.org/project/azure-mgmt-cdn/
+  repository: https://github.com/Azure/azure-sdk-for-python
+  version: 14.0.0
+  published: '2026-07-14'
+- name: Azure.ResourceManager.Cdn
+  registry: nuget
+  language: .NET
+  official: true
+  url: https://www.nuget.org/packages/Azure.ResourceManager.Cdn
+  repository: https://github.com/Azure/azure-sdk-for-net
+  version: 1.5.1
+  published: null
+  note: >-
+    Latest version read from the NuGet registration index (upper bound 1.5.1); the index page consulted
+    did not expose a publish date for that version, so `published` is recorded null rather than guessed.
+- name: com.azure.resourcemanager:azure-resourcemanager-cdn
+  registry: maven
+  language: Java
+  official: true
+  url: https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-cdn
+  repository: https://github.com/Azure/azure-sdk-for-java
+  version: 2.51.0
+  published: '2025-05-26'
+- name: Az.Cdn
+  registry: powershellgallery
+  language: PowerShell
+  official: true
+  url: https://www.powershellgallery.com/packages/Az.Cdn
+  repository: https://github.com/Azure/azure-powershell
+  version: 6.2.0
+  published: '2026-08-31'
+- name: azure-cli
+  registry: pypi
+  language: Python (CLI)
+  official: true
+  url: https://pypi.org/project/azure-cli/
+  repository: https://github.com/Azure/azure-cli
+  version: 2.90.0
+  published: '2026-09-01'
+  note: >-
+    Ships the `az cdn` and `az afd` command groups. The binary surface is catalogued in
+    cli/microsoft-azure-cdn-cli.yml; it is listed here because the distribution is a registry package.
+- name: github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn
+  registry: go
+  language: Go
+  official: true
+  url: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn
+  repository: https://github.com/Azure/azure-sdk-for-go
+  version: v1.1.1
+  published: '2023-04-14'
+  note: >-
+    DECAY SIGNAL — last release 2023-04-14, more than three years behind the 2026-07-01 REST contract.
+    A Go consumer generated from this package does not see the AFD/Front Door Standard and Premium
+    surface the current contract exposes.
+- name: azure_mgmt_cdn
+  registry: rubygems
+  language: Ruby
+  official: true
+  url: https://rubygems.org/gems/azure_mgmt_cdn
+  repository: https://github.com/Azure/azure-sdk-for-ruby
+  version: 0.18.2
+  published: '2021-03-11'
+  note: >-
+    DECAY SIGNAL — last release 2021-03-11. The Azure SDK for Ruby is retired; this package is five
+    years behind the contract and should not be treated as a supported client.

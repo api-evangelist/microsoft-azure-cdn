@@ -1,0 +1,384 @@
+generated: '2026-09-17'
+method: searched
+source: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01/examples
+provider: microsoft-azure-cdn
+note: Provider-published request/response examples, harvested verbatim on 2026-09-17. Microsoft ships
+  one or more example documents per operation alongside the contract and references them from x-ms-examples;
+  they are NOT inline in the spec body, which is why an in-spec example scan reports zero for this API
+  while 123 real examples exist. Each file carries a concrete parameters block and a concrete response
+  body.
+format: 'Azure x-ms-examples (JSON: parameters + responses keyed by status code)'
+count: 123
+operations_covered: 115
+operations_total: 115
+directory: examples/_original/
+examples:
+- file: examples/_original/AFDCustomDomains_Create.json
+  operations:
+  - AFDCustomDomains_Create
+- file: examples/_original/AFDCustomDomains_Delete.json
+  operations:
+  - AFDCustomDomains_Delete
+- file: examples/_original/AFDCustomDomains_Get.json
+  operations:
+  - AFDCustomDomains_Get
+- file: examples/_original/AFDCustomDomains_ListByProfile.json
+  operations:
+  - AFDCustomDomains_ListByProfile
+- file: examples/_original/AFDCustomDomains_RefreshValidationToken.json
+  operations:
+  - AFDCustomDomains_RefreshValidationToken
+- file: examples/_original/AFDCustomDomains_Update.json
+  operations:
+  - AFDCustomDomains_Update
+- file: examples/_original/AFDEndpoints_Create.json
+  operations:
+  - AFDEndpoints_Create
+- file: examples/_original/AFDEndpoints_Delete.json
+  operations:
+  - AFDEndpoints_Delete
+- file: examples/_original/AFDEndpoints_Get.json
+  operations:
+  - AFDEndpoints_Get
+- file: examples/_original/AFDEndpoints_ListByProfile.json
+  operations:
+  - AFDEndpoints_ListByProfile
+- file: examples/_original/AFDEndpoints_ListResourceUsage.json
+  operations:
+  - AFDEndpoints_ListResourceUsage
+- file: examples/_original/AFDEndpoints_PurgeContent.json
+  operations:
+  - AFDEndpoints_PurgeContent
+- file: examples/_original/AFDEndpoints_Update.json
+  operations:
+  - AFDEndpoints_Update
+- file: examples/_original/AFDEndpoints_ValidateCustomDomain.json
+  operations:
+  - AFDEndpoints_ValidateCustomDomain
+- file: examples/_original/AFDOriginGroups_Create.json
+  operations:
+  - AFDOriginGroups_Create
+- file: examples/_original/AFDOriginGroups_Delete.json
+  operations:
+  - AFDOriginGroups_Delete
+- file: examples/_original/AFDOriginGroups_Get.json
+  operations:
+  - AFDOriginGroups_Get
+- file: examples/_original/AFDOriginGroups_ListByProfile.json
+  operations:
+  - AFDOriginGroups_ListByProfile
+- file: examples/_original/AFDOriginGroups_ListResourceUsage.json
+  operations:
+  - AFDOriginGroups_ListResourceUsage
+- file: examples/_original/AFDOriginGroups_Update.json
+  operations:
+  - AFDOriginGroups_Update
+- file: examples/_original/AFDOrigins_Create.json
+  operations:
+  - AFDOrigins_Create
+- file: examples/_original/AFDOrigins_CreateWithIncomingHostHeaderValidation.json
+  operations:
+  - AFDOrigins_Create
+- file: examples/_original/AFDOrigins_Create_CustomCertificateSubject.json
+  operations:
+  - AFDOrigins_Create
+- file: examples/_original/AFDOrigins_Create_OriginHostname.json
+  operations:
+  - AFDOrigins_Create
+- file: examples/_original/AFDOrigins_Delete.json
+  operations:
+  - AFDOrigins_Delete
+- file: examples/_original/AFDOrigins_Get.json
+  operations:
+  - AFDOrigins_Get
+- file: examples/_original/AFDOrigins_ListByOriginGroup.json
+  operations:
+  - AFDOrigins_ListByOriginGroup
+- file: examples/_original/AFDOrigins_Update.json
+  operations:
+  - AFDOrigins_Update
+- file: examples/_original/AFDOrigins_Update_CustomCertificateSubject.json
+  operations:
+  - AFDOrigins_Update
+- file: examples/_original/AFDOrigins_Update_OriginHostname.json
+  operations:
+  - AFDOrigins_Update
+- file: examples/_original/AFDProfiles_CheckEndpointNameAvailability.json
+  operations:
+  - AFDProfiles_CheckEndpointNameAvailability
+- file: examples/_original/AFDProfiles_CheckHostNameAvailability.json
+  operations:
+  - AFDProfiles_CheckHostNameAvailability
+- file: examples/_original/AFDProfiles_ListResourceUsage.json
+  operations:
+  - AFDProfiles_ListResourceUsage
+- file: examples/_original/AFDProfiles_Upgrade.json
+  operations:
+  - AFDProfiles_Upgrade
+- file: examples/_original/AFDProfiles_ValidateSecret.json
+  operations:
+  - AFDProfiles_ValidateSecret
+- file: examples/_original/CdnProfiles_CanMigrate.json
+  operations:
+  - Profiles_CdnCanMigrateToAfd
+- file: examples/_original/CdnProfiles_Migrate.json
+  operations:
+  - Profiles_CdnMigrateToAfd
+- file: examples/_original/CheckEndpointNameAvailability.json
+  operations:
+  - CheckEndpointNameAvailability
+- file: examples/_original/CheckNameAvailability.json
+  operations:
+  - CheckNameAvailability
+- file: examples/_original/CheckNameAvailabilityWithSubscription.json
+  operations:
+  - CheckNameAvailabilityWithSubscription
+- file: examples/_original/CustomDomains_Create.json
+  operations:
+  - CustomDomains_Create
+- file: examples/_original/CustomDomains_Delete.json
+  operations:
+  - CustomDomains_Delete
+- file: examples/_original/CustomDomains_DisableCustomHttps.json
+  operations:
+  - CustomDomains_DisableCustomHttps
+- file: examples/_original/CustomDomains_EnableCustomHttpsUsingBYOC.json
+  operations:
+  - CustomDomains_EnableCustomHttps
+- file: examples/_original/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
+  operations:
+  - CustomDomains_EnableCustomHttps
+- file: examples/_original/CustomDomains_Get.json
+  operations:
+  - CustomDomains_Get
+- file: examples/_original/CustomDomains_ListByEndpoint.json
+  operations:
+  - CustomDomains_ListByEndpoint
+- file: examples/_original/EdgeNodes_List.json
+  operations:
+  - EdgeNodes_List
+- file: examples/_original/Endpoints_Create.json
+  operations:
+  - Endpoints_Create
+- file: examples/_original/Endpoints_Delete.json
+  operations:
+  - Endpoints_Delete
+- file: examples/_original/Endpoints_Get.json
+  operations:
+  - Endpoints_Get
+- file: examples/_original/Endpoints_ListByProfile.json
+  operations:
+  - Endpoints_ListByProfile
+- file: examples/_original/Endpoints_ListResourceUsage.json
+  operations:
+  - Endpoints_ListResourceUsage
+- file: examples/_original/Endpoints_LoadContent.json
+  operations:
+  - Endpoints_LoadContent
+- file: examples/_original/Endpoints_PurgeContent.json
+  operations:
+  - Endpoints_PurgeContent
+- file: examples/_original/Endpoints_Start.json
+  operations:
+  - Endpoints_Start
+- file: examples/_original/Endpoints_Stop.json
+  operations:
+  - Endpoints_Stop
+- file: examples/_original/Endpoints_Update.json
+  operations:
+  - Endpoints_Update
+- file: examples/_original/Endpoints_ValidateCustomDomain.json
+  operations:
+  - Endpoints_ValidateCustomDomain
+- file: examples/_original/LogAnalytics_GetLogAnalyticsLocations.json
+  operations:
+  - LogAnalytics_GetLogAnalyticsLocations
+- file: examples/_original/LogAnalytics_GetLogAnalyticsMetrics.json
+  operations:
+  - LogAnalytics_GetLogAnalyticsMetrics
+- file: examples/_original/LogAnalytics_GetLogAnalyticsRankings.json
+  operations:
+  - LogAnalytics_GetLogAnalyticsRankings
+- file: examples/_original/LogAnalytics_GetLogAnalyticsResources.json
+  operations:
+  - LogAnalytics_GetLogAnalyticsResources
+- file: examples/_original/LogAnalytics_GetWafLogAnalyticsMetrics.json
+  operations:
+  - LogAnalytics_GetWafLogAnalyticsMetrics
+- file: examples/_original/LogAnalytics_GetWafLogAnalyticsRankings.json
+  operations:
+  - LogAnalytics_GetWafLogAnalyticsRankings
+- file: examples/_original/Operations_List.json
+  operations:
+  - Operations_List
+- file: examples/_original/OriginGroups_Create.json
+  operations:
+  - OriginGroups_Create
+- file: examples/_original/OriginGroups_Delete.json
+  operations:
+  - OriginGroups_Delete
+- file: examples/_original/OriginGroups_Get.json
+  operations:
+  - OriginGroups_Get
+- file: examples/_original/OriginGroups_ListByEndpoint.json
+  operations:
+  - OriginGroups_ListByEndpoint
+- file: examples/_original/OriginGroups_Update.json
+  operations:
+  - OriginGroups_Update
+- file: examples/_original/Origins_Create.json
+  operations:
+  - Origins_Create
+- file: examples/_original/Origins_Delete.json
+  operations:
+  - Origins_Delete
+- file: examples/_original/Origins_Get.json
+  operations:
+  - Origins_Get
+- file: examples/_original/Origins_ListByEndpoint.json
+  operations:
+  - Origins_ListByEndpoint
+- file: examples/_original/Origins_Update.json
+  operations:
+  - Origins_Update
+- file: examples/_original/Profiles_CanMigrate.json
+  operations:
+  - Profiles_CanMigrate
+- file: examples/_original/Profiles_Create.json
+  operations:
+  - Profiles_Create
+- file: examples/_original/Profiles_Delete.json
+  operations:
+  - Profiles_Delete
+- file: examples/_original/Profiles_GenerateSsoUri.json
+  operations:
+  - Profiles_GenerateSsoUri
+- file: examples/_original/Profiles_Get.json
+  operations:
+  - Profiles_Get
+- file: examples/_original/Profiles_List.json
+  operations:
+  - Profiles_List
+- file: examples/_original/Profiles_ListByResourceGroup.json
+  operations:
+  - Profiles_ListByResourceGroup
+- file: examples/_original/Profiles_ListResourceUsage.json
+  operations:
+  - Profiles_ListResourceUsage
+- file: examples/_original/Profiles_ListSupportedOptimizationTypes.json
+  operations:
+  - Profiles_ListSupportedOptimizationTypes
+- file: examples/_original/Profiles_Migrate.json
+  operations:
+  - Profiles_Migrate
+- file: examples/_original/Profiles_MigrationAbort.json
+  operations:
+  - Profiles_MigrationAbort
+- file: examples/_original/Profiles_MigrationCommit.json
+  operations:
+  - Profiles_MigrationCommit
+- file: examples/_original/Profiles_Update.json
+  operations:
+  - Profiles_Update
+- file: examples/_original/ResourceUsage_List.json
+  operations:
+  - ResourceUsage_List
+- file: examples/_original/Routes_Create.json
+  operations:
+  - Routes_Create
+- file: examples/_original/Routes_Delete.json
+  operations:
+  - Routes_Delete
+- file: examples/_original/Routes_Get.json
+  operations:
+  - Routes_Get
+- file: examples/_original/Routes_ListByEndpoint.json
+  operations:
+  - Routes_ListByEndpoint
+- file: examples/_original/Routes_Update.json
+  operations:
+  - Routes_Update
+- file: examples/_original/RuleSets_Create.json
+  operations:
+  - RuleSets_Create
+- file: examples/_original/RuleSets_Delete.json
+  operations:
+  - RuleSets_Delete
+- file: examples/_original/RuleSets_Get.json
+  operations:
+  - RuleSets_Get
+- file: examples/_original/RuleSets_ListByProfile.json
+  operations:
+  - RuleSets_ListByProfile
+- file: examples/_original/RuleSets_ListResourceUsage.json
+  operations:
+  - RuleSets_ListResourceUsage
+- file: examples/_original/Rules_Create.json
+  operations:
+  - Rules_Create
+- file: examples/_original/Rules_Delete.json
+  operations:
+  - Rules_Delete
+- file: examples/_original/Rules_Get.json
+  operations:
+  - Rules_Get
+- file: examples/_original/Rules_ListByRuleSet.json
+  operations:
+  - Rules_ListByRuleSet
+- file: examples/_original/Rules_Update.json
+  operations:
+  - Rules_Update
+- file: examples/_original/Secrets_Create.json
+  operations:
+  - Secrets_Create
+- file: examples/_original/Secrets_CreateCustomerCertificateType.json
+  operations:
+  - Secrets_Create
+- file: examples/_original/Secrets_CreateUrlSigningKeyType.json
+  operations:
+  - Secrets_Create
+- file: examples/_original/Secrets_Delete.json
+  operations:
+  - Secrets_Delete
+- file: examples/_original/Secrets_Get.json
+  operations:
+  - Secrets_Get
+- file: examples/_original/Secrets_ListByProfile.json
+  operations:
+  - Secrets_ListByProfile
+- file: examples/_original/SecurityPolicies_Create.json
+  operations:
+  - SecurityPolicies_Create
+- file: examples/_original/SecurityPolicies_Delete.json
+  operations:
+  - SecurityPolicies_Delete
+- file: examples/_original/SecurityPolicies_Get.json
+  operations:
+  - SecurityPolicies_Get
+- file: examples/_original/SecurityPolicies_ListByProfile.json
+  operations:
+  - SecurityPolicies_ListByProfile
+- file: examples/_original/SecurityPolicies_Patch.json
+  operations:
+  - SecurityPolicies_Patch
+- file: examples/_original/ValidateProbe.json
+  operations:
+  - ValidateProbe
+- file: examples/_original/WafListManagedRuleSets.json
+  operations:
+  - ManagedRuleSets_List
+- file: examples/_original/WafListPolicies.json
+  operations:
+  - Policies_List
+- file: examples/_original/WafPatchPolicy.json
+  operations:
+  - Policies_Update
+- file: examples/_original/WafPolicyCreateOrUpdate.json
+  operations:
+  - Policies_CreateOrUpdate
+- file: examples/_original/WafPolicyDelete.json
+  operations:
+  - Policies_Delete
+- file: examples/_original/WafPolicyGet.json
+  operations:
+  - Policies_Get

@@ -1,0 +1,116 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  Live MCP probe of https://learn.microsoft.com/api/mcp (initialize + tools/list, 2026-09-17) and
+  https://github.com/Azure/azure-mcp
+provider: microsoft-azure-cdn
+deployment:
+  mode: remote
+  endpoint: https://learn.microsoft.com/api/mcp
+  auth: none
+  verified: probed
+  scope: documentation
+  note: >-
+    SCOPE MATTERS HERE. Microsoft ships a real, anonymous, remote MCP server and it answered a live
+    `initialize` and `tools/list` on 2026-09-17 — serverInfo "Microsoft Learn MCP Server", version
+    1.0.0, protocolVersion 2025-06-18, three tools, no OAuth challenge. What it exposes is Microsoft
+    Learn DOCUMENTATION (search, code-sample search, page fetch), which covers Azure CDN docs, and NOT
+    the Microsoft.Cdn management surface. An agent can ask it how to create a CDN profile; it cannot
+    use it to create one. The management plane has no MCP server: Azure's own control-plane server
+    (Azure/azure-mcp, npx -y @azure/mcp@latest) ships 32 service areas and cdn/frontdoor is not among
+    them (verified against the repo's areas/ directory, 2026-09-17). The candidate_tools block below
+    is what a Microsoft.Cdn MCP server WOULD expose, derived from the harvested contract; it is a
+    derivation, not a server that exists.
+servers:
+- name: Microsoft Learn MCP Server
+  status: live
+  transport: streamable-http
+  endpoint: https://learn.microsoft.com/api/mcp
+  publisher: Microsoft
+  auth: none
+  protocol_version: '2025-06-18'
+  server_version: 1.0.0
+  probed: '2026-09-17'
+  tools_file: microsoft-azure-cdn-learn-mcp-tools.json
+  covers: Microsoft Learn documentation, including learn.microsoft.com/en-us/rest/api/cdn/
+  tools:
+  - name: microsoft_docs_search
+    description: Search official Microsoft/Azure documentation; up to 10 chunks of max 500 tokens.
+    input: [query]
+    read_only: true
+  - name: microsoft_code_sample_search
+    description: Search code snippets and examples in official Microsoft Learn documentation.
+    input: [query, language]
+    read_only: true
+  - name: microsoft_docs_fetch
+    description: Fetch a complete Microsoft Learn documentation page as markdown.
+    input: [url]
+    read_only: true
+related:
+- name: Azure MCP Server
+  repository: https://github.com/Azure/azure-mcp
+  package: https://www.npmjs.com/package/@azure/mcp
+  version: 3.0.0-beta.44
+  published: '2026-09-15'
+  mode: local-stdio
+  install: npx -y @azure/mcp@latest server start
+  covers_this_product: false
+  note: >-
+    Microsoft's Azure control-plane MCP server. Checked because it would be the natural home for a CDN
+    tool set. Its areas/ directory lists acr, aks, appconfig, authorization, azurebestpractices,
+    azureisv, azuremanagedlustre, azureterraformbestpractices, bicepschema, cloudarchitect, cosmos,
+    deploy, extension, foundry, functionapp, grafana, keyvault, kusto, loadtesting, marketplace,
+    monitor, mysql, postgres, quota, redis, resourcehealth, search, servicebus, sql, storage,
+    virtualdesktop and workbooks — no cdn and no frontdoor. Recorded as a checked absence.
+candidate_tools:
+  status: candidate
+  method: derived
+  source: openapi/microsoft-azure-cdn-management-openapi.json
+  note: >-
+    Derived from the harvested Microsoft.Cdn contract (api-version 2026-07-01, 115 operations). NOBODY
+    SHIPS THESE. They exist so the crosswalk in microsoft-azure-cdn-tool-crosswalk.yml has a named
+    left-hand side and so a would-be implementer can see the shape; each maps to a real operationId in
+    that spec.
+  tools:
+  - name: cdn_list_profiles
+    rest: [Profiles_List, Profiles_ListByResourceGroup]
+    read_only: true
+  - name: cdn_get_profile
+    rest: [Profiles_Get]
+    read_only: true
+  - name: cdn_create_profile
+    rest: [Profiles_Create]
+    read_only: false
+    long_running: true
+  - name: cdn_delete_profile
+    rest: [Profiles_Delete]
+    read_only: false
+    long_running: true
+  - name: cdn_list_endpoints
+    rest: [Endpoints_ListByProfile, AFDEndpoints_ListByProfile]
+    read_only: true
+  - name: cdn_purge_endpoint_content
+    rest: [Endpoints_PurgeContent, AFDEndpoints_PurgeContent]
+    read_only: false
+    long_running: true
+  - name: cdn_load_endpoint_content
+    rest: [Endpoints_LoadContent]
+    read_only: false
+    long_running: true
+  - name: cdn_start_endpoint
+    rest: [Endpoints_Start]
+    read_only: false
+    long_running: true
+  - name: cdn_stop_endpoint
+    rest: [Endpoints_Stop]
+    read_only: false
+    long_running: true
+  - name: cdn_check_name_availability
+    rest: [CheckNameAvailability, CheckNameAvailabilityWithSubscription]
+    read_only: true
+  - name: cdn_list_custom_domains
+    rest: [CustomDomains_ListByEndpoint, AFDCustomDomains_ListByProfile]
+    read_only: true
+  - name: cdn_list_rule_sets
+    rest: [RuleSets_ListByProfile, Rules_ListByRuleSet]
+    read_only: true

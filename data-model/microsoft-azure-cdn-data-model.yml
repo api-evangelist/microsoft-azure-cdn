@@ -1,0 +1,138 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/microsoft-azure-cdn-management-openapi.json (api-version 2026-07-01)
+provider: microsoft-azure-cdn
+note: 'Entity graph derived from the harvested Microsoft.Cdn contract. Two parallel resource families
+  live in one resource provider and one API: the CLASSIC CDN family (Profile > Endpoint > Origin / OriginGroup
+  / CustomDomain) and the AZURE FRONT DOOR Standard/Premium family (Profile > AFDEndpoint > Route, plus
+  AFDOriginGroup > AFDOrigin, AFDDomain, RuleSet > Rule, Secret, SecurityPolicy). Profile is the shared
+  root of both; which family a profile belongs to is decided by its SKU. That single fact explains most
+  of the surface: a client that assumes one family will silently address the wrong half.'
+identifier_scheme:
+  style: ARM resource id path
+  format: /subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Cdn/profiles/{profileName}[/...]
+  note: Resources are addressed by hierarchical name, not opaque id; the client chooses the name on PUT.
+roots:
+- Profile
+families:
+  classic_cdn:
+  - Profile
+  - Endpoint
+  - Origin
+  - OriginGroup
+  - CustomDomain
+  - CdnWebApplicationFirewallPolicy
+  azure_front_door:
+  - Profile
+  - AFDEndpoint
+  - AFDOrigin
+  - AFDOriginGroup
+  - AFDDomain
+  - Route
+  - RuleSet
+  - Rule
+  - Secret
+  - SecurityPolicy
+entity_count: 271
+definition_count: 387
+core_entities:
+- name: Profile
+  fields: 4
+- name: Endpoint
+  fields: 1
+- name: Origin
+  fields: 1
+- name: OriginGroup
+  fields: 1
+- name: CustomDomain
+  fields: 1
+- name: AFDEndpoint
+  fields: 1
+- name: AFDOrigin
+  fields: 1
+- name: AFDOriginGroup
+  fields: 1
+- name: AFDDomain
+  fields: 1
+- name: Route
+  fields: 1
+- name: RuleSet
+  fields: 1
+- name: Rule
+  fields: 1
+- name: Secret
+  fields: 1
+- name: SecurityPolicy
+  fields: 1
+- name: CdnWebApplicationFirewallPolicy
+  fields: 3
+relationships:
+- from: AFDDomain
+  to: AFDDomainProperties
+  type: has_one
+  via: properties
+- from: AFDEndpoint
+  to: AFDEndpointProperties
+  type: has_one
+  via: properties
+- from: AFDOrigin
+  to: AFDOriginProperties
+  type: has_one
+  via: properties
+- from: AFDOriginGroup
+  to: AFDOriginGroupProperties
+  type: has_one
+  via: properties
+- from: CdnWebApplicationFirewallPolicy
+  to: CdnWebApplicationFirewallPolicyProperties
+  type: has_one
+  via: properties
+- from: CdnWebApplicationFirewallPolicy
+  to: Sku
+  type: has_one
+  via: sku
+- from: CustomDomain
+  to: CustomDomainProperties
+  type: has_one
+  via: properties
+- from: Endpoint
+  to: EndpointProperties
+  type: has_one
+  via: properties
+- from: Origin
+  to: OriginProperties
+  type: has_one
+  via: properties
+- from: OriginGroup
+  to: OriginGroupProperties
+  type: has_one
+  via: properties
+- from: Profile
+  to: ProfileProperties
+  type: has_one
+  via: properties
+- from: Profile
+  to: Sku
+  type: has_one
+  via: sku
+- from: Route
+  to: RouteProperties
+  type: has_one
+  via: properties
+- from: Rule
+  to: RuleProperties
+  type: has_one
+  via: properties
+- from: RuleSet
+  to: RuleSetProperties
+  type: has_one
+  via: properties
+- from: Secret
+  to: SecretProperties
+  type: has_one
+  via: properties
+- from: SecurityPolicy
+  to: SecurityPolicyProperties
+  type: has_one
+  via: properties
+relationship_count: 17

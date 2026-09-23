@@ -7,7 +7,13 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   authentication/microsoft-azure-cdn-authentication.yml:
-    method: derived
+    method: searched
+    evidence: declared in the artifact
+  changelog/microsoft-azure-cdn-changelog.yml:
+    method: searched
+    evidence: declared in the artifact
+  cli/microsoft-azure-cdn-cli.yml:
+    method: searched
     evidence: declared in the artifact
   collections/microsoft-azure-cdn-operations-api.opencollection.json:
     method: derived
@@ -27,28 +33,25 @@ artifacts:
   collections/microsoft-azure-cdn.postman_collection.json:
     method: derived
     evidence: openapi/microsoft-azure-cdn
+  conformance/microsoft-azure-cdn-conformance.yml:
+    method: searched
+    evidence: declared in the artifact
+  conventions/microsoft-azure-cdn-conventions.yml:
+    method: searched
+    evidence: declared in the artifact
+  data-model/microsoft-azure-cdn-data-model.yml:
+    method: derived
+    evidence: declared in the artifact
+  errors/microsoft-azure-cdn-problem-types.yml:
+    method: derived
+    evidence: declared in the artifact
+  examples/microsoft-azure-cdn-examples.yml:
+    method: searched
+    evidence: declared in the artifact
   finops/microsoft-azure-cdn-finops.yml:
     method: generated
     evidence: declared in the artifact
-  kin/checks-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-06T210741.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-07T135032.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-10T093022.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-10T111628.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-11T211707.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-12T193225.yml:
+  kin/checks-2026-09-16T225339.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-08-17T064519.yml:
@@ -165,24 +168,153 @@ artifacts:
   kin/score-2026-09-05T072335.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T144739.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T195450.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T211839.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T011047.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T211804.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T224210.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T200636.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T213054.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T214843.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T232836.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T204815.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T222408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T062655.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T080032.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T204651.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T221936.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-13T214537.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T064754.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T210656.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T225847.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T211329.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T230249.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T210549.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T225339.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  lifecycle/microsoft-azure-cdn-lifecycle.yml:
+    method: searched
+    evidence: declared in the artifact
   llms/microsoft-azure-cdn-llms-probe.yml:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
-  openapi/microsoft-azure-cdn-operations-api-openapi.yml:
+  llms/microsoft-azure-cdn-llms.txt:
+    method: generated
+    evidence: declared in the artifact
+  mcp/microsoft-azure-cdn-learn-mcp-tools.json:
     method: unknown
     evidence: no authorship recorded
+  mcp/microsoft-azure-cdn-mcp.yml:
+    method: searched
+    evidence: declared in the artifact
+  mcp/microsoft-azure-cdn-tool-crosswalk.yml:
+    method: derived
+    evidence: declared in the artifact
+  openapi/_original/microsoft-azure-cdn-management-openapi.json:
+    method: harvested
+    evidence: fetched from the provider as-is; byte-identical to the source
+  openapi/microsoft-azure-cdn-management-openapi.json:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/microsoft-azure-cdn-operations-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/microsoft-azure-cdn-profiles-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
-  plans/microsoft-azure-cdn-plans-pricing.yml:
+  overlays/microsoft-azure-cdn-management-overlay.yaml:
     method: generated
+    evidence: declared in the artifact
+  packages/microsoft-azure-cdn-packages.yml:
+    method: searched
+    evidence: declared in the artifact
+  plans/microsoft-azure-cdn-plans-pricing.yml:
+    method: searched
     evidence: declared in the artifact
   rate-limits/microsoft-azure-cdn-rate-limits.yml:
-    method: generated
+    method: searched
     evidence: declared in the artifact
   scopes/microsoft-azure-cdn-scopes.yml:
-    method: derived
+    method: searched
     evidence: declared in the artifact
   security/microsoft-azure-cdn-domain-security.yml:
+    method: unknown
+    evidence: no authorship recorded
+  security/microsoft-azure-cdn-trust-center.yml:
+    method: searched
+    evidence: declared in the artifact
+  security/microsoft-azure-cdn-vulnerability-disclosure.yml:
+    method: searched
+    evidence: declared in the artifact
+  skills/_index.yml:
+    method: generated
+    evidence: declared in the artifact
+  skills/microsoft-azure-cdn-audit-profiles-and-usage.md:
+    method: generated
+    evidence: declared in the artifact
+  skills/microsoft-azure-cdn-migrate-to-front-door.md:
+    method: generated
+    evidence: declared in the artifact
+  skills/microsoft-azure-cdn-provision-cdn-profile-and-endpoint.md:
+    method: generated
+    evidence: declared in the artifact
+  skills/microsoft-azure-cdn-purge-cached-content.md:
+    method: generated
+    evidence: declared in the artifact
+  well-known/microsoft-azure-cdn-openid-configuration.json:
+    method: unknown
+    evidence: no authorship recorded
+  well-known/microsoft-azure-cdn-security.txt:
+    method: unknown
+    evidence: no authorship recorded
+  well-known/microsoft-azure-cdn-well-known.yml:
     method: unknown
     evidence: no authorship recorded

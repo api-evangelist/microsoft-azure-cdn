@@ -1,0 +1,60 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable,
+  https://azure.microsoft.com/en-us/updates/,
+  https://azure.microsoft.com/en-us/blog/feed/
+provider: microsoft-azure-cdn
+scheme: dated api-version
+current_version: '2026-07-01'
+note: >-
+  Azure CDN has no product-specific dated changelog page. Its change record is the api-version series
+  in the public azure-rest-api-specs repository — each dated folder is a frozen contract, and the diff
+  between two folders IS the changelog. The narrative channel is the general Azure updates feed
+  filtered to Content Delivery Network, which is not CDN-specific and is not machine-readable.
+channels:
+- name: API version series (authoritative)
+  url: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable
+  machine_readable: true
+  dated: true
+- name: Azure updates — Content Delivery Network filter
+  url: https://azure.microsoft.com/en-us/updates/?filters=%5B%22Content+Delivery+Network%22%5D
+  http_status: 200
+  machine_readable: false
+  dated: true
+- name: Azure blog RSS
+  url: https://azure.microsoft.com/en-us/blog/feed/
+  http_status: 200
+  content_type: application/rss+xml
+  machine_readable: true
+  scope: all of Azure, not CDN-specific
+entries:
+- version: '2026-07-01'
+  date: '2026-07-01'
+  type: stable
+  breaking: unknown
+  highlights:
+  - Current contract. 73 paths, 115 operations, 387 definitions, 16 tags.
+  - Surface spans both the classic CDN resources (Endpoints, Origins, CustomDomains, OriginGroups) and the Azure Front Door Standard/Premium resources (AFDEndpoints, AFDOrigins, AFDOriginGroups, AFDDomains, Routes, RuleSets, Rules, Secrets, SecurityPolicies).
+  - Generated from TypeSpec (info carries x-typespec-generated, emitter @azure-tools/typespec-autorest).
+- version: '2025-12-01'
+  date: '2025-12-01'
+  type: stable
+- version: '2025-06-01'
+  date: '2025-06-01'
+  type: stable
+- version: '2025-04-15'
+  date: '2025-04-15'
+  type: stable
+- version: '2024-09-01'
+  date: '2024-09-01'
+  type: stable
+- version: '2024-02-01'
+  date: '2024-02-01'
+  type: stable
+  note: The api-version the API Evangelist scaffold in openapi/_ae-authored/ was written against, before the real contract was harvested.
+cadence:
+  stable_versions_total: 19
+  first: '2015-06-01'
+  latest: '2026-07-01'
+  observed: roughly one to three stable versions a year over eleven years.
