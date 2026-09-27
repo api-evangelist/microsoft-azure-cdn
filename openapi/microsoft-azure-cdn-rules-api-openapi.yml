@@ -1,0 +1,644 @@
+openapi: 3.2.0
+info:
+  title: Microsoft Azure Cdn Rules API
+  version: '2026-07-01'
+  x-typespec-generated:
+  - emitter: '@azure-tools/typespec-autorest'
+  description: 'Operations tagged Rules across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://management.azure.com
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: Rules
+paths:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules
+  : get:
+      operationId: Rules_ListByRuleSet
+      tags:
+      - Rules
+      description: Lists all of the existing delivery rules within a rule set.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: ruleSetName
+        in: path
+        description: Name of the rule set under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleListResult'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        Rules_ListByRuleSet:
+          $ref: ./examples/Rules_ListByRuleSet.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      summary: Rules list by rule set
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}
+  : get:
+      operationId: Rules_Get
+      tags:
+      - Rules
+      description: Gets an existing delivery rule within a rule set.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: ruleSetName
+        in: path
+        description: Name of the rule set under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: ruleName
+        in: path
+        description: Name of the delivery rule which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        Rules_Get:
+          $ref: ./examples/Rules_Get.json
+      summary: Rules get
+      x-summary-source: derived
+    put:
+      operationId: Rules_Create
+      tags:
+      - Rules
+      description: Creates a new delivery rule within the specified rule set.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: ruleSetName
+        in: path
+        description: Name of the rule set under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: ruleName
+        in: path
+        description: Name of the delivery rule which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource 'Rule' update operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        '201':
+          description: Resource 'Rule' create operation succeeded
+          headers:
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        Rules_Create:
+          $ref: ./examples/Rules_Create.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+        final-state-schema: '#/definitions/Rule'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rule'
+        description: The delivery rule properties.
+        required: true
+      summary: Rules create
+      x-summary-source: derived
+    patch:
+      operationId: Rules_Update
+      tags:
+      - Rules
+      description: Updates an existing delivery rule within a rule set.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: ruleSetName
+        in: path
+        description: Name of the rule set under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: ruleName
+        in: path
+        description: Name of the delivery rule which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        Rules_Update:
+          $ref: ./examples/Rules_Update.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+        final-state-schema: '#/definitions/Rule'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleUpdateParameters'
+        description: Delivery rule properties
+        required: true
+      summary: Rules update
+      x-summary-source: derived
+    delete:
+      operationId: Rules_Delete
+      tags:
+      - Rules
+      description: Deletes an existing delivery rule within a rule set.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: ruleSetName
+        in: path
+        description: Name of the rule set under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: ruleName
+        in: path
+        description: Name of the delivery rule which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource deleted successfully.
+        '202':
+          description: Resource deletion accepted.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+        '204':
+          description: Resource does not exist.
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        Rules_Delete:
+          $ref: ./examples/Rules_Delete.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+      x-ms-long-running-operation: true
+      summary: Rules delete
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+components:
+  schemas:
+    RuleUpdatePropertiesParameters:
+      type: object
+      description: The JSON object that contains the properties of the rule to update.
+      properties:
+        ruleSetName:
+          type: string
+          description: The name of the rule set containing the rule.
+          readOnly: true
+        order:
+          type: integer
+          format: int32
+          description: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and actions listed in it will always be applied.
+        conditions:
+          type: array
+          description: A list of conditions that must be matched for the actions to be executed
+          items:
+            $ref: '#/components/schemas/DeliveryRuleCondition'
+          x-ms-identifiers:
+          - name
+        actions:
+          type: array
+          description: A list of actions that are executed when all the conditions of a rule are satisfied.
+          items:
+            $ref: '#/components/schemas/DeliveryRuleAction'
+          x-ms-identifiers:
+          - name
+        matchProcessingBehavior:
+          type: string
+          description: If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue.
+          default: Continue
+          enum:
+          - Continue
+          - Stop
+          x-ms-enum:
+            name: MatchProcessingBehavior
+            modelAsString: true
+            values:
+            - name: Continue
+              value: Continue
+            - name: Stop
+              value: Stop
+    RuleUpdateParameters:
+      type: object
+      description: The domain JSON object required for domain creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RuleUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the rule to update.
+          x-ms-client-flatten: true
+    DeliveryRuleAction:
+      type: object
+      description: An action for the delivery rule.
+      properties:
+        name:
+          $ref: '#/components/schemas/DeliveryRuleActionName'
+          description: The name of the action for the delivery rule.
+      discriminator:
+        propertyName: name
+      required:
+      - name
+    Rule:
+      type: object
+      description: Friendly Rules name mapping to the any Rules or secret related information.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RuleProperties'
+          description: The JSON object that contains the properties of the Rules to create.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    RuleProperties:
+      type: object
+      description: The JSON object that contains the properties of the Rules to create.
+      properties:
+        ruleSetName:
+          type: string
+          description: The name of the rule set containing the rule.
+          readOnly: true
+        order:
+          type: integer
+          format: int32
+          description: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and actions listed in it will always be applied.
+        conditions:
+          type: array
+          description: A list of conditions that must be matched for the actions to be executed
+          items:
+            $ref: '#/components/schemas/DeliveryRuleCondition'
+          x-ms-identifiers:
+          - name
+        actions:
+          type: array
+          description: A list of actions that are executed when all the conditions of a rule are satisfied.
+          items:
+            $ref: '#/components/schemas/DeliveryRuleAction'
+          x-ms-identifiers:
+          - name
+        matchProcessingBehavior:
+          type: string
+          description: If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue.
+          default: Continue
+          enum:
+          - Continue
+          - Stop
+          x-ms-enum:
+            name: MatchProcessingBehavior
+            modelAsString: true
+            values:
+            - name: Continue
+              value: Continue
+            - name: Stop
+              value: Stop
+        provisioningState:
+          $ref: '#/components/schemas/AfdProvisioningState'
+          description: Provisioning status
+          readOnly: true
+        deploymentStatus:
+          $ref: '#/components/schemas/DeploymentStatus'
+          readOnly: true
+    AfdProvisioningState:
+      type: string
+      description: Provisioning status
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    MatchVariable:
+      type: string
+      description: Request variable to compare with.
+      enum:
+      - RemoteAddress
+      - RequestMethod
+      - QueryString
+      - PostArgs
+      - RequestUri
+      - RequestHeader
+      - RequestBody
+      - RequestScheme
+      - UrlPath
+      - UrlFileExtension
+      - UrlFileName
+      - HttpVersion
+      - Cookies
+      - IsDevice
+      - SocketAddr
+      - ClientPort
+      - ServerPort
+      - HostName
+      - SslProtocol
+      x-ms-enum:
+        name: MatchVariable
+        modelAsString: true
+        values:
+        - name: RemoteAddress
+          value: RemoteAddress
+        - name: RequestMethod
+          value: RequestMethod
+        - name: QueryString
+          value: QueryString
+        - name: PostArgs
+          value: PostArgs
+        - name: RequestUri
+          value: RequestUri
+        - name: RequestHeader
+          value: RequestHeader
+        - name: RequestBody
+          value: RequestBody
+        - name: RequestScheme
+          value: RequestScheme
+        - name: UrlPath
+          value: UrlPath
+        - name: UrlFileExtension
+          value: UrlFileExtension
+        - name: UrlFileName
+          value: UrlFileName
+        - name: HttpVersion
+          value: HttpVersion
+        - name: Cookies
+          value: Cookies
+        - name: IsDevice
+          value: IsDevice
+        - name: SocketAddr
+          value: SocketAddr
+        - name: ClientPort
+          value: ClientPort
+        - name: ServerPort
+          value: ServerPort
+        - name: HostName
+          value: HostName
+        - name: SslProtocol
+          value: SslProtocol
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    RuleListResult:
+      type: object
+      description: The response of a Rule list operation.
+      properties:
+        value:
+          type: array
+          description: The Rule items on this page
+          items:
+            $ref: '#/components/schemas/Rule'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    DeliveryRuleCondition:
+      type: object
+      description: A condition for the delivery rule.
+      properties:
+        name:
+          $ref: '#/components/schemas/MatchVariable'
+          description: The name of the condition for the delivery rule.
+      discriminator:
+        propertyName: name
+      required:
+      - name
+    DeliveryRuleActionName:
+      type: string
+      description: The name of the action for the delivery rule.
+      enum:
+      - CacheExpiration
+      - CacheKeyQueryString
+      - ModifyRequestHeader
+      - ModifyResponseHeader
+      - UrlRedirect
+      - UrlRewrite
+      - UrlSigning
+      - OriginGroupOverride
+      - RouteConfigurationOverride
+      - EdgeAction
+      - AfdUrlSigning
+      x-ms-enum:
+        name: DeliveryRuleActionName
+        modelAsString: true
+        values:
+        - name: CacheExpiration
+          value: CacheExpiration
+        - name: CacheKeyQueryString
+          value: CacheKeyQueryString
+        - name: ModifyRequestHeader
+          value: ModifyRequestHeader
+        - name: ModifyResponseHeader
+          value: ModifyResponseHeader
+        - name: UrlRedirect
+          value: UrlRedirect
+        - name: UrlRewrite
+          value: UrlRewrite
+        - name: UrlSigning
+          value: UrlSigning
+        - name: OriginGroupOverride
+          value: OriginGroupOverride
+        - name: RouteConfigurationOverride
+          value: RouteConfigurationOverride
+        - name: EdgeAction
+          value: EdgeAction
+        - name: AfdUrlSigning
+          value: AfdUrlSigning
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          scopes:
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
+x-refined-from:
+- microsoft-azure-cdn-management-openapi.json
+- microsoft-azure-cdn-management-openapi.json

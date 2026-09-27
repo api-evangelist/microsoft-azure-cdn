@@ -1,0 +1,538 @@
+openapi: 3.2.0
+info:
+  title: Microsoft Azure Cdn Origin Groups API
+  version: '2026-07-01'
+  x-typespec-generated:
+  - emitter: '@azure-tools/typespec-autorest'
+  description: 'Operations tagged OriginGroups across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://management.azure.com
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: OriginGroups
+paths:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups
+  : get:
+      operationId: OriginGroups_ListByEndpoint
+      tags:
+      - OriginGroups
+      description: Lists all of the existing origin groups within an endpoint.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: endpointName
+        in: path
+        description: Name of the endpoint under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginGroupListResult'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        OriginsGroups_ListByEndpoint:
+          $ref: ./examples/OriginGroups_ListByEndpoint.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      summary: Origin groups list by endpoint
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}
+  : get:
+      operationId: OriginGroups_Get
+      tags:
+      - OriginGroups
+      description: Gets an existing origin group within an endpoint.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: endpointName
+        in: path
+        description: Name of the endpoint under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginGroup'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        OriginGroups_Get:
+          $ref: ./examples/OriginGroups_Get.json
+      summary: Origin groups get
+      x-summary-source: derived
+    put:
+      operationId: OriginGroups_Create
+      tags:
+      - OriginGroups
+      description: Creates a new origin group within the specified endpoint.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: endpointName
+        in: path
+        description: Name of the endpoint under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource 'OriginGroup' update operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginGroup'
+        '201':
+          description: Resource 'OriginGroup' create operation succeeded
+          headers:
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginGroup'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginGroup'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        OriginGroups_Create:
+          $ref: ./examples/OriginGroups_Create.json
+      x-ms-long-running-operation-options:
+        final-state-via: location
+        final-state-schema: '#/definitions/OriginGroup'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OriginGroup'
+        description: Origin group properties
+        required: true
+      summary: Origin groups create
+      x-summary-source: derived
+    patch:
+      operationId: OriginGroups_Update
+      tags:
+      - OriginGroups
+      description: Updates an existing origin group within an endpoint.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: endpointName
+        in: path
+        description: Name of the endpoint under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginGroup'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginGroup'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        OriginGroups_Update:
+          $ref: ./examples/OriginGroups_Update.json
+      x-ms-long-running-operation-options:
+        final-state-via: location
+        final-state-schema: '#/definitions/OriginGroup'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OriginGroupUpdateParameters'
+        description: Origin group properties
+        required: true
+      summary: Origin groups update
+      x-summary-source: derived
+    delete:
+      operationId: OriginGroups_Delete
+      tags:
+      - OriginGroups
+      description: Deletes an existing origin group within an endpoint.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: endpointName
+        in: path
+        description: Name of the endpoint under the profile which is unique globally.
+        required: true
+        schema:
+          type: string
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource deleted successfully.
+        '202':
+          description: Resource deletion accepted.
+          headers:
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+        '204':
+          description: Resource does not exist.
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        OriginGroups_Delete:
+          $ref: ./examples/OriginGroups_Delete.json
+      x-ms-long-running-operation-options:
+        final-state-via: location
+      x-ms-long-running-operation: true
+      summary: Origin groups delete
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+components:
+  schemas:
+    HealthProbeParameters:
+      type: object
+      description: The JSON object that contains the properties to send health probes to origin.
+      properties:
+        probePath:
+          type: string
+          description: The path relative to the origin that is used to determine the health of the origin.
+        probeRequestType:
+          $ref: '#/components/schemas/HealthProbeRequestType'
+          description: The type of health probe request that is made.
+        probeProtocol:
+          $ref: '#/components/schemas/ProbeProtocol'
+          description: Protocol to use for health probe.
+        probeIntervalInSeconds:
+          type: integer
+          format: int32
+          description: The number of seconds between health probes.Default is 240sec.
+          minimum: 1
+          maximum: 255
+    OriginGroupProperties:
+      type: object
+      description: The JSON object that contains the properties of the origin group.
+      properties:
+        resourceState:
+          $ref: '#/components/schemas/OriginGroupResourceState'
+          description: Resource status of the origin group.
+          readOnly: true
+        provisioningState:
+          $ref: '#/components/schemas/OriginGroupProvisioningState'
+          description: Provisioning status of the origin group.
+          readOnly: true
+      allOf:
+      - $ref: '#/components/schemas/OriginGroupUpdatePropertiesParameters'
+    OriginGroupUpdatePropertiesParameters:
+      type: object
+      description: The JSON object that contains the properties of the origin group.
+      properties:
+        healthProbeSettings:
+          $ref: '#/components/schemas/HealthProbeParameters'
+          description: Health probe settings to the origin that is used to determine the health of the origin.
+        origins:
+          type: array
+          description: The source of the content being delivered via CDN within given origin group.
+          items:
+            $ref: '#/components/schemas/ResourceReference'
+        trafficRestorationTimeToHealedOrNewEndpointsInMinutes:
+          type: integer
+          format: int32
+          description: Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. This property is currently not supported.
+          minimum: 0
+          maximum: 50
+        responseBasedOriginErrorDetectionSettings:
+          $ref: '#/components/schemas/ResponseBasedOriginErrorDetectionParameters'
+          description: The JSON object that contains the properties to determine origin health using real requests/responses. This property is currently not supported.
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+    OriginGroupProvisioningState:
+      type: string
+      description: Provisioning status of the origin group.
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: OriginGroupProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    HttpErrorRangeParameters:
+      type: object
+      description: The JSON object that represents the range for http status codes
+      properties:
+        begin:
+          type: integer
+          format: int32
+          description: The inclusive start of the http status code range.
+          minimum: 100
+          maximum: 999
+        end:
+          type: integer
+          format: int32
+          description: The inclusive end of the http status code range.
+          minimum: 100
+          maximum: 999
+    HealthProbeRequestType:
+      type: string
+      description: The type of health probe request that is made.
+      enum:
+      - NotSet
+      - GET
+      - HEAD
+      x-ms-enum:
+        name: HealthProbeRequestType
+        modelAsString: false
+    ResponseBasedDetectedErrorTypes:
+      type: string
+      description: Type of response errors for real user requests for which origin will be deemed unhealthy
+      enum:
+      - None
+      - TcpErrorsOnly
+      - TcpAndHttpErrors
+      x-ms-enum:
+        name: ResponseBasedDetectedErrorTypes
+        modelAsString: false
+    ResponseBasedOriginErrorDetectionParameters:
+      type: object
+      description: The JSON object that contains the properties to determine origin health using real requests/responses.
+      properties:
+        responseBasedDetectedErrorTypes:
+          $ref: '#/components/schemas/ResponseBasedDetectedErrorTypes'
+          description: Type of response errors for real user requests for which origin will be deemed unhealthy
+        responseBasedFailoverThresholdPercentage:
+          type: integer
+          format: int32
+          description: The percentage of failed requests in the sample where failover should trigger.
+          minimum: 0
+          maximum: 100
+        httpErrorRanges:
+          type: array
+          description: The list of Http status code ranges that are considered as server errors for origin and it is marked as unhealthy.
+          items:
+            $ref: '#/components/schemas/HttpErrorRangeParameters'
+          x-ms-identifiers: []
+    OriginGroupResourceState:
+      type: string
+      description: Resource status of the origin group.
+      enum:
+      - Creating
+      - Active
+      - Deleting
+      x-ms-enum:
+        name: OriginGroupResourceState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Active
+          value: Active
+        - name: Deleting
+          value: Deleting
+    OriginGroupListResult:
+      type: object
+      description: The response of a OriginGroup list operation.
+      properties:
+        value:
+          type: array
+          description: The OriginGroup items on this page
+          items:
+            $ref: '#/components/schemas/OriginGroup'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    ProbeProtocol:
+      type: string
+      description: Protocol to use for health probe.
+      enum:
+      - NotSet
+      - Http
+      - Https
+      x-ms-enum:
+        name: ProbeProtocol
+        modelAsString: false
+    OriginGroupUpdateParameters:
+      type: object
+      description: Origin group properties needed for origin group creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/OriginGroupUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+    OriginGroup:
+      type: object
+      description: Origin group comprising of origins is used for load balancing to origins when the content cannot be served from CDN.
+      properties:
+        properties:
+          $ref: '#/components/schemas/OriginGroupProperties'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          scopes:
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
+x-refined-from:
+- microsoft-azure-cdn-management-openapi.json
+- microsoft-azure-cdn-management-openapi.json

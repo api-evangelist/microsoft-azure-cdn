@@ -1,0 +1,450 @@
+openapi: 3.2.0
+info:
+  title: Microsoft Azure Cdn Security Policies API
+  version: '2026-07-01'
+  x-typespec-generated:
+  - emitter: '@azure-tools/typespec-autorest'
+  description: 'Operations tagged SecurityPolicies across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://management.azure.com
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: Security Policies
+paths:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies
+  : get:
+      operationId: SecurityPolicies_ListByProfile
+      tags:
+      - Security Policies
+      description: Lists security policies associated with the profile
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPolicyListResult'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        SecurityPolicies_ListByProfile:
+          $ref: ./examples/SecurityPolicies_ListByProfile.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      summary: Security policies list by profile
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}
+  : get:
+      operationId: SecurityPolicies_Get
+      tags:
+      - Security Policies
+      description: Gets an existing security policy within a profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: securityPolicyName
+        in: path
+        description: Name of the security policy under the profile.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPolicy'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        SecurityPolicies_Get:
+          $ref: ./examples/SecurityPolicies_Get.json
+      summary: Security policies get
+      x-summary-source: derived
+    put:
+      operationId: SecurityPolicies_Create
+      tags:
+      - Security Policies
+      description: Creates a new security policy within the specified profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: securityPolicyName
+        in: path
+        description: Name of the security policy under the profile.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource 'SecurityPolicy' update operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPolicy'
+        '201':
+          description: Resource 'SecurityPolicy' create operation succeeded
+          headers:
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPolicy'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPolicy'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        SecurityPolicies_Create:
+          $ref: ./examples/SecurityPolicies_Create.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+        final-state-schema: '#/definitions/SecurityPolicy'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityPolicy'
+        description: The security policy properties.
+        required: true
+      summary: Security policies create
+      x-summary-source: derived
+    patch:
+      operationId: SecurityPolicies_Patch
+      tags:
+      - Security Policies
+      description: Updates an existing security policy within a profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: securityPolicyName
+        in: path
+        description: Name of the security policy under the profile.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPolicy'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPolicy'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        SecurityPolicies_Patch:
+          $ref: ./examples/SecurityPolicies_Patch.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+        final-state-schema: '#/definitions/SecurityPolicy'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityPolicyUpdateParameters'
+        description: Security policy update properties
+        required: true
+      summary: Security policies patch
+      x-summary-source: derived
+    delete:
+      operationId: SecurityPolicies_Delete
+      tags:
+      - Security Policies
+      description: Deletes an existing security policy within profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: securityPolicyName
+        in: path
+        description: Name of the security policy under the profile.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource deleted successfully.
+        '202':
+          description: Resource deletion accepted.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+        '204':
+          description: Resource does not exist.
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        SecurityPolicies_Delete:
+          $ref: ./examples/SecurityPolicies_Delete.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+      x-ms-long-running-operation: true
+      summary: Security policies delete
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+components:
+  schemas:
+    SecurityPolicyListResult:
+      type: object
+      description: The response of a SecurityPolicy list operation.
+      properties:
+        value:
+          type: array
+          description: The SecurityPolicy items on this page
+          items:
+            $ref: '#/components/schemas/SecurityPolicy'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    SecurityPolicyProperties:
+      type: object
+      description: The json object that contains properties required to create a security policy
+      properties:
+        profileName:
+          type: string
+          description: The name of the profile which holds the security policy.
+          readOnly: true
+        parameters:
+          $ref: '#/components/schemas/SecurityPolicyPropertiesParameters'
+          description: object which contains security policy parameters
+      allOf:
+      - $ref: '#/components/schemas/AFDStateProperties'
+    SecurityPolicyPropertiesParameters:
+      type: object
+      description: The json object containing security policy parameters
+      properties:
+        type:
+          $ref: '#/components/schemas/SecurityPolicyType'
+          description: The type of the Security policy to create.
+      discriminator:
+        propertyName: type
+      required:
+      - type
+    SecurityPolicy:
+      type: object
+      description: SecurityPolicy association for AzureFrontDoor profile
+      properties:
+        properties:
+          $ref: '#/components/schemas/SecurityPolicyProperties'
+          description: The json object that contains properties required to create a security policy
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    AFDStateProperties:
+      type: object
+      description: The tracking states for afd resources.
+      properties:
+        provisioningState:
+          $ref: '#/components/schemas/AfdProvisioningState'
+          description: Provisioning status
+          readOnly: true
+        deploymentStatus:
+          $ref: '#/components/schemas/DeploymentStatus'
+          readOnly: true
+    AfdProvisioningState:
+      type: string
+      description: Provisioning status
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    SecurityPolicyUpdateParameters:
+      type: object
+      description: The JSON object containing security policy update parameters.
+      properties:
+        properties:
+          $ref: '#/components/schemas/SecurityPolicyUpdateProperties'
+          description: The json object that contains properties required to update a security policy
+          x-ms-client-flatten: true
+    SecurityPolicyUpdateProperties:
+      type: object
+      description: The json object that contains properties required to update a security policy
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SecurityPolicyPropertiesParameters'
+          description: object which contains security policy parameters
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    SecurityPolicyType:
+      type: string
+      description: The type of the Security policy to create.
+      enum:
+      - WebApplicationFirewall
+      x-ms-enum:
+        name: SecurityPolicyType
+        modelAsString: true
+        values:
+        - name: WebApplicationFirewall
+          value: WebApplicationFirewall
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          scopes:
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
+x-refined-from:
+- microsoft-azure-cdn-management-openapi.json
+- microsoft-azure-cdn-management-openapi.json

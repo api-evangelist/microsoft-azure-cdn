@@ -1,0 +1,690 @@
+openapi: 3.2.0
+info:
+  title: Microsoft Azure Cdn AFD Origin Groups API
+  version: '2026-07-01'
+  x-typespec-generated:
+  - emitter: '@azure-tools/typespec-autorest'
+  description: 'Operations tagged AFDOriginGroups across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://management.azure.com
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: AFDOriginGroups
+paths:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups
+  : get:
+      operationId: AFDOriginGroups_ListByProfile
+      tags:
+      - AFDOriginGroups
+      description: Lists all of the existing origin groups within a profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AFDOriginGroupListResult'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        AFDOriginGroups_ListByProfile:
+          $ref: ./examples/AFDOriginGroups_ListByProfile.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      summary: AFD origin groups list by profile
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}
+  : get:
+      operationId: AFDOriginGroups_Get
+      tags:
+      - AFDOriginGroups
+      description: Gets an existing origin group within a profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AFDOriginGroup'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        AFDOriginGroups_Get:
+          $ref: ./examples/AFDOriginGroups_Get.json
+      summary: AFD origin groups get
+      x-summary-source: derived
+    put:
+      operationId: AFDOriginGroups_Create
+      tags:
+      - AFDOriginGroups
+      description: Creates a new origin group within the specified profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource 'AFDOriginGroup' update operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AFDOriginGroup'
+        '201':
+          description: Resource 'AFDOriginGroup' create operation succeeded
+          headers:
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AFDOriginGroup'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AFDOriginGroup'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        AFDOriginGroups_Create:
+          $ref: ./examples/AFDOriginGroups_Create.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+        final-state-schema: '#/definitions/AFDOriginGroup'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AFDOriginGroup'
+        description: Origin group properties
+        required: true
+      summary: AFD origin groups create
+      x-summary-source: derived
+    patch:
+      operationId: AFDOriginGroups_Update
+      tags:
+      - AFDOriginGroups
+      description: Updates an existing origin group within a profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AFDOriginGroup'
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AFDOriginGroup'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        AFDOriginGroups_Update:
+          $ref: ./examples/AFDOriginGroups_Update.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+        final-state-schema: '#/definitions/AFDOriginGroup'
+      x-ms-long-running-operation: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AFDOriginGroupUpdateParameters'
+        description: Origin group properties
+        required: true
+      summary: AFD origin groups update
+      x-summary-source: derived
+    delete:
+      operationId: AFDOriginGroups_Delete
+      tags:
+      - AFDOriginGroups
+      description: Deletes an existing origin group within a profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource deleted successfully.
+        '202':
+          description: Resource deletion accepted.
+          headers:
+            Azure-AsyncOperation:
+              description: A link to the status monitor
+              schema:
+                type: string
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
+        '204':
+          description: Resource does not exist.
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        AFDOriginGroups_Delete:
+          $ref: ./examples/AFDOriginGroups_Delete.json
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+      x-ms-long-running-operation: true
+      summary: AFD origin groups delete
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/usages
+  : post:
+      operationId: AFDOriginGroups_ListResourceUsage
+      tags:
+      - AFDOriginGroups
+      description: Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
+      parameters:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ResourceGroupNameParameter
+      - name: profileName
+        in: path
+        description: Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the resource group.
+        required: true
+        schema:
+          type: string
+          maxLength: 260
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$
+      - name: originGroupName
+        in: path
+        description: Name of the origin group which is unique within the endpoint.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsagesListResult'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        AFDOriginGroups_ListResourceUsage:
+          $ref: ./examples/AFDOriginGroups_ListResourceUsage.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      summary: AFD origin groups list resource usage
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
+components:
+  schemas:
+    UsagesListResult:
+      type: object
+      description: The list usages operation response.
+      properties:
+        value:
+          type: array
+          description: The Usage items on this page
+          items:
+            $ref: '#/components/schemas/Usage'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    HealthProbeRequestType:
+      type: string
+      description: The type of health probe request that is made.
+      enum:
+      - NotSet
+      - GET
+      - HEAD
+      x-ms-enum:
+        name: HealthProbeRequestType
+        modelAsString: false
+    AFDOriginGroup:
+      type: object
+      description: AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from Azure Front Door.
+      properties:
+        properties:
+          $ref: '#/components/schemas/AFDOriginGroupProperties'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    AFDOriginGroupUpdatePropertiesParameters:
+      type: object
+      description: The JSON object that contains the properties of the origin group.
+      properties:
+        profileName:
+          type: string
+          description: The name of the profile which holds the origin group.
+          readOnly: true
+        loadBalancingSettings:
+          $ref: '#/components/schemas/LoadBalancingSettingsParameters'
+          description: Load balancing settings for a backend pool
+        healthProbeSettings:
+          $ref: '#/components/schemas/HealthProbeParameters'
+          description: Health probe settings to the origin that is used to determine the health of the origin.
+        trafficRestorationTimeToHealedOrNewEndpointsInMinutes:
+          type: integer
+          format: int32
+          description: Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. This property is currently not supported.
+          minimum: 0
+          maximum: 50
+        sessionAffinityState:
+          $ref: '#/components/schemas/EnabledState'
+          description: Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
+        authentication:
+          $ref: '#/components/schemas/OriginAuthenticationProperties'
+          description: Authentication settings for origin in origin group.
+    OriginAuthenticationProperties:
+      type: object
+      description: The JSON object that contains the properties of the origin authentication settings.
+      properties:
+        type:
+          $ref: '#/components/schemas/OriginAuthenticationType'
+          description: The type of the authentication for the origin.
+        userAssignedIdentity:
+          $ref: '#/components/schemas/ResourceReference'
+          description: The user assigned managed identity to use for the origin authentication if type is UserAssignedIdentity.
+        scope:
+          type: string
+          format: uri
+          description: The scope used when requesting token from Microsoft Entra. For example, for Azure Blob Storage, scope could be "https://storage.azure.com/.default".
+        tokenDestinationHeader:
+          $ref: '#/components/schemas/OriginAuthenticationTokenDestinationHeader'
+          description: The HTTP request header where the origin authentication token will be placed when forwarding the request to the origin. If not specified, the service will use the `Authorization` header for backward compatibility.
+    UsageUnit:
+      type: string
+      description: An enum describing the unit of measurement.
+      enum:
+      - Count
+      x-ms-enum:
+        name: UsageUnit
+        modelAsString: true
+        values:
+        - name: Count
+          value: Count
+    ProbeProtocol:
+      type: string
+      description: Protocol to use for health probe.
+      enum:
+      - NotSet
+      - Http
+      - Https
+      x-ms-enum:
+        name: ProbeProtocol
+        modelAsString: false
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+    OriginAuthenticationTokenDestinationHeader:
+      type: string
+      description: The HTTP request header where the origin authentication token is placed when forwarding the request to the origin.
+      enum:
+      - Authorization
+      - X-Azure-Authorization
+      x-ms-enum:
+        name: OriginAuthenticationTokenDestinationHeader
+        modelAsString: true
+        values:
+        - name: Authorization
+          value: Authorization
+          description: Place the token in the standard `Authorization` request header (default behavior).
+        - name: XAzureAuthorization
+          value: X-Azure-Authorization
+          description: Place the token in the `X-Azure-Authorization` request header to avoid conflicts with an existing `Authorization` header set by the client.
+    AFDOriginGroupProperties:
+      type: object
+      description: The JSON object that contains the properties of the origin group.
+      properties:
+        profileName:
+          type: string
+          description: The name of the profile which holds the origin group.
+          readOnly: true
+        loadBalancingSettings:
+          $ref: '#/components/schemas/LoadBalancingSettingsParameters'
+          description: Load balancing settings for a backend pool
+        healthProbeSettings:
+          $ref: '#/components/schemas/HealthProbeParameters'
+          description: Health probe settings to the origin that is used to determine the health of the origin.
+        trafficRestorationTimeToHealedOrNewEndpointsInMinutes:
+          type: integer
+          format: int32
+          description: Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. This property is currently not supported.
+          minimum: 0
+          maximum: 50
+        sessionAffinityState:
+          $ref: '#/components/schemas/EnabledState'
+          description: Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
+        authentication:
+          $ref: '#/components/schemas/OriginAuthenticationProperties'
+          description: Authentication settings for origin in origin group.
+        provisioningState:
+          $ref: '#/components/schemas/AfdProvisioningState'
+          description: Provisioning status
+          readOnly: true
+        deploymentStatus:
+          $ref: '#/components/schemas/DeploymentStatus'
+          readOnly: true
+    Usage:
+      type: object
+      description: Describes resource usage.
+      properties:
+        id:
+          type: string
+          description: Resource identifier.
+          readOnly: true
+        unit:
+          $ref: '#/components/schemas/UsageUnit'
+          description: An enum describing the unit of measurement.
+        currentValue:
+          type: integer
+          format: int64
+          description: The current value of the usage.
+        limit:
+          type: integer
+          format: int64
+          description: The limit of usage.
+        name:
+          $ref: '#/components/schemas/UsageName'
+          description: The name of the type of usage.
+      required:
+      - unit
+      - currentValue
+      - limit
+      - name
+    AFDOriginGroupUpdateParameters:
+      type: object
+      description: AFDOrigin group properties needed for origin group creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/AFDOriginGroupUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+    OriginAuthenticationType:
+      type: string
+      description: The type of the authentication for the origin.
+      enum:
+      - SystemAssignedIdentity
+      - UserAssignedIdentity
+      x-ms-enum:
+        name: OriginAuthenticationType
+        modelAsString: true
+        values:
+        - name: SystemAssignedIdentity
+          value: SystemAssignedIdentity
+        - name: UserAssignedIdentity
+          value: UserAssignedIdentity
+    AfdProvisioningState:
+      type: string
+      description: Provisioning status
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    HealthProbeParameters:
+      type: object
+      description: The JSON object that contains the properties to send health probes to origin.
+      properties:
+        probePath:
+          type: string
+          description: The path relative to the origin that is used to determine the health of the origin.
+        probeRequestType:
+          $ref: '#/components/schemas/HealthProbeRequestType'
+          description: The type of health probe request that is made.
+        probeProtocol:
+          $ref: '#/components/schemas/ProbeProtocol'
+          description: Protocol to use for health probe.
+        probeIntervalInSeconds:
+          type: integer
+          format: int32
+          description: The number of seconds between health probes.Default is 240sec.
+          minimum: 1
+          maximum: 255
+    AFDOriginGroupListResult:
+      type: object
+      description: The response of a AFDOriginGroup list operation.
+      properties:
+        value:
+          type: array
+          description: The AFDOriginGroup items on this page
+          items:
+            $ref: '#/components/schemas/AFDOriginGroup'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    EnabledState:
+      type: string
+      description: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
+      enum:
+      - Enabled
+      - Disabled
+      x-ms-enum:
+        name: EnabledState
+        modelAsString: true
+        values:
+        - name: Enabled
+          value: Enabled
+        - name: Disabled
+          value: Disabled
+    LoadBalancingSettingsParameters:
+      type: object
+      description: Round-Robin load balancing settings for a backend pool
+      properties:
+        sampleSize:
+          type: integer
+          format: int32
+          description: The number of samples to consider for load balancing decisions
+        successfulSamplesRequired:
+          type: integer
+          format: int32
+          description: The number of samples within the sample period that must succeed
+        additionalLatencyInMilliseconds:
+          type: integer
+          format: int32
+          description: The additional latency in milliseconds for probes to fall into the lowest latency bucket
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    UsageName:
+      type: object
+      description: The usage names.
+      properties:
+        value:
+          type: string
+          description: A string describing the resource name.
+        localizedValue:
+          type: string
+          description: A localized string describing the resource name.
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          scopes:
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
+x-refined-from:
+- microsoft-azure-cdn-management-openapi.json
+- microsoft-azure-cdn-management-openapi.json

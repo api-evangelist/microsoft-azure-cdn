@@ -1,42 +1,234 @@
 openapi: 3.2.0
 info:
-  title: Azure CDN REST Operations API
-  description: Azure Content Delivery Network (CDN) provides global content delivery from strategically placed edge locations. The REST API manages CDN profiles, endpoints, custom domains, and origins.
-  version: '2024-01-01'
+  title: Microsoft Azure Cdn Operations API
+  x-refined-note:
+  - x-typespec-generated differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Operations across 3 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
-  description: Azure Resource Manager
 security:
 - azure_auth:
   - user_impersonation
 tags:
 - name: Operations
-  description: Operations operations
 paths:
   /providers/Microsoft.Cdn/operations:
     get:
-      operationId: listOperations
-      summary: Azure CDN REST API List operations
-      description: Lists all available REST API operations for Microsoft.Cdn.
+      operationId: Operations_List
       tags:
       - Operations
+      description: List the operations for the provider
       parameters:
-      - $ref: '#/components/parameters/apiVersion'
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/parameters/ApiVersionParameter
       responses:
         '200':
-          description: Operations list
+          description: Azure operation completed successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OperationList'
+                $ref: '#/components/schemas/OperationsListResult'
         default:
-          description: Error
+          description: An unexpected error response.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ErrorResponse
+      x-ms-examples:
+        Operations_List:
+          $ref: ./examples/Operations_List.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+      summary: Operations list
+      x-summary-source: derived
+    servers:
+    - url: https://management.azure.com
 components:
   schemas:
+    MetricAvailability:
+      type: object
+      description: Retention policy of a resource metric.
+      properties:
+        timeGrain:
+          type: string
+        blobDuration:
+          type: string
+    LogSpecification:
+      type: object
+      description: Log specification of operation.
+      properties:
+        name:
+          type: string
+          description: Name of log specification.
+        displayName:
+          type: string
+          description: Display name of log specification.
+        blobDuration:
+          type: string
+          description: Blob duration of specification.
+        logFilterPattern:
+          type: string
+          description: Pattern to filter based on name
+    OperationsListResult:
+      type: object
+      description: Result of the request to list CDN operations. It contains a list of operations and a URL link to get the next set of results.
+      properties:
+        value:
+          type: array
+          description: List of CDN operations supported by the CDN resource provider.
+          items:
+            $ref: '#/components/schemas/Operation'
+          x-ms-identifiers: []
+        nextLink:
+          type: string
+          description: URL to get the next set of operation list results if there are any.
+      required:
+      - value
+    OperationDisplay:
+      type: object
+      description: The object that represents the operation.
+      properties:
+        provider:
+          type: string
+          description: 'Service provider: Microsoft.Cdn'
+          readOnly: true
+        resource:
+          type: string
+          description: 'Resource on which the operation is performed: Profile, endpoint, etc.'
+          readOnly: true
+        operation:
+          type: string
+          description: 'Operation type: Read, write, delete, etc.'
+          readOnly: true
+        description:
+          type: string
+          description: Description of operation.
+          readOnly: true
+    DimensionProperties:
+      type: object
+      description: 'Type of operation: get, read, delete, etc.'
+      properties:
+        name:
+          type: string
+          description: Name of dimension.
+        displayName:
+          type: string
+          description: Display name of dimension.
+        internalName:
+          type: string
+          description: Internal name of dimension.
+    MetricSpecification:
+      type: object
+      description: Metric specification of operation.
+      properties:
+        name:
+          type: string
+          description: Name of metric specification.
+        displayName:
+          type: string
+          description: Display name of metric specification.
+        displayDescription:
+          type: string
+          description: Display description of metric specification.
+        unit:
+          type: string
+          description: 'The metric unit. Possible values include: ''Bytes'', ''Count'', ''Milliseconds''.'
+        aggregationType:
+          type: string
+          description: 'The metric aggregation type. Possible values include: ''Average'', ''Count'', ''Total''.'
+        availabilities:
+          type: array
+          description: Retention policies of a resource metric.
+          items:
+            $ref: '#/components/schemas/MetricAvailability'
+          x-ms-identifiers: []
+        supportedTimeGrainTypes:
+          type: array
+          description: The supported time grain types for the metrics.
+          items:
+            type: string
+        dimensions:
+          type: array
+          description: The dimensions of metric
+          items:
+            $ref: '#/components/schemas/DimensionProperties'
+          x-ms-identifiers:
+          - name
+        fillGapWithZero:
+          type: boolean
+          description: Property to specify whether to fill gap with zero.
+        metricFilterPattern:
+          type: string
+          description: Pattern to filter based on name
+        isInternal:
+          type: boolean
+          description: Property to specify metric is internal or not.
+    OperationProperties:
+      type: object
+      description: Properties of operation, include metric specifications.
+      properties:
+        serviceSpecification:
+          $ref: '#/components/schemas/ServiceSpecification'
+          description: One property of operation, include metric specifications.
+    Operation:
+      type: object
+      description: CDN REST API operation
+      properties:
+        name:
+          type: string
+          description: 'Operation name: {provider}/{resource}/{operation}'
+          readOnly: true
+        isDataAction:
+          type: boolean
+          description: Indicates whether the operation is a data action
+        display:
+          $ref: '#/components/schemas/OperationDisplay'
+          description: The object that represents the operation.
+        origin:
+          type: string
+          description: The origin of operations.
+          readOnly: true
+        properties:
+          $ref: '#/components/schemas/OperationProperties'
+          description: Properties of operation, include metric specifications.
+          x-ms-client-flatten: true
+          x-ms-client-name: operationProperties
+    ServiceSpecification:
+      type: object
+      description: One property of operation, include log specifications.
+      properties:
+        logSpecifications:
+          type: array
+          description: Log specifications of operation.
+          items:
+            $ref: '#/components/schemas/LogSpecification'
+          x-ms-identifiers:
+          - name
+        metricSpecifications:
+          type: array
+          description: Metric specifications of operation.
+          items:
+            $ref: '#/components/schemas/MetricSpecification'
+          x-ms-identifiers:
+          - name
+    Operation_2:
+      type: object
+      properties:
+        name:
+          type: string
+        display:
+          type: object
+          properties:
+            provider:
+              type: string
+            resource:
+              type: string
+            operation:
+              type: string
+            description:
+              type: string
+        isDataAction:
+          type: boolean
     ErrorResponse:
       type: object
       properties:
@@ -55,27 +247,9 @@ components:
         value:
           type: array
           items:
-            $ref: '#/components/schemas/Operation'
+            $ref: '#/components/schemas/Operation_2'
         nextLink:
           type: string
-    Operation:
-      type: object
-      properties:
-        name:
-          type: string
-        display:
-          type: object
-          properties:
-            provider:
-              type: string
-            resource:
-              type: string
-            operation:
-              type: string
-            description:
-              type: string
-        isDataAction:
-          type: boolean
   parameters:
     apiVersion:
       name: api-version
@@ -87,14 +261,16 @@ components:
   securitySchemes:
     azure_auth:
       type: oauth2
-      description: Azure Active Directory OAuth2 Flow.
       flows:
         implicit:
-          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
           scopes:
-            user_impersonation: Impersonate your user account
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
 externalDocs:
   description: Azure CDN REST API Documentation
   url: https://learn.microsoft.com/en-us/rest/api/cdn/
-x-generated-from: https://learn.microsoft.com/en-us/rest/api/cdn/
-x-generated-by: claude-crawl-2026-05-08
+x-refined-from:
+- microsoft-azure-cdn-management-openapi.json
+- microsoft-azure-cdn-openapi.yml
+- microsoft-azure-cdn-management-openapi.json

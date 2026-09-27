@@ -37,15 +37,19 @@ modified: '2026-09-17'
 specificationVersion: '0.23'
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - azure/azure-rest-api-specs
+  open_source: unknown
   commercial: true
   callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -64,51 +68,6 @@ maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 apis:
-- aid: microsoft-azure-cdn:microsoft-azure-cdn-management-api
-  name: Azure CDN Management API (Microsoft.Cdn)
-  description: The contract Microsoft publishes for the Microsoft.Cdn resource provider, harvested verbatim
-    from Azure/azure-rest-api-specs at api-version 2026-07-01. Swagger 2.0, 73 paths, 115 operations,
-    387 definitions, 16 tags, 56 long-running operations, 26 paged operations, and 123 provider-published
-    request/response examples.
-  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
-  baseURL: https://management.azure.com/
-  tags:
-  - Profiles
-  - Origins
-  - Custom Domains
-  - Routes
-  - Rules
-  - Security Policies
-  - Web Application Firewall
-  tags_raw:
-  - Profiles
-  - Endpoints
-  - Origins
-  - Custom Domains
-  - Routes
-  - Rules
-  - Security Policies
-  - Web Application Firewall
-  properties:
-  - type: OpenAPI
-    url: openapi/microsoft-azure-cdn-management-openapi.json
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted, as published)
-    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01/openapi.json
-  - type: Documentation
-    url: https://learn.microsoft.com/en-us/rest/api/cdn/
-  - type: APIReference
-    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
-  - type: Examples
-    url: examples/microsoft-azure-cdn-examples.yml
-  - type: Overlay
-    url: overlays/microsoft-azure-cdn-management-overlay.yaml
-  - type: ErrorCatalog
-    url: errors/microsoft-azure-cdn-problem-types.yml
-  - type: DataModel
-    url: data-model/microsoft-azure-cdn-data-model.yml
-  - type: SourceCode
-    url: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
 - aid: microsoft-azure-cdn:microsoft-azure-cdn-operations-api
   name: microsoft-azure-cdn Operations API
   description: Operations operations
@@ -138,6 +97,376 @@ apis:
     url: https://learn.microsoft.com/en-us/rest/api/cdn/
   - type: APIReference
     url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-afddomains-api
+  name: Microsoft Azure Cdn AFD Domains API
+  description: The AFDDomains API from Microsoft Azure Cdn — 3 operation(s) for afddomains.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - AFDDomains
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-afddomains-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-afdendpoints-api
+  name: Microsoft Azure Cdn AFD Endpoints API
+  description: The AFDEndpoints API from Microsoft Azure Cdn — 5 operation(s) for afdendpoints.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - AFDEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-afdendpoints-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-afdorigingroups-api
+  name: Microsoft Azure Cdn AFD Origin Groups API
+  description: The AFDOriginGroups API from Microsoft Azure Cdn — 3 operation(s) for afdorigingroups.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - AFDOriginGroups
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-afdorigingroups-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-afdorigins-api
+  name: Microsoft Azure Cdn AFD Origins API
+  description: The AFDOrigins API from Microsoft Azure Cdn — 2 operation(s) for afdorigins.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - AFDOrigins
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-afdorigins-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-cdnwebapplicationfirewallpolicies-api
+  name: Microsoft Azure Cdn Cdn Web Application Firewall Policies API
+  description: >-
+    The CdnWebApplicationFirewallPolicies API from Microsoft Azure Cdn — 2 operation(s) for cdnwebapplicationfirewallpolicies.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - CdnWebApplicationFirewallPolicies
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-cdnwebapplicationfirewallpolicies-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-endpoints-api
+  name: Microsoft Azure Cdn Endpoints API
+  description: The Endpoints API from Microsoft Azure Cdn — 8 operation(s) for endpoints.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-origingroups-api
+  name: Microsoft Azure Cdn Origin Groups API
+  description: The OriginGroups API from Microsoft Azure Cdn — 2 operation(s) for origingroups.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - OriginGroups
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-origingroups-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-origins-api
+  name: Microsoft Azure Cdn Origins API
+  description: The Origins API from Microsoft Azure Cdn — 2 operation(s) for origins.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Origins
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-origins-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-providers-api
+  name: Microsoft Azure Cdn Providers API
+  description: The Providers API from Microsoft Azure Cdn — 2 operation(s) for providers.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Providers
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-providers-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-routes-api
+  name: Microsoft Azure Cdn Routes API
+  description: The Routes API from Microsoft Azure Cdn — 2 operation(s) for routes.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Routes
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-routes-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-rules-api
+  name: Microsoft Azure Cdn Rules API
+  description: The Rules API from Microsoft Azure Cdn — 2 operation(s) for rules.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Rules
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-rules-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-rulesets-api
+  name: Microsoft Azure Cdn Rule Sets API
+  description: The RuleSets API from Microsoft Azure Cdn — 3 operation(s) for rulesets.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - RuleSets
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-rulesets-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-secrets-api
+  name: Microsoft Azure Cdn Secrets API
+  description: The Secrets API from Microsoft Azure Cdn — 2 operation(s) for secrets.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Secrets
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-secrets-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-subscriptions-api
+  name: Microsoft Azure Cdn Subscriptions API
+  description: The Subscriptions API from Microsoft Azure Cdn — 7 operation(s) for subscriptions.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-custom-domains-api
+  name: Microsoft Azure Cdn Custom Domains API
+  description: The Custom Domains API from Microsoft Azure Cdn — 4 operation(s) for custom domains.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Custom Domains
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-custom-domains-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
+- aid: microsoft-azure-cdn:microsoft-azure-cdn-security-policies-api
+  name: Microsoft Azure Cdn Security Policies API
+  description: >-
+    The Security Policies API from Microsoft Azure Cdn — 2 operation(s) for security policies.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
+  baseURL: https://management.azure.com/
+  tags:
+  - Security Policies
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cdn-security-policies-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/
+  - type: APIReference
+    url: https://learn.microsoft.com/en-us/rest/api/cdn/profiles
+  - type: Examples
+    url: examples/microsoft-azure-cdn-examples.yml
+  - type: ErrorCatalog
+    url: errors/microsoft-azure-cdn-problem-types.yml
+  - type: DataModel
+    url: data-model/microsoft-azure-cdn-data-model.yml
+  - type: SourceCode
+    url: >-
+      https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
 common:
 - type: TrustCenter
   url: security/microsoft-azure-cdn-trust-center.yml
