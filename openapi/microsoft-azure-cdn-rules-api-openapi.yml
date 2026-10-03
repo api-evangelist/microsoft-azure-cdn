@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Rules API
+  title: CdnManagementClient Rules API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged Rules across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -58,8 +58,6 @@ paths:
         nextLinkName: nextLink
       summary: Rules list by rule set
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}
   : get:
       operationId: Rules_Get
@@ -334,10 +332,63 @@ paths:
       x-ms-long-running-operation: true
       summary: Rules delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
+    Rule:
+      type: object
+      description: Friendly Rules name mapping to the any Rules or secret related information.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RuleProperties'
+          description: The JSON object that contains the properties of the Rules to create.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    AfdProvisioningState:
+      type: string
+      description: Provisioning status
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    DeliveryRuleCondition:
+      type: object
+      description: A condition for the delivery rule.
+      properties:
+        name:
+          $ref: '#/components/schemas/MatchVariable'
+          description: The name of the condition for the delivery rule.
+      discriminator:
+        propertyName: name
+      required:
+      - name
+    DeliveryRuleAction:
+      type: object
+      description: An action for the delivery rule.
+      properties:
+        name:
+          $ref: '#/components/schemas/DeliveryRuleActionName'
+          description: The name of the action for the delivery rule.
+      discriminator:
+        propertyName: name
+      required:
+      - name
     RuleUpdatePropertiesParameters:
       type: object
       description: The JSON object that contains the properties of the rule to update.
@@ -379,35 +430,6 @@ components:
               value: Continue
             - name: Stop
               value: Stop
-    RuleUpdateParameters:
-      type: object
-      description: The domain JSON object required for domain creation or update.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RuleUpdatePropertiesParameters'
-          description: The JSON object that contains the properties of the rule to update.
-          x-ms-client-flatten: true
-    DeliveryRuleAction:
-      type: object
-      description: An action for the delivery rule.
-      properties:
-        name:
-          $ref: '#/components/schemas/DeliveryRuleActionName'
-          description: The name of the action for the delivery rule.
-      discriminator:
-        propertyName: name
-      required:
-      - name
-    Rule:
-      type: object
-      description: Friendly Rules name mapping to the any Rules or secret related information.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RuleProperties'
-          description: The JSON object that contains the properties of the Rules to create.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     RuleProperties:
       type: object
       description: The JSON object that contains the properties of the Rules to create.
@@ -456,29 +478,89 @@ components:
         deploymentStatus:
           $ref: '#/components/schemas/DeploymentStatus'
           readOnly: true
-    AfdProvisioningState:
+    RuleUpdateParameters:
+      type: object
+      description: The domain JSON object required for domain creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RuleUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the rule to update.
+          x-ms-client-flatten: true
+    DeliveryRuleActionName:
       type: string
-      description: Provisioning status
+      description: The name of the action for the delivery rule.
       enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
+      - CacheExpiration
+      - CacheKeyQueryString
+      - ModifyRequestHeader
+      - ModifyResponseHeader
+      - UrlRedirect
+      - UrlRewrite
+      - UrlSigning
+      - OriginGroupOverride
+      - RouteConfigurationOverride
+      - EdgeAction
+      - AfdUrlSigning
       x-ms-enum:
-        name: AfdProvisioningState
+        name: DeliveryRuleActionName
         modelAsString: true
         values:
+        - name: CacheExpiration
+          value: CacheExpiration
+        - name: CacheKeyQueryString
+          value: CacheKeyQueryString
+        - name: ModifyRequestHeader
+          value: ModifyRequestHeader
+        - name: ModifyResponseHeader
+          value: ModifyResponseHeader
+        - name: UrlRedirect
+          value: UrlRedirect
+        - name: UrlRewrite
+          value: UrlRewrite
+        - name: UrlSigning
+          value: UrlSigning
+        - name: OriginGroupOverride
+          value: OriginGroupOverride
+        - name: RouteConfigurationOverride
+          value: RouteConfigurationOverride
+        - name: EdgeAction
+          value: EdgeAction
+        - name: AfdUrlSigning
+          value: AfdUrlSigning
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
         - name: Succeeded
           value: Succeeded
         - name: Failed
           value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
+    RuleListResult:
+      type: object
+      description: The response of a Rule list operation.
+      properties:
+        value:
+          type: array
+          description: The Rule items on this page
+          items:
+            $ref: '#/components/schemas/Rule'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     MatchVariable:
       type: string
       description: Request variable to compare with.
@@ -544,92 +626,6 @@ components:
           value: HostName
         - name: SslProtocol
           value: SslProtocol
-    DeploymentStatus:
-      type: string
-      enum:
-      - NotStarted
-      - InProgress
-      - Succeeded
-      - Failed
-      x-ms-enum:
-        name: DeploymentStatus
-        modelAsString: true
-        values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-    RuleListResult:
-      type: object
-      description: The response of a Rule list operation.
-      properties:
-        value:
-          type: array
-          description: The Rule items on this page
-          items:
-            $ref: '#/components/schemas/Rule'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    DeliveryRuleCondition:
-      type: object
-      description: A condition for the delivery rule.
-      properties:
-        name:
-          $ref: '#/components/schemas/MatchVariable'
-          description: The name of the condition for the delivery rule.
-      discriminator:
-        propertyName: name
-      required:
-      - name
-    DeliveryRuleActionName:
-      type: string
-      description: The name of the action for the delivery rule.
-      enum:
-      - CacheExpiration
-      - CacheKeyQueryString
-      - ModifyRequestHeader
-      - ModifyResponseHeader
-      - UrlRedirect
-      - UrlRewrite
-      - UrlSigning
-      - OriginGroupOverride
-      - RouteConfigurationOverride
-      - EdgeAction
-      - AfdUrlSigning
-      x-ms-enum:
-        name: DeliveryRuleActionName
-        modelAsString: true
-        values:
-        - name: CacheExpiration
-          value: CacheExpiration
-        - name: CacheKeyQueryString
-          value: CacheKeyQueryString
-        - name: ModifyRequestHeader
-          value: ModifyRequestHeader
-        - name: ModifyResponseHeader
-          value: ModifyResponseHeader
-        - name: UrlRedirect
-          value: UrlRedirect
-        - name: UrlRewrite
-          value: UrlRewrite
-        - name: UrlSigning
-          value: UrlSigning
-        - name: OriginGroupOverride
-          value: OriginGroupOverride
-        - name: RouteConfigurationOverride
-          value: RouteConfigurationOverride
-        - name: EdgeAction
-          value: EdgeAction
-        - name: AfdUrlSigning
-          value: AfdUrlSigning
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -639,6 +635,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

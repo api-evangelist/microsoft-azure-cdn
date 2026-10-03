@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Subscriptions API
+  title: CdnManagementClient Subscriptions API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged Subscriptions across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -42,8 +42,6 @@ paths:
       - Subscriptions
       summary: Managed rule sets list
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkNameAvailability:
     post:
       operationId: CheckNameAvailabilityWithSubscription
@@ -78,8 +76,6 @@ paths:
       - Subscriptions
       summary: Check name availability with subscription
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage:
     post:
       operationId: ResourceUsage_List
@@ -109,8 +105,6 @@ paths:
       - Subscriptions
       summary: Resource usage list
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe:
     post:
       operationId: ValidateProbe
@@ -145,8 +139,6 @@ paths:
       - Subscriptions
       summary: Validate probe
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/canMigrate:
     post:
       operationId: Profiles_CanMigrate
@@ -198,8 +190,6 @@ paths:
       - Subscriptions
       summary: Profiles can migrate
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/checkEndpointNameAvailability:
     post:
       operationId: CheckEndpointNameAvailability
@@ -235,8 +225,6 @@ paths:
       - Subscriptions
       summary: Check endpoint name availability
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/migrate:
     post:
       operationId: Profiles_Migrate
@@ -287,13 +275,141 @@ paths:
       - Subscriptions
       summary: Profiles migrate
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    CanMigrateResult:
+    MigrationParameters:
       type: object
-      description: Result for canMigrate operation.
+      description: Request body for Migrate operation.
+      properties:
+        sku:
+          $ref: '#/components/schemas/Sku'
+          description: Sku for the migration
+        classicResourceReference:
+          $ref: '#/components/schemas/ResourceReference'
+          description: Resource reference of the classic cdn profile or classic frontdoor that need to be migrated.
+        profileName:
+          type: string
+          description: Name of the new profile that need to be created.
+        migrationWebApplicationFirewallMappings:
+          type: array
+          description: Waf mapping for the migrated profile
+          items:
+            $ref: '#/components/schemas/MigrationWebApplicationFirewallMapping'
+          x-ms-identifiers: []
+      required:
+      - sku
+      - classicResourceReference
+      - profileName
+    CanMigrateParameters:
+      type: object
+      description: Request body for CanMigrate operation.
+      properties:
+        classicResourceReference:
+          $ref: '#/components/schemas/ResourceReference'
+          description: Resource reference of the classic cdn profile or classic frontdoor that need to be migrated.
+      required:
+      - classicResourceReference
+    ManagedRuleGroupDefinition:
+      type: object
+      description: Describes a managed rule group.
+      properties:
+        ruleGroupName:
+          type: string
+          description: Name of the managed rule group.
+          readOnly: true
+        description:
+          type: string
+          description: Description of the managed rule group.
+          readOnly: true
+        rules:
+          type: array
+          description: List of rules within the managed rule group.
+          items:
+            $ref: '#/components/schemas/ManagedRuleDefinition'
+          readOnly: true
+          x-ms-identifiers:
+          - ruleId
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+    ManagedRuleSetDefinition:
+      type: object
+      description: Describes a managed rule set definition.
+      properties:
+        properties:
+          $ref: '#/components/schemas/ManagedRuleSetDefinitionProperties'
+          description: Describes managed rule set definition properties.
+          x-ms-client-flatten: true
+        sku:
+          $ref: '#/components/schemas/Sku'
+          description: The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/Resource
+    CheckEndpointNameAvailabilityInput:
+      type: object
+      description: Input of CheckNameAvailability API.
+      properties:
+        name:
+          type: string
+          description: The resource name to validate.
+        type:
+          $ref: '#/components/schemas/ResourceType'
+          description: The type of the resource whose name is to be validated.
+        autoGeneratedDomainNameLabelScope:
+          $ref: '#/components/schemas/AutoGeneratedDomainNameLabelScope'
+          description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
+      required:
+      - name
+      - type
+    Sku:
+      type: object
+      description: 'Standard_Verizon = The SKU name for a Standard Verizon CDN profile.
+
+        Premium_Verizon = The SKU name for a Premium Verizon CDN profile.
+
+        Custom_Verizon = The SKU name for a Custom Verizon CDN profile.
+
+        Standard_Akamai = The SKU name for an Akamai CDN profile.
+
+        Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using GB based billing model.
+
+        Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
+
+        Standard_AzureFrontDoor =  The SKU name for an Azure Front Door Standard profile.
+
+        Premium_AzureFrontDoor = The SKU name for an Azure Front Door Premium profile.
+
+        Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5 peak bandwidth billing model.
+
+        Standard_AvgBandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model.
+
+        StandardPlus_ChinaCdn = The SKU name for a China CDN profile for live-streaming using GB based billing model.
+
+        StandardPlus_955BandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth billing model.
+
+        StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly average peak bandwidth billing model.'
+      properties:
+        name:
+          $ref: '#/components/schemas/SkuName'
+          description: Name of the pricing tier.
+    ResourceUsageUnit:
+      type: string
+      description: Unit of the usage. e.g. count.
+      enum:
+      - count
+      x-ms-enum:
+        name: ResourceUsageUnit
+        modelAsString: true
+        values:
+        - name: count
+          value: count
+    MigrateResult:
+      type: object
+      description: Result for migrate operation.
       properties:
         id:
           type: string
@@ -305,24 +421,101 @@ components:
           description: Resource type.
           readOnly: true
         properties:
-          $ref: '#/components/schemas/CanMigrateProperties'
+          $ref: '#/components/schemas/MigrateResultProperties'
           x-ms-client-flatten: true
-    CheckNameAvailabilityOutput:
+    ManagedRuleSetDefinitionProperties:
       type: object
-      description: Output of check name availability API.
+      description: Properties for a managed rule set definition.
       properties:
-        nameAvailable:
-          type: boolean
-          description: Indicates whether the name is available.
-          readOnly: true
-        reason:
+        provisioningState:
           type: string
-          description: The reason why the name is not available.
+          description: Provisioning state of the managed rule set.
+          readOnly: true
+        ruleSetType:
+          type: string
+          description: Type of the managed rule set.
+          readOnly: true
+        ruleSetVersion:
+          type: string
+          description: Version of the managed rule set type.
+          readOnly: true
+        ruleGroups:
+          type: array
+          description: Rule groups of the managed rule set.
+          items:
+            $ref: '#/components/schemas/ManagedRuleGroupDefinition'
+          readOnly: true
+          x-ms-identifiers:
+          - ruleGroupName
+    ValidateProbeOutput:
+      type: object
+      description: Output of the validate probe API.
+      properties:
+        isValid:
+          type: boolean
+          description: Indicates whether the probe URL is accepted or not.
+          readOnly: true
+        errorCode:
+          type: string
+          description: Specifies the error code when the probe url is not accepted.
           readOnly: true
         message:
           type: string
-          description: The detailed error message describing why the name is not available.
+          description: The detailed error message describing why the probe URL is not accepted.
           readOnly: true
+    MigrationErrorType:
+      type: object
+      description: Error response indicates CDN service is not able to process the incoming request. The reason is provided in the error message.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          readOnly: true
+        resourceName:
+          type: string
+          description: Resource which has the problem.
+          readOnly: true
+        errorMessage:
+          type: string
+          description: Error message indicating why the operation failed.
+          readOnly: true
+        nextSteps:
+          type: string
+          description: Describes what needs to be done to fix the problem
+          readOnly: true
+    AutoGeneratedDomainNameLabelScope:
+      type: string
+      description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
+      enum:
+      - TenantReuse
+      - SubscriptionReuse
+      - ResourceGroupReuse
+      - NoReuse
+      x-ms-enum:
+        name: AutoGeneratedDomainNameLabelScope
+        modelAsString: true
+        values:
+        - name: TenantReuse
+          value: TenantReuse
+        - name: SubscriptionReuse
+          value: SubscriptionReuse
+        - name: ResourceGroupReuse
+          value: ResourceGroupReuse
+        - name: NoReuse
+          value: NoReuse
+    CheckNameAvailabilityInput:
+      type: object
+      description: Input of CheckNameAvailability API.
+      properties:
+        name:
+          type: string
+          description: The resource name to validate.
+        type:
+          $ref: '#/components/schemas/ResourceType'
+          description: The type of the resource whose name is to be validated.
+      required:
+      - name
+      - type
     ResourceUsage:
       type: object
       description: Output of check resource usage API.
@@ -345,57 +538,50 @@ components:
           format: int32
           description: Quota of the specified resource type.
           readOnly: true
-    ResourceUsageUnit:
-      type: string
-      description: Unit of the usage. e.g. count.
-      enum:
-      - count
-      x-ms-enum:
-        name: ResourceUsageUnit
-        modelAsString: true
-        values:
-        - name: count
-          value: count
-    CheckEndpointNameAvailabilityOutput:
+    ManagedRuleDefinition:
       type: object
-      description: Output of check name availability API.
+      description: Describes a managed rule definition.
       properties:
-        nameAvailable:
-          type: boolean
-          description: Indicates whether the name is available.
-          readOnly: true
-        availableHostname:
+        ruleId:
           type: string
-          description: Returns the available hostname generated based on the AutoGeneratedDomainNameLabelScope when the name is available, otherwise it returns empty string
+          description: Identifier for the managed rule.
           readOnly: true
-        reason:
+        description:
           type: string
-          description: The reason why the name is not available.
+          description: Describes the functionality of the managed rule.
           readOnly: true
-        message:
+    CanMigrateResult:
+      type: object
+      description: Result for canMigrate operation.
+      properties:
+        id:
           type: string
-          description: The detailed error message describing why the name is not available.
+          format: arm-id
+          description: Resource ID.
           readOnly: true
-    AutoGeneratedDomainNameLabelScope:
-      type: string
-      description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
-      enum:
-      - TenantReuse
-      - SubscriptionReuse
-      - ResourceGroupReuse
-      - NoReuse
-      x-ms-enum:
-        name: AutoGeneratedDomainNameLabelScope
-        modelAsString: true
-        values:
-        - name: TenantReuse
-          value: TenantReuse
-        - name: SubscriptionReuse
-          value: SubscriptionReuse
-        - name: ResourceGroupReuse
-          value: ResourceGroupReuse
-        - name: NoReuse
-          value: NoReuse
+        type:
+          type: string
+          description: Resource type.
+          readOnly: true
+        properties:
+          $ref: '#/components/schemas/CanMigrateProperties'
+          x-ms-client-flatten: true
+    ValidateProbeInput:
+      type: object
+      description: Input of the validate probe API.
+      properties:
+        probeURL:
+          type: string
+          description: The probe URL to validate.
+      required:
+      - probeURL
+    MigrateResultProperties:
+      type: object
+      properties:
+        migratedProfileResourceId:
+          $ref: '#/components/schemas/ResourceReference'
+          description: Arm resource id of the migrated profile
+          readOnly: true
     MigrationWebApplicationFirewallMapping:
       type: object
       description: Web Application Firewall Mapping
@@ -406,19 +592,6 @@ components:
         migratedTo:
           $ref: '#/components/schemas/ResourceReference'
           description: Migration to Waf policy
-    CheckNameAvailabilityInput:
-      type: object
-      description: Input of CheckNameAvailability API.
-      properties:
-        name:
-          type: string
-          description: The resource name to validate.
-        type:
-          $ref: '#/components/schemas/ResourceType'
-          description: The type of the resource whose name is to be validated.
-      required:
-      - name
-      - type
     ResourceType:
       type: string
       description: Type of CDN resource used in CheckNameAvailability.
@@ -433,85 +606,6 @@ components:
           value: Microsoft.Cdn/Profiles/Endpoints
         - name: Microsoft.Cdn/Profiles/AfdEndpoints
           value: Microsoft.Cdn/Profiles/AfdEndpoints
-    MigrationErrorType:
-      type: object
-      description: Error response indicates CDN service is not able to process the incoming request. The reason is provided in the error message.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          readOnly: true
-        resourceName:
-          type: string
-          description: Resource which has the problem.
-          readOnly: true
-        errorMessage:
-          type: string
-          description: Error message indicating why the operation failed.
-          readOnly: true
-        nextSteps:
-          type: string
-          description: Describes what needs to be done to fix the problem
-          readOnly: true
-    CanMigrateParameters:
-      type: object
-      description: Request body for CanMigrate operation.
-      properties:
-        classicResourceReference:
-          $ref: '#/components/schemas/ResourceReference'
-          description: Resource reference of the classic cdn profile or classic frontdoor that need to be migrated.
-      required:
-      - classicResourceReference
-    ManagedRuleDefinition:
-      type: object
-      description: Describes a managed rule definition.
-      properties:
-        ruleId:
-          type: string
-          description: Identifier for the managed rule.
-          readOnly: true
-        description:
-          type: string
-          description: Describes the functionality of the managed rule.
-          readOnly: true
-    ResourceReference:
-      type: object
-      description: Reference to another resource.
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-    ManagedRuleSetDefinitionList:
-      type: object
-      description: List of managed rule set definitions available for use in a policy.
-      properties:
-        value:
-          type: array
-          description: The ManagedRuleSetDefinition items on this page
-          items:
-            $ref: '#/components/schemas/ManagedRuleSetDefinition'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    CanMigrateProperties:
-      type: object
-      properties:
-        canMigrate:
-          type: boolean
-          description: Flag that says if the profile can be migrated
-          readOnly: true
-        defaultSku:
-          $ref: '#/components/schemas/CanMigrateDefaultSku'
-          description: Recommended sku for the migration
-          readOnly: true
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/MigrationErrorType'
-          x-ms-identifiers: []
     SkuName:
       type: string
       description: Name of the pricing tier.
@@ -559,39 +653,6 @@ components:
           value: StandardPlus_955BandWidth_ChinaCdn
         - name: StandardPlus_AvgBandWidth_ChinaCdn
           value: StandardPlus_AvgBandWidth_ChinaCdn
-    ManagedRuleGroupDefinition:
-      type: object
-      description: Describes a managed rule group.
-      properties:
-        ruleGroupName:
-          type: string
-          description: Name of the managed rule group.
-          readOnly: true
-        description:
-          type: string
-          description: Description of the managed rule group.
-          readOnly: true
-        rules:
-          type: array
-          description: List of rules within the managed rule group.
-          items:
-            $ref: '#/components/schemas/ManagedRuleDefinition'
-          readOnly: true
-          x-ms-identifiers:
-          - ruleId
-    ManagedRuleSetDefinition:
-      type: object
-      description: Describes a managed rule set definition.
-      properties:
-        properties:
-          $ref: '#/components/schemas/ManagedRuleSetDefinitionProperties'
-          description: Describes managed rule set definition properties.
-          x-ms-client-flatten: true
-        sku:
-          $ref: '#/components/schemas/Sku'
-          description: The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/Resource
     CanMigrateDefaultSku:
       type: string
       description: Recommended sku for the migration
@@ -606,125 +667,26 @@ components:
           value: Standard_AzureFrontDoor
         - name: Premium_AzureFrontDoor
           value: Premium_AzureFrontDoor
-    MigrateResultProperties:
+    CheckEndpointNameAvailabilityOutput:
       type: object
+      description: Output of check name availability API.
       properties:
-        migratedProfileResourceId:
-          $ref: '#/components/schemas/ResourceReference'
-          description: Arm resource id of the migrated profile
-          readOnly: true
-    Sku:
-      type: object
-      description: 'Standard_Verizon = The SKU name for a Standard Verizon CDN profile.
-
-        Premium_Verizon = The SKU name for a Premium Verizon CDN profile.
-
-        Custom_Verizon = The SKU name for a Custom Verizon CDN profile.
-
-        Standard_Akamai = The SKU name for an Akamai CDN profile.
-
-        Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using GB based billing model.
-
-        Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
-
-        Standard_AzureFrontDoor =  The SKU name for an Azure Front Door Standard profile.
-
-        Premium_AzureFrontDoor = The SKU name for an Azure Front Door Premium profile.
-
-        Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5 peak bandwidth billing model.
-
-        Standard_AvgBandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model.
-
-        StandardPlus_ChinaCdn = The SKU name for a China CDN profile for live-streaming using GB based billing model.
-
-        StandardPlus_955BandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth billing model.
-
-        StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly average peak bandwidth billing model.'
-      properties:
-        name:
-          $ref: '#/components/schemas/SkuName'
-          description: Name of the pricing tier.
-    MigrateResult:
-      type: object
-      description: Result for migrate operation.
-      properties:
-        id:
-          type: string
-          format: arm-id
-          description: Resource ID.
-          readOnly: true
-        type:
-          type: string
-          description: Resource type.
-          readOnly: true
-        properties:
-          $ref: '#/components/schemas/MigrateResultProperties'
-          x-ms-client-flatten: true
-    ValidateProbeInput:
-      type: object
-      description: Input of the validate probe API.
-      properties:
-        probeURL:
-          type: string
-          description: The probe URL to validate.
-      required:
-      - probeURL
-    ManagedRuleSetDefinitionProperties:
-      type: object
-      description: Properties for a managed rule set definition.
-      properties:
-        provisioningState:
-          type: string
-          description: Provisioning state of the managed rule set.
-          readOnly: true
-        ruleSetType:
-          type: string
-          description: Type of the managed rule set.
-          readOnly: true
-        ruleSetVersion:
-          type: string
-          description: Version of the managed rule set type.
-          readOnly: true
-        ruleGroups:
-          type: array
-          description: Rule groups of the managed rule set.
-          items:
-            $ref: '#/components/schemas/ManagedRuleGroupDefinition'
-          readOnly: true
-          x-ms-identifiers:
-          - ruleGroupName
-    ValidateProbeOutput:
-      type: object
-      description: Output of the validate probe API.
-      properties:
-        isValid:
+        nameAvailable:
           type: boolean
-          description: Indicates whether the probe URL is accepted or not.
+          description: Indicates whether the name is available.
           readOnly: true
-        errorCode:
+        availableHostname:
           type: string
-          description: Specifies the error code when the probe url is not accepted.
+          description: Returns the available hostname generated based on the AutoGeneratedDomainNameLabelScope when the name is available, otherwise it returns empty string
+          readOnly: true
+        reason:
+          type: string
+          description: The reason why the name is not available.
           readOnly: true
         message:
           type: string
-          description: The detailed error message describing why the probe URL is not accepted.
+          description: The detailed error message describing why the name is not available.
           readOnly: true
-    CheckEndpointNameAvailabilityInput:
-      type: object
-      description: Input of CheckNameAvailability API.
-      properties:
-        name:
-          type: string
-          description: The resource name to validate.
-        type:
-          $ref: '#/components/schemas/ResourceType'
-          description: The type of the resource whose name is to be validated.
-        autoGeneratedDomainNameLabelScope:
-          $ref: '#/components/schemas/AutoGeneratedDomainNameLabelScope'
-          description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
-      required:
-      - name
-      - type
     ResourceUsageListResult:
       type: object
       description: Output of check resource usage API.
@@ -740,29 +702,53 @@ components:
           description: The link to the next page of items
       required:
       - value
-    MigrationParameters:
+    CanMigrateProperties:
       type: object
-      description: Request body for Migrate operation.
       properties:
-        sku:
-          $ref: '#/components/schemas/Sku'
-          description: Sku for the migration
-        classicResourceReference:
-          $ref: '#/components/schemas/ResourceReference'
-          description: Resource reference of the classic cdn profile or classic frontdoor that need to be migrated.
-        profileName:
-          type: string
-          description: Name of the new profile that need to be created.
-        migrationWebApplicationFirewallMappings:
+        canMigrate:
+          type: boolean
+          description: Flag that says if the profile can be migrated
+          readOnly: true
+        defaultSku:
+          $ref: '#/components/schemas/CanMigrateDefaultSku'
+          description: Recommended sku for the migration
+          readOnly: true
+        errors:
           type: array
-          description: Waf mapping for the migrated profile
           items:
-            $ref: '#/components/schemas/MigrationWebApplicationFirewallMapping'
+            $ref: '#/components/schemas/MigrationErrorType'
           x-ms-identifiers: []
+    ManagedRuleSetDefinitionList:
+      type: object
+      description: List of managed rule set definitions available for use in a policy.
+      properties:
+        value:
+          type: array
+          description: The ManagedRuleSetDefinition items on this page
+          items:
+            $ref: '#/components/schemas/ManagedRuleSetDefinition'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
       required:
-      - sku
-      - classicResourceReference
-      - profileName
+      - value
+    CheckNameAvailabilityOutput:
+      type: object
+      description: Output of check name availability API.
+      properties:
+        nameAvailable:
+          type: boolean
+          description: Indicates whether the name is available.
+          readOnly: true
+        reason:
+          type: string
+          description: The reason why the name is not available.
+          readOnly: true
+        message:
+          type: string
+          description: The detailed error message describing why the name is not available.
+          readOnly: true
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -772,6 +758,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

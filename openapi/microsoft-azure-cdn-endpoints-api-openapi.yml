@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Endpoints API
+  title: CdnManagementClient Endpoints API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged Endpoints across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -52,8 +52,6 @@ paths:
         nextLinkName: nextLink
       summary: Endpoints list by profile
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}
   : get:
       operationId: Endpoints_Get
@@ -287,8 +285,6 @@ paths:
       x-ms-long-running-operation: true
       summary: Endpoints delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/checkResourceUsage
   : post:
       operationId: Endpoints_ListResourceUsage
@@ -334,8 +330,6 @@ paths:
         nextLinkName: nextLink
       summary: Endpoints list resource usage
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load
   : post:
       operationId: Endpoints_LoadContent
@@ -397,8 +391,6 @@ paths:
         required: true
       summary: Endpoints load content
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge
   : post:
       operationId: Endpoints_PurgeContent
@@ -460,8 +452,6 @@ paths:
         required: true
       summary: Endpoints purge content
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start
   : post:
       operationId: Endpoints_Start
@@ -520,8 +510,6 @@ paths:
       x-ms-long-running-operation: true
       summary: Endpoints start
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop
   : post:
       operationId: Endpoints_Stop
@@ -580,8 +568,6 @@ paths:
       x-ms-long-running-operation: true
       summary: Endpoints stop
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/validateCustomDomain
   : post:
       operationId: Endpoints_ValidateCustomDomain
@@ -632,190 +618,20 @@ paths:
         required: true
       summary: Endpoints validate custom domain
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    PrivateEndpointStatus:
-      type: string
-      description: The approval status for the connection to the Private Link
-      enum:
-      - Pending
-      - Approved
-      - Rejected
-      - Disconnected
-      - Timeout
-      x-ms-enum:
-        name: PrivateEndpointStatus
-        modelAsString: true
-        values:
-        - name: Pending
-          value: Pending
-        - name: Approved
-          value: Approved
-        - name: Rejected
-          value: Rejected
-        - name: Disconnected
-          value: Disconnected
-        - name: Timeout
-          value: Timeout
-    EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink:
+    DeepCreatedCustomDomainProperties:
       type: object
-      description: Defines the Web Application Firewall policy for the endpoint (if applicable)
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-    HttpErrorRangeParameters:
-      type: object
-      description: The JSON object that represents the range for http status codes
-      properties:
-        begin:
-          type: integer
-          format: int32
-          description: The inclusive start of the http status code range.
-          minimum: 100
-          maximum: 999
-        end:
-          type: integer
-          format: int32
-          description: The inclusive end of the http status code range.
-          minimum: 100
-          maximum: 999
-    HealthProbeRequestType:
-      type: string
-      description: The type of health probe request that is made.
-      enum:
-      - NotSet
-      - GET
-      - HEAD
-      x-ms-enum:
-        name: HealthProbeRequestType
-        modelAsString: false
-    OptimizationType:
-      type: string
-      description: Specifies what scenario the customer wants this CDN endpoint to optimize, e.g. Download, Media services. With this information we can apply scenario driven optimization.
-      enum:
-      - GeneralWebDelivery
-      - GeneralMediaStreaming
-      - VideoOnDemandMediaStreaming
-      - LargeFileDownload
-      - DynamicSiteAcceleration
-      x-ms-enum:
-        name: OptimizationType
-        modelAsString: true
-        values:
-        - name: GeneralWebDelivery
-          value: GeneralWebDelivery
-        - name: GeneralMediaStreaming
-          value: GeneralMediaStreaming
-        - name: VideoOnDemandMediaStreaming
-          value: VideoOnDemandMediaStreaming
-        - name: LargeFileDownload
-          value: LargeFileDownload
-        - name: DynamicSiteAcceleration
-          value: DynamicSiteAcceleration
-    ResourceUsage:
-      type: object
-      description: Output of check resource usage API.
-      properties:
-        resourceType:
-          type: string
-          description: Resource type for which the usage is provided.
-          readOnly: true
-        unit:
-          $ref: '#/components/schemas/ResourceUsageUnit'
-          description: Unit of the usage. e.g. count.
-          readOnly: true
-        currentValue:
-          type: integer
-          format: int32
-          description: Actual value of usage on the specified resource type.
-          readOnly: true
-        limit:
-          type: integer
-          format: int32
-          description: Quota of the specified resource type.
-          readOnly: true
-    DeepCreatedOriginProperties:
-      type: object
-      description: Properties of the origin created on the CDN endpoint.
+      description: Properties of the custom domain created on the CDN endpoint.
       properties:
         hostName:
           type: string
-          description: The address of the origin. It can be a domain name, IPv4 address, or IPv6 address. This should be unique across all origins in an endpoint.
-        httpPort:
-          type: integer
-          format: int32
-          description: The value of the HTTP port. Must be between 1 and 65535.
-          minimum: 1
-          maximum: 65535
-        httpsPort:
-          type: integer
-          format: int32
-          description: The value of the HTTPS port. Must be between 1 and 65535.
-          minimum: 1
-          maximum: 65535
-        originHostHeader:
+          description: The host name of the custom domain. Must be a domain name.
+        validationData:
           type: string
-          description: The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
-        priority:
-          type: integer
-          format: int32
-          description: Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-          minimum: 1
-          maximum: 5
-        weight:
-          type: integer
-          format: int32
-          description: Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
-          minimum: 1
-          maximum: 1000
-        enabled:
-          type: boolean
-          description: Origin is enabled for load balancing or not. By default, origin is always enabled.
-        privateLinkAlias:
-          type: string
-          description: The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
-        privateLinkResourceId:
-          type: string
-          description: The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
-        privateLinkLocation:
-          type: string
-          description: The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
-        privateLinkApprovalMessage:
-          type: string
-          description: A custom message to be included in the approval request to connect to the Private Link.
-        privateEndpointStatus:
-          $ref: '#/components/schemas/PrivateEndpointStatus'
-          description: The approval status for the connection to the Private Link
-          readOnly: true
+          description: Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
       required:
       - hostName
-    ResourceUsageUnit:
-      type: string
-      description: Unit of the usage. e.g. count.
-      enum:
-      - count
-      x-ms-enum:
-        name: ResourceUsageUnit
-        modelAsString: true
-        values:
-        - name: count
-          value: count
-    DeepCreatedOrigin:
-      type: object
-      description: The main origin of CDN content which is added when creating a CDN endpoint.
-      properties:
-        name:
-          type: string
-          description: Origin name which must be unique within the endpoint.
-        properties:
-          $ref: '#/components/schemas/DeepCreatedOriginProperties'
-          description: Properties of the origin created on the CDN endpoint.
-          x-ms-client-flatten: true
-      required:
-      - name
     EndpointUpdateParameters:
       type: object
       description: Properties required to create or update an endpoint.
@@ -829,114 +645,6 @@ components:
           $ref: '#/components/schemas/EndpointPropertiesUpdateParameters'
           description: The JSON object containing endpoint update parameters.
           x-ms-client-flatten: true
-    EndpointProperties:
-      type: object
-      description: The JSON object that contains the properties required to create an endpoint.
-      properties:
-        hostName:
-          type: string
-          description: The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
-          readOnly: true
-        origins:
-          type: array
-          description: The source of the content being delivered via CDN.
-          items:
-            $ref: '#/components/schemas/DeepCreatedOrigin'
-          x-ms-identifiers:
-          - name
-        originGroups:
-          type: array
-          description: The origin groups comprising of origins that are used for load balancing the traffic based on availability.
-          items:
-            $ref: '#/components/schemas/DeepCreatedOriginGroup'
-          x-ms-identifiers:
-          - name
-        customDomains:
-          type: array
-          description: The custom domains under the endpoint.
-          items:
-            $ref: '#/components/schemas/DeepCreatedCustomDomain'
-          readOnly: true
-          x-ms-identifiers:
-          - name
-        resourceState:
-          $ref: '#/components/schemas/EndpointResourceState'
-          description: Resource status of the endpoint.
-          readOnly: true
-        provisioningState:
-          $ref: '#/components/schemas/EndpointProvisioningState'
-          description: Provisioning status of the endpoint.
-          readOnly: true
-      required:
-      - origins
-      allOf:
-      - $ref: '#/components/schemas/EndpointPropertiesUpdateParameters'
-    ProbeProtocol:
-      type: string
-      description: Protocol to use for health probe.
-      enum:
-      - NotSet
-      - Http
-      - Https
-      x-ms-enum:
-        name: ProbeProtocol
-        modelAsString: false
-    EndpointResourceState:
-      type: string
-      description: Resource status of the endpoint.
-      enum:
-      - Creating
-      - Deleting
-      - Running
-      - Starting
-      - Stopped
-      - Stopping
-      x-ms-enum:
-        name: EndpointResourceState
-        modelAsString: true
-        values:
-        - name: Creating
-          value: Creating
-        - name: Deleting
-          value: Deleting
-        - name: Running
-          value: Running
-        - name: Starting
-          value: Starting
-        - name: Stopped
-          value: Stopped
-        - name: Stopping
-          value: Stopping
-    EndpointProvisioningState:
-      type: string
-      description: Provisioning status of the endpoint.
-      enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
-      x-ms-enum:
-        name: EndpointProvisioningState
-        modelAsString: true
-        values:
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
-    ResourceReference:
-      type: object
-      description: Reference to another resource.
-      properties:
-        id:
-          type: string
-          description: Resource ID.
     Endpoint:
       type: object
       description: CDN endpoint is the entity within a CDN profile containing configuration information such as origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format <endpointname>.azureedge.net.
@@ -947,187 +655,6 @@ components:
           x-ms-client-flatten: true
       allOf:
       - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/TrackedResource
-    DeepCreatedCustomDomainProperties:
-      type: object
-      description: Properties of the custom domain created on the CDN endpoint.
-      properties:
-        hostName:
-          type: string
-          description: The host name of the custom domain. Must be a domain name.
-        validationData:
-          type: string
-          description: Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
-      required:
-      - hostName
-    ResponseBasedDetectedErrorTypes:
-      type: string
-      description: Type of response errors for real user requests for which origin will be deemed unhealthy
-      enum:
-      - None
-      - TcpErrorsOnly
-      - TcpAndHttpErrors
-      x-ms-enum:
-        name: ResponseBasedDetectedErrorTypes
-        modelAsString: false
-    ResponseBasedOriginErrorDetectionParameters:
-      type: object
-      description: The JSON object that contains the properties to determine origin health using real requests/responses.
-      properties:
-        responseBasedDetectedErrorTypes:
-          $ref: '#/components/schemas/ResponseBasedDetectedErrorTypes'
-          description: Type of response errors for real user requests for which origin will be deemed unhealthy
-        responseBasedFailoverThresholdPercentage:
-          type: integer
-          format: int32
-          description: The percentage of failed requests in the sample where failover should trigger.
-          minimum: 0
-          maximum: 100
-        httpErrorRanges:
-          type: array
-          description: The list of Http status code ranges that are considered as server errors for origin and it is marked as unhealthy.
-          items:
-            $ref: '#/components/schemas/HttpErrorRangeParameters'
-          x-ms-identifiers: []
-    GeoFilter:
-      type: object
-      description: Rules defining user's geo access within a CDN endpoint.
-      properties:
-        relativePath:
-          type: string
-          description: Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
-        action:
-          $ref: '#/components/schemas/GeoFilterActions'
-          description: Action of the geo filter, i.e. allow or block access.
-        countryCodes:
-          type: array
-          description: Two letter country or region codes defining user country or region access in a geo filter, e.g. AU, MX, US.
-          items:
-            type: string
-      required:
-      - relativePath
-      - action
-      - countryCodes
-    DeliveryRuleAction:
-      type: object
-      description: An action for the delivery rule.
-      properties:
-        name:
-          $ref: '#/components/schemas/DeliveryRuleActionName'
-          description: The name of the action for the delivery rule.
-      discriminator:
-        propertyName: name
-      required:
-      - name
-    PurgeParameters:
-      type: object
-      description: Parameters required for content purge.
-      properties:
-        contentPaths:
-          type: array
-          description: The path to the content to be purged. Can describe a file path or a wild card directory.
-          items:
-            type: string
-      required:
-      - contentPaths
-    KeyVaultSigningKeyParametersType:
-      type: string
-      enum:
-      - KeyVaultSigningKeyParameters
-      x-ms-enum:
-        name: KeyVaultSigningKeyParametersType
-        modelAsString: true
-        values:
-        - name: KeyVaultSigningKeyParameters
-          value: KeyVaultSigningKeyParameters
-    DeliveryRuleCondition:
-      type: object
-      description: A condition for the delivery rule.
-      properties:
-        name:
-          $ref: '#/components/schemas/MatchVariable'
-          description: The name of the condition for the delivery rule.
-      discriminator:
-        propertyName: name
-      required:
-      - name
-    ValidateCustomDomainInput:
-      type: object
-      description: Input of the custom domain to be validated for DNS mapping.
-      properties:
-        hostName:
-          type: string
-          description: The host name of the custom domain. Must be a domain name.
-      required:
-      - hostName
-    DeliveryRuleActionName:
-      type: string
-      description: The name of the action for the delivery rule.
-      enum:
-      - CacheExpiration
-      - CacheKeyQueryString
-      - ModifyRequestHeader
-      - ModifyResponseHeader
-      - UrlRedirect
-      - UrlRewrite
-      - UrlSigning
-      - OriginGroupOverride
-      - RouteConfigurationOverride
-      - EdgeAction
-      - AfdUrlSigning
-      x-ms-enum:
-        name: DeliveryRuleActionName
-        modelAsString: true
-        values:
-        - name: CacheExpiration
-          value: CacheExpiration
-        - name: CacheKeyQueryString
-          value: CacheKeyQueryString
-        - name: ModifyRequestHeader
-          value: ModifyRequestHeader
-        - name: ModifyResponseHeader
-          value: ModifyResponseHeader
-        - name: UrlRedirect
-          value: UrlRedirect
-        - name: UrlRewrite
-          value: UrlRewrite
-        - name: UrlSigning
-          value: UrlSigning
-        - name: OriginGroupOverride
-          value: OriginGroupOverride
-        - name: RouteConfigurationOverride
-          value: RouteConfigurationOverride
-        - name: EdgeAction
-          value: EdgeAction
-        - name: AfdUrlSigning
-          value: AfdUrlSigning
-    HealthProbeParameters:
-      type: object
-      description: The JSON object that contains the properties to send health probes to origin.
-      properties:
-        probePath:
-          type: string
-          description: The path relative to the origin that is used to determine the health of the origin.
-        probeRequestType:
-          $ref: '#/components/schemas/HealthProbeRequestType'
-          description: The type of health probe request that is made.
-        probeProtocol:
-          $ref: '#/components/schemas/ProbeProtocol'
-          description: Protocol to use for health probe.
-        probeIntervalInSeconds:
-          type: integer
-          format: int32
-          description: The number of seconds between health probes.Default is 240sec.
-          minimum: 1
-          maximum: 255
-    GeoFilterActions:
-      type: string
-      description: Action of the geo filter, i.e. allow or block access.
-      enum:
-      - Block
-      - Allow
-      x-ms-enum:
-        name: GeoFilterActions
-        modelAsString: false
     EndpointPropertiesUpdateParameters:
       type: object
       description: The JSON object containing endpoint update parameters.
@@ -1194,17 +721,313 @@ components:
         webApplicationFirewallPolicyLink:
           $ref: '#/components/schemas/EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink'
           description: Defines the Web Application Firewall policy for the endpoint (if applicable)
-    LoadParameters:
+    EndpointProvisioningState:
+      type: string
+      description: Provisioning status of the endpoint.
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: EndpointProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    ResourceReference:
       type: object
-      description: Parameters required for content load.
+      description: Reference to another resource.
       properties:
-        contentPaths:
+        id:
+          type: string
+          description: Resource ID.
+    DeepCreatedOriginProperties:
+      type: object
+      description: Properties of the origin created on the CDN endpoint.
+      properties:
+        hostName:
+          type: string
+          description: The address of the origin. It can be a domain name, IPv4 address, or IPv6 address. This should be unique across all origins in an endpoint.
+        httpPort:
+          type: integer
+          format: int32
+          description: The value of the HTTP port. Must be between 1 and 65535.
+          minimum: 1
+          maximum: 65535
+        httpsPort:
+          type: integer
+          format: int32
+          description: The value of the HTTPS port. Must be between 1 and 65535.
+          minimum: 1
+          maximum: 65535
+        originHostHeader:
+          type: string
+          description: The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
+        priority:
+          type: integer
+          format: int32
+          description: Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
+          minimum: 1
+          maximum: 5
+        weight:
+          type: integer
+          format: int32
+          description: Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
+          minimum: 1
+          maximum: 1000
+        enabled:
+          type: boolean
+          description: Origin is enabled for load balancing or not. By default, origin is always enabled.
+        privateLinkAlias:
+          type: string
+          description: The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
+        privateLinkResourceId:
+          type: string
+          description: The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
+        privateLinkLocation:
+          type: string
+          description: The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
+        privateLinkApprovalMessage:
+          type: string
+          description: A custom message to be included in the approval request to connect to the Private Link.
+        privateEndpointStatus:
+          $ref: '#/components/schemas/PrivateEndpointStatus'
+          description: The approval status for the connection to the Private Link
+          readOnly: true
+      required:
+      - hostName
+    EndpointProperties:
+      type: object
+      description: The JSON object that contains the properties required to create an endpoint.
+      properties:
+        hostName:
+          type: string
+          description: The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
+          readOnly: true
+        origins:
           type: array
-          description: The path to the content to be loaded. Path should be a relative file URL of the origin.
+          description: The source of the content being delivered via CDN.
+          items:
+            $ref: '#/components/schemas/DeepCreatedOrigin'
+          x-ms-identifiers:
+          - name
+        originGroups:
+          type: array
+          description: The origin groups comprising of origins that are used for load balancing the traffic based on availability.
+          items:
+            $ref: '#/components/schemas/DeepCreatedOriginGroup'
+          x-ms-identifiers:
+          - name
+        customDomains:
+          type: array
+          description: The custom domains under the endpoint.
+          items:
+            $ref: '#/components/schemas/DeepCreatedCustomDomain'
+          readOnly: true
+          x-ms-identifiers:
+          - name
+        resourceState:
+          $ref: '#/components/schemas/EndpointResourceState'
+          description: Resource status of the endpoint.
+          readOnly: true
+        provisioningState:
+          $ref: '#/components/schemas/EndpointProvisioningState'
+          description: Provisioning status of the endpoint.
+          readOnly: true
+      required:
+      - origins
+      allOf:
+      - $ref: '#/components/schemas/EndpointPropertiesUpdateParameters'
+    DeliveryRuleActionName:
+      type: string
+      description: The name of the action for the delivery rule.
+      enum:
+      - CacheExpiration
+      - CacheKeyQueryString
+      - ModifyRequestHeader
+      - ModifyResponseHeader
+      - UrlRedirect
+      - UrlRewrite
+      - UrlSigning
+      - OriginGroupOverride
+      - RouteConfigurationOverride
+      - EdgeAction
+      - AfdUrlSigning
+      x-ms-enum:
+        name: DeliveryRuleActionName
+        modelAsString: true
+        values:
+        - name: CacheExpiration
+          value: CacheExpiration
+        - name: CacheKeyQueryString
+          value: CacheKeyQueryString
+        - name: ModifyRequestHeader
+          value: ModifyRequestHeader
+        - name: ModifyResponseHeader
+          value: ModifyResponseHeader
+        - name: UrlRedirect
+          value: UrlRedirect
+        - name: UrlRewrite
+          value: UrlRewrite
+        - name: UrlSigning
+          value: UrlSigning
+        - name: OriginGroupOverride
+          value: OriginGroupOverride
+        - name: RouteConfigurationOverride
+          value: RouteConfigurationOverride
+        - name: EdgeAction
+          value: EdgeAction
+        - name: AfdUrlSigning
+          value: AfdUrlSigning
+    DeepCreatedCustomDomain:
+      type: object
+      description: Custom domains created on the CDN endpoint.
+      properties:
+        name:
+          type: string
+          description: Custom domain name.
+        properties:
+          $ref: '#/components/schemas/DeepCreatedCustomDomainProperties'
+          description: Properties of the custom domain created on the CDN endpoint.
+          x-ms-client-flatten: true
+      required:
+      - name
+    OptimizationType:
+      type: string
+      description: Specifies what scenario the customer wants this CDN endpoint to optimize, e.g. Download, Media services. With this information we can apply scenario driven optimization.
+      enum:
+      - GeneralWebDelivery
+      - GeneralMediaStreaming
+      - VideoOnDemandMediaStreaming
+      - LargeFileDownload
+      - DynamicSiteAcceleration
+      x-ms-enum:
+        name: OptimizationType
+        modelAsString: true
+        values:
+        - name: GeneralWebDelivery
+          value: GeneralWebDelivery
+        - name: GeneralMediaStreaming
+          value: GeneralMediaStreaming
+        - name: VideoOnDemandMediaStreaming
+          value: VideoOnDemandMediaStreaming
+        - name: LargeFileDownload
+          value: LargeFileDownload
+        - name: DynamicSiteAcceleration
+          value: DynamicSiteAcceleration
+    ResponseBasedOriginErrorDetectionParameters:
+      type: object
+      description: The JSON object that contains the properties to determine origin health using real requests/responses.
+      properties:
+        responseBasedDetectedErrorTypes:
+          $ref: '#/components/schemas/ResponseBasedDetectedErrorTypes'
+          description: Type of response errors for real user requests for which origin will be deemed unhealthy
+        responseBasedFailoverThresholdPercentage:
+          type: integer
+          format: int32
+          description: The percentage of failed requests in the sample where failover should trigger.
+          minimum: 0
+          maximum: 100
+        httpErrorRanges:
+          type: array
+          description: The list of Http status code ranges that are considered as server errors for origin and it is marked as unhealthy.
+          items:
+            $ref: '#/components/schemas/HttpErrorRangeParameters'
+          x-ms-identifiers: []
+    GeoFilter:
+      type: object
+      description: Rules defining user's geo access within a CDN endpoint.
+      properties:
+        relativePath:
+          type: string
+          description: Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
+        action:
+          $ref: '#/components/schemas/GeoFilterActions'
+          description: Action of the geo filter, i.e. allow or block access.
+        countryCodes:
+          type: array
+          description: Two letter country or region codes defining user country or region access in a geo filter, e.g. AU, MX, US.
           items:
             type: string
       required:
-      - contentPaths
+      - relativePath
+      - action
+      - countryCodes
+    ResourceUsageUnit:
+      type: string
+      description: Unit of the usage. e.g. count.
+      enum:
+      - count
+      x-ms-enum:
+        name: ResourceUsageUnit
+        modelAsString: true
+        values:
+        - name: count
+          value: count
+    ValidateCustomDomainInput:
+      type: object
+      description: Input of the custom domain to be validated for DNS mapping.
+      properties:
+        hostName:
+          type: string
+          description: The host name of the custom domain. Must be a domain name.
+      required:
+      - hostName
+    HealthProbeParameters:
+      type: object
+      description: The JSON object that contains the properties to send health probes to origin.
+      properties:
+        probePath:
+          type: string
+          description: The path relative to the origin that is used to determine the health of the origin.
+        probeRequestType:
+          $ref: '#/components/schemas/HealthProbeRequestType'
+          description: The type of health probe request that is made.
+        probeProtocol:
+          $ref: '#/components/schemas/ProbeProtocol'
+          description: Protocol to use for health probe.
+        probeIntervalInSeconds:
+          type: integer
+          format: int32
+          description: The number of seconds between health probes.Default is 240sec.
+          minimum: 1
+          maximum: 255
+    EndpointResourceState:
+      type: string
+      description: Resource status of the endpoint.
+      enum:
+      - Creating
+      - Deleting
+      - Running
+      - Starting
+      - Stopped
+      - Stopping
+      x-ms-enum:
+        name: EndpointResourceState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Deleting
+          value: Deleting
+        - name: Running
+          value: Running
+        - name: Starting
+          value: Starting
+        - name: Stopped
+          value: Stopped
+        - name: Stopping
+          value: Stopping
     ValidateCustomDomainOutput:
       type: object
       description: Output of custom domain validation.
@@ -1236,19 +1059,315 @@ components:
           description: The link to the next page of items
       required:
       - value
-    DeepCreatedCustomDomain:
+    EndpointPropertiesUpdateParametersDeliveryPolicy:
       type: object
-      description: Custom domains created on the CDN endpoint.
+      description: A policy that specifies the delivery rules to be used for an endpoint.
+      properties:
+        description:
+          type: string
+          description: User-friendly description of the policy.
+        rules:
+          type: array
+          description: A list of the delivery rules.
+          items:
+            $ref: '#/components/schemas/DeliveryRule'
+          x-ms-identifiers:
+          - name
+      required:
+      - rules
+    KeyVaultSigningKeyParameters:
+      type: object
+      description: Describes the parameters for using a user's KeyVault for URL Signing Key.
+      properties:
+        typeName:
+          $ref: '#/components/schemas/KeyVaultSigningKeyParametersType'
+        subscriptionId:
+          type: string
+          description: Subscription Id of the user's Key Vault containing the secret
+        resourceGroupName:
+          type: string
+          description: Resource group of the user's Key Vault containing the secret
+        vaultName:
+          type: string
+          description: The name of the user's Key Vault containing the secret
+        secretName:
+          type: string
+          description: The name of secret in Key Vault.
+        secretVersion:
+          type: string
+          description: The version(GUID) of secret in Key Vault.
+      required:
+      - typeName
+      - subscriptionId
+      - resourceGroupName
+      - vaultName
+      - secretName
+      - secretVersion
+    DeepCreatedOriginGroupProperties:
+      type: object
+      description: Properties of the origin group created on the CDN endpoint.
+      properties:
+        healthProbeSettings:
+          $ref: '#/components/schemas/HealthProbeParameters'
+          description: Health probe settings to the origin that is used to determine the health of the origin.
+        origins:
+          type: array
+          description: The source of the content being delivered via CDN within given origin group.
+          items:
+            $ref: '#/components/schemas/ResourceReference'
+        trafficRestorationTimeToHealedOrNewEndpointsInMinutes:
+          type: integer
+          format: int32
+          description: Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. This property is currently not supported.
+          maximum: 50
+        responseBasedOriginErrorDetectionSettings:
+          $ref: '#/components/schemas/ResponseBasedOriginErrorDetectionParameters'
+          description: The JSON object that contains the properties to determine origin health using real requests/responses.This property is currently not supported.
+      required:
+      - origins
+    LoadParameters:
+      type: object
+      description: Parameters required for content load.
+      properties:
+        contentPaths:
+          type: array
+          description: The path to the content to be loaded. Path should be a relative file URL of the origin.
+          items:
+            type: string
+      required:
+      - contentPaths
+    ResourceUsage:
+      type: object
+      description: Output of check resource usage API.
+      properties:
+        resourceType:
+          type: string
+          description: Resource type for which the usage is provided.
+          readOnly: true
+        unit:
+          $ref: '#/components/schemas/ResourceUsageUnit'
+          description: Unit of the usage. e.g. count.
+          readOnly: true
+        currentValue:
+          type: integer
+          format: int32
+          description: Actual value of usage on the specified resource type.
+          readOnly: true
+        limit:
+          type: integer
+          format: int32
+          description: Quota of the specified resource type.
+          readOnly: true
+    DeliveryRule:
+      type: object
+      description: A rule that specifies a set of actions and conditions
       properties:
         name:
           type: string
-          description: Custom domain name.
+          description: Name of the rule
+        order:
+          type: integer
+          format: int32
+          description: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and actions listed in it will always be applied.
+        conditions:
+          type: array
+          description: A list of conditions that must be matched for the actions to be executed
+          items:
+            $ref: '#/components/schemas/DeliveryRuleCondition'
+          x-ms-identifiers:
+          - name
+        actions:
+          type: array
+          description: A list of actions that are executed when all the conditions of a rule are satisfied.
+          items:
+            $ref: '#/components/schemas/DeliveryRuleAction'
+          x-ms-identifiers:
+          - name
+      required:
+      - order
+      - actions
+    DeepCreatedOrigin:
+      type: object
+      description: The main origin of CDN content which is added when creating a CDN endpoint.
+      properties:
+        name:
+          type: string
+          description: Origin name which must be unique within the endpoint.
         properties:
-          $ref: '#/components/schemas/DeepCreatedCustomDomainProperties'
-          description: Properties of the custom domain created on the CDN endpoint.
+          $ref: '#/components/schemas/DeepCreatedOriginProperties'
+          description: Properties of the origin created on the CDN endpoint.
           x-ms-client-flatten: true
       required:
       - name
+    DeliveryRuleCondition:
+      type: object
+      description: A condition for the delivery rule.
+      properties:
+        name:
+          $ref: '#/components/schemas/MatchVariable'
+          description: The name of the condition for the delivery rule.
+      discriminator:
+        propertyName: name
+      required:
+      - name
+    DeliveryRuleAction:
+      type: object
+      description: An action for the delivery rule.
+      properties:
+        name:
+          $ref: '#/components/schemas/DeliveryRuleActionName'
+          description: The name of the action for the delivery rule.
+      discriminator:
+        propertyName: name
+      required:
+      - name
+    KeyVaultSigningKeyParametersType:
+      type: string
+      enum:
+      - KeyVaultSigningKeyParameters
+      x-ms-enum:
+        name: KeyVaultSigningKeyParametersType
+        modelAsString: true
+        values:
+        - name: KeyVaultSigningKeyParameters
+          value: KeyVaultSigningKeyParameters
+    UrlSigningKey:
+      type: object
+      description: Url signing key
+      properties:
+        keyId:
+          type: string
+          description: Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form the hash.
+        keySourceParameters:
+          $ref: '#/components/schemas/KeyVaultSigningKeyParameters'
+          description: Defines the parameters for using customer key vault for Url Signing Key.
+      required:
+      - keyId
+      - keySourceParameters
+    DeepCreatedOriginGroup:
+      type: object
+      description: The origin group for CDN content which is added when creating a CDN endpoint. Traffic is sent to the origins within the origin group based on origin health.
+      properties:
+        name:
+          type: string
+          description: Origin group name which must be unique within the endpoint.
+        properties:
+          $ref: '#/components/schemas/DeepCreatedOriginGroupProperties'
+          description: Properties of the origin group created on the CDN endpoint.
+          x-ms-client-flatten: true
+      required:
+      - name
+    GeoFilterActions:
+      type: string
+      description: Action of the geo filter, i.e. allow or block access.
+      enum:
+      - Block
+      - Allow
+      x-ms-enum:
+        name: GeoFilterActions
+        modelAsString: false
+    ProbeProtocol:
+      type: string
+      description: Protocol to use for health probe.
+      enum:
+      - NotSet
+      - Http
+      - Https
+      x-ms-enum:
+        name: ProbeProtocol
+        modelAsString: false
+    ResponseBasedDetectedErrorTypes:
+      type: string
+      description: Type of response errors for real user requests for which origin will be deemed unhealthy
+      enum:
+      - None
+      - TcpErrorsOnly
+      - TcpAndHttpErrors
+      x-ms-enum:
+        name: ResponseBasedDetectedErrorTypes
+        modelAsString: false
+    PurgeParameters:
+      type: object
+      description: Parameters required for content purge.
+      properties:
+        contentPaths:
+          type: array
+          description: The path to the content to be purged. Can describe a file path or a wild card directory.
+          items:
+            type: string
+      required:
+      - contentPaths
+    HttpErrorRangeParameters:
+      type: object
+      description: The JSON object that represents the range for http status codes
+      properties:
+        begin:
+          type: integer
+          format: int32
+          description: The inclusive start of the http status code range.
+          minimum: 100
+          maximum: 999
+        end:
+          type: integer
+          format: int32
+          description: The inclusive end of the http status code range.
+          minimum: 100
+          maximum: 999
+    EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink:
+      type: object
+      description: Defines the Web Application Firewall policy for the endpoint (if applicable)
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+    ResourceUsageListResult:
+      type: object
+      description: Output of check resource usage API.
+      properties:
+        value:
+          type: array
+          description: The ResourceUsage items on this page
+          items:
+            $ref: '#/components/schemas/ResourceUsage'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    HealthProbeRequestType:
+      type: string
+      description: The type of health probe request that is made.
+      enum:
+      - NotSet
+      - GET
+      - HEAD
+      x-ms-enum:
+        name: HealthProbeRequestType
+        modelAsString: false
+    PrivateEndpointStatus:
+      type: string
+      description: The approval status for the connection to the Private Link
+      enum:
+      - Pending
+      - Approved
+      - Rejected
+      - Disconnected
+      - Timeout
+      x-ms-enum:
+        name: PrivateEndpointStatus
+        modelAsString: true
+        values:
+        - name: Pending
+          value: Pending
+        - name: Approved
+          value: Approved
+        - name: Rejected
+          value: Rejected
+        - name: Disconnected
+          value: Disconnected
+        - name: Timeout
+          value: Timeout
     MatchVariable:
       type: string
       description: Request variable to compare with.
@@ -1314,141 +1433,6 @@ components:
           value: HostName
         - name: SslProtocol
           value: SslProtocol
-    DeliveryRule:
-      type: object
-      description: A rule that specifies a set of actions and conditions
-      properties:
-        name:
-          type: string
-          description: Name of the rule
-        order:
-          type: integer
-          format: int32
-          description: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and actions listed in it will always be applied.
-        conditions:
-          type: array
-          description: A list of conditions that must be matched for the actions to be executed
-          items:
-            $ref: '#/components/schemas/DeliveryRuleCondition'
-          x-ms-identifiers:
-          - name
-        actions:
-          type: array
-          description: A list of actions that are executed when all the conditions of a rule are satisfied.
-          items:
-            $ref: '#/components/schemas/DeliveryRuleAction'
-          x-ms-identifiers:
-          - name
-      required:
-      - order
-      - actions
-    DeepCreatedOriginGroup:
-      type: object
-      description: The origin group for CDN content which is added when creating a CDN endpoint. Traffic is sent to the origins within the origin group based on origin health.
-      properties:
-        name:
-          type: string
-          description: Origin group name which must be unique within the endpoint.
-        properties:
-          $ref: '#/components/schemas/DeepCreatedOriginGroupProperties'
-          description: Properties of the origin group created on the CDN endpoint.
-          x-ms-client-flatten: true
-      required:
-      - name
-    ResourceUsageListResult:
-      type: object
-      description: Output of check resource usage API.
-      properties:
-        value:
-          type: array
-          description: The ResourceUsage items on this page
-          items:
-            $ref: '#/components/schemas/ResourceUsage'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    UrlSigningKey:
-      type: object
-      description: Url signing key
-      properties:
-        keyId:
-          type: string
-          description: Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form the hash.
-        keySourceParameters:
-          $ref: '#/components/schemas/KeyVaultSigningKeyParameters'
-          description: Defines the parameters for using customer key vault for Url Signing Key.
-      required:
-      - keyId
-      - keySourceParameters
-    DeepCreatedOriginGroupProperties:
-      type: object
-      description: Properties of the origin group created on the CDN endpoint.
-      properties:
-        healthProbeSettings:
-          $ref: '#/components/schemas/HealthProbeParameters'
-          description: Health probe settings to the origin that is used to determine the health of the origin.
-        origins:
-          type: array
-          description: The source of the content being delivered via CDN within given origin group.
-          items:
-            $ref: '#/components/schemas/ResourceReference'
-        trafficRestorationTimeToHealedOrNewEndpointsInMinutes:
-          type: integer
-          format: int32
-          description: Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. This property is currently not supported.
-          maximum: 50
-        responseBasedOriginErrorDetectionSettings:
-          $ref: '#/components/schemas/ResponseBasedOriginErrorDetectionParameters'
-          description: The JSON object that contains the properties to determine origin health using real requests/responses.This property is currently not supported.
-      required:
-      - origins
-    EndpointPropertiesUpdateParametersDeliveryPolicy:
-      type: object
-      description: A policy that specifies the delivery rules to be used for an endpoint.
-      properties:
-        description:
-          type: string
-          description: User-friendly description of the policy.
-        rules:
-          type: array
-          description: A list of the delivery rules.
-          items:
-            $ref: '#/components/schemas/DeliveryRule'
-          x-ms-identifiers:
-          - name
-      required:
-      - rules
-    KeyVaultSigningKeyParameters:
-      type: object
-      description: Describes the parameters for using a user's KeyVault for URL Signing Key.
-      properties:
-        typeName:
-          $ref: '#/components/schemas/KeyVaultSigningKeyParametersType'
-        subscriptionId:
-          type: string
-          description: Subscription Id of the user's Key Vault containing the secret
-        resourceGroupName:
-          type: string
-          description: Resource group of the user's Key Vault containing the secret
-        vaultName:
-          type: string
-          description: The name of the user's Key Vault containing the secret
-        secretName:
-          type: string
-          description: The name of secret in Key Vault.
-        secretVersion:
-          type: string
-          description: The version(GUID) of secret in Key Vault.
-      required:
-      - typeName
-      - subscriptionId
-      - resourceGroupName
-      - vaultName
-      - secretName
-      - secretVersion
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -1458,6 +1442,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

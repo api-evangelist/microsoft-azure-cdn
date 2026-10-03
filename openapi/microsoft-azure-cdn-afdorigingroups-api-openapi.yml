@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn AFD Origin Groups API
+  title: CdnManagementClient AFD Origin Groups API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged AFDOriginGroups across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -52,8 +52,6 @@ paths:
         nextLinkName: nextLink
       summary: AFD origin groups list by profile
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}
   : get:
       operationId: AFDOriginGroups_Get
@@ -305,8 +303,6 @@ paths:
       x-ms-long-running-operation: true
       summary: AFD origin groups delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/usages
   : post:
       operationId: AFDOriginGroups_ListResourceUsage
@@ -352,45 +348,48 @@ paths:
         nextLinkName: nextLink
       summary: AFD origin groups list resource usage
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    UsagesListResult:
+    OriginAuthenticationProperties:
       type: object
-      description: The list usages operation response.
+      description: The JSON object that contains the properties of the origin authentication settings.
       properties:
-        value:
-          type: array
-          description: The Usage items on this page
-          items:
-            $ref: '#/components/schemas/Usage'
-        nextLink:
+        type:
+          $ref: '#/components/schemas/OriginAuthenticationType'
+          description: The type of the authentication for the origin.
+        userAssignedIdentity:
+          $ref: '#/components/schemas/ResourceReference'
+          description: The user assigned managed identity to use for the origin authentication if type is UserAssignedIdentity.
+        scope:
           type: string
           format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    HealthProbeRequestType:
+          description: The scope used when requesting token from Microsoft Entra. For example, for Azure Blob Storage, scope could be "https://storage.azure.com/.default".
+        tokenDestinationHeader:
+          $ref: '#/components/schemas/OriginAuthenticationTokenDestinationHeader'
+          description: The HTTP request header where the origin authentication token will be placed when forwarding the request to the origin. If not specified, the service will use the `Authorization` header for backward compatibility.
+    AfdProvisioningState:
       type: string
-      description: The type of health probe request that is made.
+      description: Provisioning status
       enum:
-      - NotSet
-      - GET
-      - HEAD
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
       x-ms-enum:
-        name: HealthProbeRequestType
-        modelAsString: false
-    AFDOriginGroup:
-      type: object
-      description: AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from Azure Front Door.
-      properties:
-        properties:
-          $ref: '#/components/schemas/AFDOriginGroupProperties'
-          description: The JSON object that contains the properties of the origin group.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
     AFDOriginGroupUpdatePropertiesParameters:
       type: object
       description: The JSON object that contains the properties of the origin group.
@@ -417,44 +416,6 @@ components:
         authentication:
           $ref: '#/components/schemas/OriginAuthenticationProperties'
           description: Authentication settings for origin in origin group.
-    OriginAuthenticationProperties:
-      type: object
-      description: The JSON object that contains the properties of the origin authentication settings.
-      properties:
-        type:
-          $ref: '#/components/schemas/OriginAuthenticationType'
-          description: The type of the authentication for the origin.
-        userAssignedIdentity:
-          $ref: '#/components/schemas/ResourceReference'
-          description: The user assigned managed identity to use for the origin authentication if type is UserAssignedIdentity.
-        scope:
-          type: string
-          format: uri
-          description: The scope used when requesting token from Microsoft Entra. For example, for Azure Blob Storage, scope could be "https://storage.azure.com/.default".
-        tokenDestinationHeader:
-          $ref: '#/components/schemas/OriginAuthenticationTokenDestinationHeader'
-          description: The HTTP request header where the origin authentication token will be placed when forwarding the request to the origin. If not specified, the service will use the `Authorization` header for backward compatibility.
-    UsageUnit:
-      type: string
-      description: An enum describing the unit of measurement.
-      enum:
-      - Count
-      x-ms-enum:
-        name: UsageUnit
-        modelAsString: true
-        values:
-        - name: Count
-          value: Count
-    ProbeProtocol:
-      type: string
-      description: Protocol to use for health probe.
-      enum:
-      - NotSet
-      - Http
-      - Https
-      x-ms-enum:
-        name: ProbeProtocol
-        modelAsString: false
     ResourceReference:
       type: object
       description: Reference to another resource.
@@ -462,22 +423,22 @@ components:
         id:
           type: string
           description: Resource ID.
-    OriginAuthenticationTokenDestinationHeader:
-      type: string
-      description: The HTTP request header where the origin authentication token is placed when forwarding the request to the origin.
-      enum:
-      - Authorization
-      - X-Azure-Authorization
-      x-ms-enum:
-        name: OriginAuthenticationTokenDestinationHeader
-        modelAsString: true
-        values:
-        - name: Authorization
-          value: Authorization
-          description: Place the token in the standard `Authorization` request header (default behavior).
-        - name: XAzureAuthorization
-          value: X-Azure-Authorization
-          description: Place the token in the `X-Azure-Authorization` request header to avoid conflicts with an existing `Authorization` header set by the client.
+    LoadBalancingSettingsParameters:
+      type: object
+      description: Round-Robin load balancing settings for a backend pool
+      properties:
+        sampleSize:
+          type: integer
+          format: int32
+          description: The number of samples to consider for load balancing decisions
+        successfulSamplesRequired:
+          type: integer
+          format: int32
+          description: The number of samples within the sample period that must succeed
+        additionalLatencyInMilliseconds:
+          type: integer
+          format: int32
+          description: The additional latency in milliseconds for probes to fall into the lowest latency bucket
     AFDOriginGroupProperties:
       type: object
       description: The JSON object that contains the properties of the origin group.
@@ -511,6 +472,50 @@ components:
         deploymentStatus:
           $ref: '#/components/schemas/DeploymentStatus'
           readOnly: true
+    UsagesListResult:
+      type: object
+      description: The list usages operation response.
+      properties:
+        value:
+          type: array
+          description: The Usage items on this page
+          items:
+            $ref: '#/components/schemas/Usage'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    HealthProbeParameters:
+      type: object
+      description: The JSON object that contains the properties to send health probes to origin.
+      properties:
+        probePath:
+          type: string
+          description: The path relative to the origin that is used to determine the health of the origin.
+        probeRequestType:
+          $ref: '#/components/schemas/HealthProbeRequestType'
+          description: The type of health probe request that is made.
+        probeProtocol:
+          $ref: '#/components/schemas/ProbeProtocol'
+          description: Protocol to use for health probe.
+        probeIntervalInSeconds:
+          type: integer
+          format: int32
+          description: The number of seconds between health probes.Default is 240sec.
+          minimum: 1
+          maximum: 255
+    UsageName:
+      type: object
+      description: The usage names.
+      properties:
+        value:
+          type: string
+          description: A string describing the resource name.
+        localizedValue:
+          type: string
+          description: A localized string describing the resource name.
     Usage:
       type: object
       description: Describes resource usage.
@@ -538,85 +543,6 @@ components:
       - currentValue
       - limit
       - name
-    AFDOriginGroupUpdateParameters:
-      type: object
-      description: AFDOrigin group properties needed for origin group creation or update.
-      properties:
-        properties:
-          $ref: '#/components/schemas/AFDOriginGroupUpdatePropertiesParameters'
-          description: The JSON object that contains the properties of the origin group.
-          x-ms-client-flatten: true
-    OriginAuthenticationType:
-      type: string
-      description: The type of the authentication for the origin.
-      enum:
-      - SystemAssignedIdentity
-      - UserAssignedIdentity
-      x-ms-enum:
-        name: OriginAuthenticationType
-        modelAsString: true
-        values:
-        - name: SystemAssignedIdentity
-          value: SystemAssignedIdentity
-        - name: UserAssignedIdentity
-          value: UserAssignedIdentity
-    AfdProvisioningState:
-      type: string
-      description: Provisioning status
-      enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
-      x-ms-enum:
-        name: AfdProvisioningState
-        modelAsString: true
-        values:
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
-    HealthProbeParameters:
-      type: object
-      description: The JSON object that contains the properties to send health probes to origin.
-      properties:
-        probePath:
-          type: string
-          description: The path relative to the origin that is used to determine the health of the origin.
-        probeRequestType:
-          $ref: '#/components/schemas/HealthProbeRequestType'
-          description: The type of health probe request that is made.
-        probeProtocol:
-          $ref: '#/components/schemas/ProbeProtocol'
-          description: Protocol to use for health probe.
-        probeIntervalInSeconds:
-          type: integer
-          format: int32
-          description: The number of seconds between health probes.Default is 240sec.
-          minimum: 1
-          maximum: 255
-    AFDOriginGroupListResult:
-      type: object
-      description: The response of a AFDOriginGroup list operation.
-      properties:
-        value:
-          type: array
-          description: The AFDOriginGroup items on this page
-          items:
-            $ref: '#/components/schemas/AFDOriginGroup'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
     EnabledState:
       type: string
       description: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
@@ -631,22 +557,6 @@ components:
           value: Enabled
         - name: Disabled
           value: Disabled
-    LoadBalancingSettingsParameters:
-      type: object
-      description: Round-Robin load balancing settings for a backend pool
-      properties:
-        sampleSize:
-          type: integer
-          format: int32
-          description: The number of samples to consider for load balancing decisions
-        successfulSamplesRequired:
-          type: integer
-          format: int32
-          description: The number of samples within the sample period that must succeed
-        additionalLatencyInMilliseconds:
-          type: integer
-          format: int32
-          description: The additional latency in milliseconds for probes to fall into the lowest latency bucket
     DeploymentStatus:
       type: string
       enum:
@@ -666,16 +576,100 @@ components:
           value: Succeeded
         - name: Failed
           value: Failed
-    UsageName:
+    OriginAuthenticationType:
+      type: string
+      description: The type of the authentication for the origin.
+      enum:
+      - SystemAssignedIdentity
+      - UserAssignedIdentity
+      x-ms-enum:
+        name: OriginAuthenticationType
+        modelAsString: true
+        values:
+        - name: SystemAssignedIdentity
+          value: SystemAssignedIdentity
+        - name: UserAssignedIdentity
+          value: UserAssignedIdentity
+    ProbeProtocol:
+      type: string
+      description: Protocol to use for health probe.
+      enum:
+      - NotSet
+      - Http
+      - Https
+      x-ms-enum:
+        name: ProbeProtocol
+        modelAsString: false
+    AFDOriginGroup:
       type: object
-      description: The usage names.
+      description: AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from Azure Front Door.
+      properties:
+        properties:
+          $ref: '#/components/schemas/AFDOriginGroupProperties'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    UsageUnit:
+      type: string
+      description: An enum describing the unit of measurement.
+      enum:
+      - Count
+      x-ms-enum:
+        name: UsageUnit
+        modelAsString: true
+        values:
+        - name: Count
+          value: Count
+    HealthProbeRequestType:
+      type: string
+      description: The type of health probe request that is made.
+      enum:
+      - NotSet
+      - GET
+      - HEAD
+      x-ms-enum:
+        name: HealthProbeRequestType
+        modelAsString: false
+    OriginAuthenticationTokenDestinationHeader:
+      type: string
+      description: The HTTP request header where the origin authentication token is placed when forwarding the request to the origin.
+      enum:
+      - Authorization
+      - X-Azure-Authorization
+      x-ms-enum:
+        name: OriginAuthenticationTokenDestinationHeader
+        modelAsString: true
+        values:
+        - name: Authorization
+          value: Authorization
+          description: Place the token in the standard `Authorization` request header (default behavior).
+        - name: XAzureAuthorization
+          value: X-Azure-Authorization
+          description: Place the token in the `X-Azure-Authorization` request header to avoid conflicts with an existing `Authorization` header set by the client.
+    AFDOriginGroupUpdateParameters:
+      type: object
+      description: AFDOrigin group properties needed for origin group creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/AFDOriginGroupUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+    AFDOriginGroupListResult:
+      type: object
+      description: The response of a AFDOriginGroup list operation.
       properties:
         value:
+          type: array
+          description: The AFDOriginGroup items on this page
+          items:
+            $ref: '#/components/schemas/AFDOriginGroup'
+        nextLink:
           type: string
-          description: A string describing the resource name.
-        localizedValue:
-          type: string
-          description: A localized string describing the resource name.
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -685,6 +679,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

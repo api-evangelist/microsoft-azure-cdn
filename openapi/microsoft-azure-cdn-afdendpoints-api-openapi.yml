@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn AFD Endpoints API
+  title: CdnManagementClient AFD Endpoints API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged AFDEndpoints across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -52,8 +52,6 @@ paths:
         nextLinkName: nextLink
       summary: AFD endpoints list by profile
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}
   : get:
       operationId: AFDEndpoints_Get
@@ -305,8 +303,6 @@ paths:
       x-ms-long-running-operation: true
       summary: AFD endpoints delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/purge
   : post:
       operationId: AFDEndpoints_PurgeContent
@@ -372,8 +368,6 @@ paths:
         required: true
       summary: AFD endpoints purge content
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/usages
   : post:
       operationId: AFDEndpoints_ListResourceUsage
@@ -419,8 +413,6 @@ paths:
         nextLinkName: nextLink
       summary: AFD endpoints list resource usage
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/validateCustomDomain
   : post:
       operationId: AFDEndpoints_ValidateCustomDomain
@@ -471,66 +463,8 @@ paths:
         required: true
       summary: AFD endpoints validate custom domain
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    UsagesListResult:
-      type: object
-      description: The list usages operation response.
-      properties:
-        value:
-          type: array
-          description: The Usage items on this page
-          items:
-            $ref: '#/components/schemas/Usage'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    EnforceMtlsEnabledState:
-      type: string
-      description: Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added to child Route resources.
-      enum:
-      - Enabled
-      - Disabled
-      x-ms-enum:
-        name: EnforceMtlsEnabledState
-        modelAsString: true
-        values:
-        - name: Enabled
-          value: Enabled
-        - name: Disabled
-          value: Disabled
-    Usage:
-      type: object
-      description: Describes resource usage.
-      properties:
-        id:
-          type: string
-          description: Resource identifier.
-          readOnly: true
-        unit:
-          $ref: '#/components/schemas/UsageUnit'
-          description: An enum describing the unit of measurement.
-        currentValue:
-          type: integer
-          format: int64
-          description: The current value of the usage.
-        limit:
-          type: integer
-          format: int64
-          description: The limit of usage.
-        name:
-          $ref: '#/components/schemas/UsageName'
-          description: The name of the type of usage.
-      required:
-      - unit
-      - currentValue
-      - limit
-      - name
     EnabledState:
       type: string
       description: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
@@ -545,16 +479,6 @@ components:
           value: Enabled
         - name: Disabled
           value: Disabled
-    AFDEndpoint:
-      type: object
-      description: Azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration information such as origin, protocol, content caching and delivery behavior. The AzureFrontDoor endpoint uses the URL format <endpointname>.azureedge.net.
-      properties:
-        properties:
-          $ref: '#/components/schemas/AFDEndpointProperties'
-          description: The JSON object that contains the properties required to create an endpoint.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/TrackedResource
     AfdPurgeParameters:
       type: object
       description: Parameters required for content purge.
@@ -571,54 +495,78 @@ components:
             type: string
       required:
       - contentPaths
-    DeploymentStatus:
+    AfdProvisioningState:
       type: string
+      description: Provisioning status
       enum:
-      - NotStarted
-      - InProgress
       - Succeeded
       - Failed
+      - Updating
+      - Deleting
+      - Creating
       x-ms-enum:
-        name: DeploymentStatus
+        name: AfdProvisioningState
         modelAsString: true
         values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
         - name: Succeeded
           value: Succeeded
         - name: Failed
           value: Failed
-    AFDEndpointUpdateParameters:
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    EnforceMtlsEnabledState:
+      type: string
+      description: Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added to child Route resources.
+      enum:
+      - Enabled
+      - Disabled
+      x-ms-enum:
+        name: EnforceMtlsEnabledState
+        modelAsString: true
+        values:
+        - name: Enabled
+          value: Enabled
+        - name: Disabled
+          value: Disabled
+    UsagesListResult:
       type: object
-      description: Properties required to create or update an endpoint.
+      description: The list usages operation response.
       properties:
-        tags:
-          type: object
-          description: Endpoint tags.
-          additionalProperties:
-            type: string
-        properties:
-          $ref: '#/components/schemas/AFDEndpointPropertiesUpdateParameters'
-          description: The JSON object containing endpoint update parameters.
-          x-ms-client-flatten: true
-    ValidateCustomDomainOutput:
+        value:
+          type: array
+          description: The Usage items on this page
+          items:
+            $ref: '#/components/schemas/Usage'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    UsageUnit:
+      type: string
+      description: An enum describing the unit of measurement.
+      enum:
+      - Count
+      x-ms-enum:
+        name: UsageUnit
+        modelAsString: true
+        values:
+        - name: Count
+          value: Count
+    ValidateCustomDomainInput:
       type: object
-      description: Output of custom domain validation.
+      description: Input of the custom domain to be validated for DNS mapping.
       properties:
-        customDomainValidated:
-          type: boolean
-          description: Indicates whether the custom domain is valid or not.
-          readOnly: true
-        reason:
+        hostName:
           type: string
-          description: The reason why the custom domain is not valid.
-          readOnly: true
-        message:
-          type: string
-          description: Error message describing why the custom domain is not valid.
-          readOnly: true
+          description: The host name of the custom domain. Must be a domain name.
+      required:
+      - hostName
     AFDEndpointProperties:
       type: object
       description: The JSON object that contains the properties required to create an endpoint.
@@ -647,17 +595,21 @@ components:
         autoGeneratedDomainNameLabelScope:
           $ref: '#/components/schemas/AutoGeneratedDomainNameLabelScope'
           description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
-    UsageUnit:
-      type: string
-      description: An enum describing the unit of measurement.
-      enum:
-      - Count
-      x-ms-enum:
-        name: UsageUnit
-        modelAsString: true
-        values:
-        - name: Count
-          value: Count
+    AFDEndpointListResult:
+      type: object
+      description: The response of a AFDEndpoint list operation.
+      properties:
+        value:
+          type: array
+          description: The AFDEndpoint items on this page
+          items:
+            $ref: '#/components/schemas/AFDEndpoint'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     AFDEndpointPropertiesUpdateParameters:
       type: object
       description: The JSON object containing endpoint update parameters.
@@ -672,29 +624,59 @@ components:
         enforceMtls:
           $ref: '#/components/schemas/EnforceMtlsEnabledState'
           description: Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added to child Route resources.
-    AfdProvisioningState:
-      type: string
-      description: Provisioning status
-      enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
-      x-ms-enum:
-        name: AfdProvisioningState
-        modelAsString: true
-        values:
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
+    ValidateCustomDomainOutput:
+      type: object
+      description: Output of custom domain validation.
+      properties:
+        customDomainValidated:
+          type: boolean
+          description: Indicates whether the custom domain is valid or not.
+          readOnly: true
+        reason:
+          type: string
+          description: The reason why the custom domain is not valid.
+          readOnly: true
+        message:
+          type: string
+          description: Error message describing why the custom domain is not valid.
+          readOnly: true
+    Usage:
+      type: object
+      description: Describes resource usage.
+      properties:
+        id:
+          type: string
+          description: Resource identifier.
+          readOnly: true
+        unit:
+          $ref: '#/components/schemas/UsageUnit'
+          description: An enum describing the unit of measurement.
+        currentValue:
+          type: integer
+          format: int64
+          description: The current value of the usage.
+        limit:
+          type: integer
+          format: int64
+          description: The limit of usage.
+        name:
+          $ref: '#/components/schemas/UsageName'
+          description: The name of the type of usage.
+      required:
+      - unit
+      - currentValue
+      - limit
+      - name
+    UsageName:
+      type: object
+      description: The usage names.
+      properties:
+        value:
+          type: string
+          description: A string describing the resource name.
+        localizedValue:
+          type: string
+          description: A localized string describing the resource name.
     AutoGeneratedDomainNameLabelScope:
       type: string
       description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
@@ -715,40 +697,48 @@ components:
           value: ResourceGroupReuse
         - name: NoReuse
           value: NoReuse
-    AFDEndpointListResult:
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    AFDEndpoint:
       type: object
-      description: The response of a AFDEndpoint list operation.
+      description: Azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration information such as origin, protocol, content caching and delivery behavior. The AzureFrontDoor endpoint uses the URL format <endpointname>.azureedge.net.
       properties:
-        value:
-          type: array
-          description: The AFDEndpoint items on this page
-          items:
-            $ref: '#/components/schemas/AFDEndpoint'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    ValidateCustomDomainInput:
+        properties:
+          $ref: '#/components/schemas/AFDEndpointProperties'
+          description: The JSON object that contains the properties required to create an endpoint.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/TrackedResource
+    AFDEndpointUpdateParameters:
       type: object
-      description: Input of the custom domain to be validated for DNS mapping.
+      description: Properties required to create or update an endpoint.
       properties:
-        hostName:
-          type: string
-          description: The host name of the custom domain. Must be a domain name.
-      required:
-      - hostName
-    UsageName:
-      type: object
-      description: The usage names.
-      properties:
-        value:
-          type: string
-          description: A string describing the resource name.
-        localizedValue:
-          type: string
-          description: A localized string describing the resource name.
+        tags:
+          type: object
+          description: Endpoint tags.
+          additionalProperties:
+            type: string
+        properties:
+          $ref: '#/components/schemas/AFDEndpointPropertiesUpdateParameters'
+          description: The JSON object containing endpoint update parameters.
+          x-ms-client-flatten: true
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -758,6 +748,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

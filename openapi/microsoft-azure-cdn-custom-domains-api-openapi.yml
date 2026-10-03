@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Custom Domains API
+  title: CdnManagementClient Custom Domains API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged CustomDomains across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -58,8 +58,6 @@ paths:
         nextLinkName: nextLink
       summary: Custom domains list by endpoint
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}
   : get:
       operationId: CustomDomains_Get
@@ -256,8 +254,6 @@ paths:
       x-ms-long-running-operation: true
       summary: Custom domains delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps
   : post:
       operationId: CustomDomains_DisableCustomHttps
@@ -322,8 +318,6 @@ paths:
       x-ms-long-running-operation: true
       summary: Custom domains disable custom https
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps
   : post:
       operationId: CustomDomains_EnableCustomHttps
@@ -396,10 +390,23 @@ paths:
         description: The configuration specifying how to enable HTTPS for the custom domain - using CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by default.
       summary: Custom domains enable custom https
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
+    CustomDomainListResult:
+      type: object
+      description: The response of a CustomDomain list operation.
+      properties:
+        value:
+          type: array
+          description: The CustomDomain items on this page
+          items:
+            $ref: '#/components/schemas/CustomDomain'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     CustomDomainProperties:
       type: object
       description: The JSON object that contains the properties of the custom domain to create.
@@ -449,44 +456,28 @@ components:
       required:
       - certificateSource
       - protocolType
-    CustomHttpsProvisioningState:
+    CustomDomainParameters:
+      type: object
+      description: The customDomain JSON object required for custom domain creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/CustomDomainPropertiesParameters'
+          description: The JSON object that contains the properties of the custom domain to create.
+          x-ms-client-flatten: true
+    CertificateSource:
       type: string
-      description: Provisioning status of the custom domain.
+      description: Defines the source of the SSL certificate.
       enum:
-      - Enabling
-      - Enabled
-      - Disabling
-      - Disabled
-      - Failed
+      - AzureKeyVault
+      - Cdn
       x-ms-enum:
-        name: CustomHttpsProvisioningState
+        name: CertificateSource
         modelAsString: true
         values:
-        - name: Enabling
-          value: Enabling
-        - name: Enabled
-          value: Enabled
-        - name: Disabling
-          value: Disabling
-        - name: Disabled
-          value: Disabled
-        - name: Failed
-          value: Failed
-    CustomDomainListResult:
-      type: object
-      description: The response of a CustomDomain list operation.
-      properties:
-        value:
-          type: array
-          description: The CustomDomain items on this page
-          items:
-            $ref: '#/components/schemas/CustomDomain'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
+        - name: AzureKeyVault
+          value: AzureKeyVault
+        - name: Cdn
+          value: Cdn
     CustomHttpsProvisioningSubstate:
       type: string
       description: Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
@@ -525,33 +516,6 @@ components:
           value: DeletingCertificate
         - name: CertificateDeleted
           value: CertificateDeleted
-    MinimumTlsVersion:
-      type: string
-      description: TLS protocol version that will be used for Https
-      enum:
-      - None
-      - TLS10
-      - TLS12
-      x-ms-enum:
-        name: MinimumTlsVersion
-        modelAsString: false
-    CustomDomainParameters:
-      type: object
-      description: The customDomain JSON object required for custom domain creation or update.
-      properties:
-        properties:
-          $ref: '#/components/schemas/CustomDomainPropertiesParameters'
-          description: The JSON object that contains the properties of the custom domain to create.
-          x-ms-client-flatten: true
-    CustomDomainPropertiesParameters:
-      type: object
-      description: The JSON object that contains the properties of the custom domain to create.
-      properties:
-        hostName:
-          type: string
-          description: The host name of the custom domain. Must be a domain name.
-      required:
-      - hostName
     ProtocolType:
       type: string
       description: Defines the TLS extension protocol that is used for secure delivery.
@@ -566,20 +530,16 @@ components:
           value: ServerNameIndication
         - name: IPBased
           value: IPBased
-    CertificateSource:
+    MinimumTlsVersion:
       type: string
-      description: Defines the source of the SSL certificate.
+      description: TLS protocol version that will be used for Https
       enum:
-      - AzureKeyVault
-      - Cdn
+      - None
+      - TLS10
+      - TLS12
       x-ms-enum:
-        name: CertificateSource
-        modelAsString: true
-        values:
-        - name: AzureKeyVault
-          value: AzureKeyVault
-        - name: Cdn
-          value: Cdn
+        name: MinimumTlsVersion
+        modelAsString: false
     CustomDomain:
       type: object
       description: Friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes, e.g. www.contoso.com.
@@ -607,6 +567,38 @@ components:
           value: Active
         - name: Deleting
           value: Deleting
+    CustomHttpsProvisioningState:
+      type: string
+      description: Provisioning status of the custom domain.
+      enum:
+      - Enabling
+      - Enabled
+      - Disabling
+      - Disabled
+      - Failed
+      x-ms-enum:
+        name: CustomHttpsProvisioningState
+        modelAsString: true
+        values:
+        - name: Enabling
+          value: Enabling
+        - name: Enabled
+          value: Enabled
+        - name: Disabling
+          value: Disabling
+        - name: Disabled
+          value: Disabled
+        - name: Failed
+          value: Failed
+    CustomDomainPropertiesParameters:
+      type: object
+      description: The JSON object that contains the properties of the custom domain to create.
+      properties:
+        hostName:
+          type: string
+          description: The host name of the custom domain. Must be a domain name.
+      required:
+      - hostName
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -616,6 +608,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

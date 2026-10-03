@@ -2,8 +2,7 @@
   "provider": "microsoft-azure-cdn",
   "sources": [
     "_original/microsoft-azure-cdn-management-openapi.json",
-    "_ae-authored/microsoft-azure-cdn-openapi.yml",
-    "microsoft-azure-cdn-management-openapi.json"
+    "_ae-authored/microsoft-azure-cdn-openapi.yml"
   ],
   "outputs": [
     "microsoft-azure-cdn-afddomains-api-openapi.yml",
@@ -26,11 +25,12 @@
     "microsoft-azure-cdn-subscriptions-api-openapi.yml"
   ],
   "archived": [
-    "archived openapi/microsoft-azure-cdn-management-openapi.json"
+    "deleted 2 superseded output(s) from the previous generation"
   ],
   "errors": [],
   "warnings": [],
   "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "microsoft-azure-cdn-management-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
     "microsoft-azure-cdn-management-openapi.json: tagged paths POST /providers/Microsoft.Cdn/checkNameAvailability -> Providers",
@@ -45,40 +45,30 @@
     "microsoft-azure-cdn-management-openapi.json: declared missing tag: Providers",
     "microsoft-azure-cdn-management-openapi.json: declared missing tag: Subscriptions",
     "microsoft-azure-cdn-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "microsoft-azure-cdn-management-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths POST /providers/Microsoft.Cdn/checkNameAvailability -> Providers",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths GET /providers/Microsoft.Cdn/edgenodes -> Providers",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths GET /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets -> Subscriptions",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths POST /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkNameAvailability -> Subscriptions",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths POST /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage -> Subscriptions",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths POST /subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe -> Subscriptions",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths POST /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/canMigrate -> Subscriptions",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths POST /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/checkEndpointNameAvailability -> Subscriptions",
-    "microsoft-azure-cdn-management-openapi.json: tagged paths POST /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/migrate -> Subscriptions",
-    "microsoft-azure-cdn-management-openapi.json: declared missing tag: Providers",
-    "microsoft-azure-cdn-management-openapi.json: declared missing tag: Subscriptions",
-    "tag 'AFDDomains' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'AFDEndpoints' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'AFDOriginGroups' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'AFDOrigins' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'CdnWebApplicationFirewallPolicies' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'CustomDomains' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Endpoints' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Operations' spans 3 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'OriginGroups' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Origins' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Profiles' spans 3 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Providers' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Routes' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'RuleSets' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Rules' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Secrets' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'SecurityPolicies' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "tag 'Subscriptions' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json): per-path servers applied",
-    "apis.yml register: written (+16 apis, 18 total)"
+    "tag 'Operations' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml): per-path servers applied",
+    "tag 'Profiles' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml): per-path servers applied",
+    "superseded outputs removed: microsoft-azure-cdn-custom-domains-api-openapi.yml, microsoft-azure-cdn-security-policies-api-openapi.yml",
+    "apis.yml register: written (+2 apis, 18 total)"
   ],
   "skipped": [
+    "_original/microsoft-azure-cdn-management-openapi_2.json: archived document superseded by a larger archived document",
+    "microsoft-azure-cdn-afddomains-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-afdendpoints-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-afdorigingroups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-afdorigins-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-cdnwebapplicationfirewallpolicies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-custom-domains-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-endpoints-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "microsoft-azure-cdn-operations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "microsoft-azure-cdn-profiles-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "microsoft-azure-cdn-origingroups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-origins-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-profiles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-providers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-routes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-rules-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-rulesets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-secrets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-security-policies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cdn-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }

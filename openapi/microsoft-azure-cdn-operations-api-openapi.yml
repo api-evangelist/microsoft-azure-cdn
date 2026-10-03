@@ -4,7 +4,7 @@ info:
   x-refined-note:
   - x-typespec-generated differs across the merged source definitions and was not carried
   version: '1.0'
-  description: 'Operations tagged Operations across 3 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Operations across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -45,14 +45,6 @@ paths:
     - url: https://management.azure.com
 components:
   schemas:
-    MetricAvailability:
-      type: object
-      description: Retention policy of a resource metric.
-      properties:
-        timeGrain:
-          type: string
-        blobDuration:
-          type: string
     LogSpecification:
       type: object
       description: Log specification of operation.
@@ -69,54 +61,24 @@ components:
         logFilterPattern:
           type: string
           description: Pattern to filter based on name
-    OperationsListResult:
+    ServiceSpecification:
       type: object
-      description: Result of the request to list CDN operations. It contains a list of operations and a URL link to get the next set of results.
+      description: One property of operation, include log specifications.
       properties:
-        value:
+        logSpecifications:
           type: array
-          description: List of CDN operations supported by the CDN resource provider.
+          description: Log specifications of operation.
           items:
-            $ref: '#/components/schemas/Operation'
-          x-ms-identifiers: []
-        nextLink:
-          type: string
-          description: URL to get the next set of operation list results if there are any.
-      required:
-      - value
-    OperationDisplay:
-      type: object
-      description: The object that represents the operation.
-      properties:
-        provider:
-          type: string
-          description: 'Service provider: Microsoft.Cdn'
-          readOnly: true
-        resource:
-          type: string
-          description: 'Resource on which the operation is performed: Profile, endpoint, etc.'
-          readOnly: true
-        operation:
-          type: string
-          description: 'Operation type: Read, write, delete, etc.'
-          readOnly: true
-        description:
-          type: string
-          description: Description of operation.
-          readOnly: true
-    DimensionProperties:
-      type: object
-      description: 'Type of operation: get, read, delete, etc.'
-      properties:
-        name:
-          type: string
-          description: Name of dimension.
-        displayName:
-          type: string
-          description: Display name of dimension.
-        internalName:
-          type: string
-          description: Internal name of dimension.
+            $ref: '#/components/schemas/LogSpecification'
+          x-ms-identifiers:
+          - name
+        metricSpecifications:
+          type: array
+          description: Metric specifications of operation.
+          items:
+            $ref: '#/components/schemas/MetricSpecification'
+          x-ms-identifiers:
+          - name
     MetricSpecification:
       type: object
       description: Metric specification of operation.
@@ -163,13 +125,6 @@ components:
         isInternal:
           type: boolean
           description: Property to specify metric is internal or not.
-    OperationProperties:
-      type: object
-      description: Properties of operation, include metric specifications.
-      properties:
-        serviceSpecification:
-          $ref: '#/components/schemas/ServiceSpecification'
-          description: One property of operation, include metric specifications.
     Operation:
       type: object
       description: CDN REST API operation
@@ -193,24 +148,69 @@ components:
           description: Properties of operation, include metric specifications.
           x-ms-client-flatten: true
           x-ms-client-name: operationProperties
-    ServiceSpecification:
+    OperationDisplay:
       type: object
-      description: One property of operation, include log specifications.
+      description: The object that represents the operation.
       properties:
-        logSpecifications:
+        provider:
+          type: string
+          description: 'Service provider: Microsoft.Cdn'
+          readOnly: true
+        resource:
+          type: string
+          description: 'Resource on which the operation is performed: Profile, endpoint, etc.'
+          readOnly: true
+        operation:
+          type: string
+          description: 'Operation type: Read, write, delete, etc.'
+          readOnly: true
+        description:
+          type: string
+          description: Description of operation.
+          readOnly: true
+    OperationProperties:
+      type: object
+      description: Properties of operation, include metric specifications.
+      properties:
+        serviceSpecification:
+          $ref: '#/components/schemas/ServiceSpecification'
+          description: One property of operation, include metric specifications.
+    DimensionProperties:
+      type: object
+      description: 'Type of operation: get, read, delete, etc.'
+      properties:
+        name:
+          type: string
+          description: Name of dimension.
+        displayName:
+          type: string
+          description: Display name of dimension.
+        internalName:
+          type: string
+          description: Internal name of dimension.
+    MetricAvailability:
+      type: object
+      description: Retention policy of a resource metric.
+      properties:
+        timeGrain:
+          type: string
+        blobDuration:
+          type: string
+    OperationsListResult:
+      type: object
+      description: Result of the request to list CDN operations. It contains a list of operations and a URL link to get the next set of results.
+      properties:
+        value:
           type: array
-          description: Log specifications of operation.
+          description: List of CDN operations supported by the CDN resource provider.
           items:
-            $ref: '#/components/schemas/LogSpecification'
-          x-ms-identifiers:
-          - name
-        metricSpecifications:
-          type: array
-          description: Metric specifications of operation.
-          items:
-            $ref: '#/components/schemas/MetricSpecification'
-          x-ms-identifiers:
-          - name
+            $ref: '#/components/schemas/Operation'
+          x-ms-identifiers: []
+        nextLink:
+          type: string
+          description: URL to get the next set of operation list results if there are any.
+      required:
+      - value
     Operation_2:
       type: object
       properties:
@@ -273,4 +273,3 @@ externalDocs:
 x-refined-from:
 - microsoft-azure-cdn-management-openapi.json
 - microsoft-azure-cdn-openapi.yml
-- microsoft-azure-cdn-management-openapi.json

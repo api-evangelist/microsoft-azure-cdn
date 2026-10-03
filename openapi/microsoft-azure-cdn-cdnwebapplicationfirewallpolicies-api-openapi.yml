@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Cdn Web Application Firewall Policies…
+  title: CdnManagementClient Cdn Web Application Firewall Policies…
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged CdnWebApplicationFirewallPolicies across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -43,8 +43,6 @@ paths:
         nextLinkName: nextLink
       summary: Policies list
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies/{policyName}
   : get:
       operationId: Policies_Get
@@ -236,63 +234,173 @@ paths:
           $ref: ./examples/WafPolicyDelete.json
       summary: Policies delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    Operator:
-      type: string
-      description: Describes operator to be matched
+    CdnEndpoint:
+      type: object
+      description: Defines the ARM Resource ID for the linked endpoints
+      properties:
+        id:
+          type: string
+          description: ARM Resource ID string.
+    PolicySettingsDefaultCustomBlockResponseStatusCode:
+      type: number
+      description: If the action type is block, this field defines the default customer overridable http response status code.
       enum:
-      - Any
-      - IPMatch
-      - GeoMatch
-      - Equal
-      - Contains
-      - LessThan
-      - GreaterThan
-      - LessThanOrEqual
-      - GreaterThanOrEqual
-      - BeginsWith
-      - EndsWith
-      - RegEx
+      - 200
+      - 403
+      - 405
+      - 406
+      - 429
       x-ms-enum:
-        name: Operator
+        name: PolicySettingsDefaultCustomBlockResponseStatusCode
         modelAsString: true
         values:
-        - name: Any
-          value: Any
-        - name: IPMatch
-          value: IPMatch
-        - name: GeoMatch
-          value: GeoMatch
-        - name: Equal
-          value: Equal
-        - name: Contains
-          value: Contains
-        - name: LessThan
-          value: LessThan
-        - name: GreaterThan
-          value: GreaterThan
-        - name: LessThanOrEqual
-          value: LessThanOrEqual
-        - name: GreaterThanOrEqual
-          value: GreaterThanOrEqual
-        - name: BeginsWith
-          value: BeginsWith
-        - name: EndsWith
-          value: EndsWith
-        - name: RegEx
-          value: RegEx
-    CdnWebApplicationFirewallPolicyPatchParameters:
+        - name: '200'
+          value: 200
+        - name: '403'
+          value: 403
+        - name: '405'
+          value: 405
+        - name: '406'
+          value: 406
+        - name: '429'
+          value: 429
+    ManagedRuleOverride:
       type: object
-      description: Properties required to update a CdnWebApplicationFirewallPolicy.
+      description: Defines a managed rule group override setting.
       properties:
-        tags:
-          type: object
-          description: CdnWebApplicationFirewallPolicy tags
-          additionalProperties:
-            type: string
+        ruleId:
+          type: string
+          description: Identifier for the managed rule.
+        enabledState:
+          $ref: '#/components/schemas/ManagedRuleEnabledState'
+          description: Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
+        action:
+          $ref: '#/components/schemas/ActionType'
+          description: Describes the override action to be applied when rule matches.
+      required:
+      - ruleId
+    TransformType:
+      type: string
+      description: Describes what transforms were applied before matching.
+      enum:
+      - Lowercase
+      - Uppercase
+      - Trim
+      - UrlDecode
+      - UrlEncode
+      - RemoveNulls
+      x-ms-enum:
+        name: TransformType
+        modelAsString: true
+        values:
+        - name: Lowercase
+          value: Lowercase
+        - name: Uppercase
+          value: Uppercase
+        - name: Trim
+          value: Trim
+        - name: UrlDecode
+          value: UrlDecode
+        - name: UrlEncode
+          value: UrlEncode
+        - name: RemoveNulls
+          value: RemoveNulls
+    CustomRuleEnabledState:
+      type: string
+      description: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
+      enum:
+      - Disabled
+      - Enabled
+      x-ms-enum:
+        name: CustomRuleEnabledState
+        modelAsString: true
+        values:
+        - name: Disabled
+          value: Disabled
+        - name: Enabled
+          value: Enabled
+    policySettings:
+      type: object
+      description: Defines contents of a web application firewall global configuration
+      properties:
+        enabledState:
+          $ref: '#/components/schemas/PolicyEnabledState'
+          description: describes if the policy is in enabled state or disabled state
+        mode:
+          $ref: '#/components/schemas/PolicyMode'
+          description: Describes if it is in detection mode or prevention mode at policy level.
+        defaultRedirectUrl:
+          type: string
+          description: If action type is redirect, this field represents the default redirect URL for the client.
+        defaultCustomBlockResponseStatusCode:
+          $ref: '#/components/schemas/PolicySettingsDefaultCustomBlockResponseStatusCode'
+          description: If the action type is block, this field defines the default customer overridable http response status code.
+        defaultCustomBlockResponseBody:
+          type: string
+          description: If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$
+    CustomRuleList:
+      type: object
+      description: Defines contents of custom rules
+      properties:
+        rules:
+          type: array
+          description: List of rules
+          items:
+            $ref: '#/components/schemas/CustomRule'
+          x-ms-identifiers:
+          - name
+    CdnWebApplicationFirewallPolicy:
+      type: object
+      description: Defines web application firewall policy for Azure CDN.
+      properties:
+        properties:
+          $ref: '#/components/schemas/CdnWebApplicationFirewallPolicyProperties'
+          description: Properties of the web application firewall policy.
+          x-ms-client-flatten: true
+        etag:
+          type: string
+          description: Gets a unique read-only string that changes whenever the resource is updated.
+        sku:
+          $ref: '#/components/schemas/Sku'
+          description: The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
+      required:
+      - sku
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/TrackedResource
+    Sku:
+      type: object
+      description: 'Standard_Verizon = The SKU name for a Standard Verizon CDN profile.
+
+        Premium_Verizon = The SKU name for a Premium Verizon CDN profile.
+
+        Custom_Verizon = The SKU name for a Custom Verizon CDN profile.
+
+        Standard_Akamai = The SKU name for an Akamai CDN profile.
+
+        Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using GB based billing model.
+
+        Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
+
+        Standard_AzureFrontDoor =  The SKU name for an Azure Front Door Standard profile.
+
+        Premium_AzureFrontDoor = The SKU name for an Azure Front Door Premium profile.
+
+        Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5 peak bandwidth billing model.
+
+        Standard_AvgBandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model.
+
+        StandardPlus_ChinaCdn = The SKU name for a China CDN profile for live-streaming using GB based billing model.
+
+        StandardPlus_955BandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth billing model.
+
+        StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly average peak bandwidth billing model.'
+      properties:
+        name:
+          $ref: '#/components/schemas/SkuName'
+          description: Name of the pricing tier.
     WafMatchVariable:
       type: string
       description: Match variable to compare against.
@@ -342,63 +450,50 @@ components:
           value: Disabled
         - name: Enabled
           value: Enabled
-    ProvisioningState:
+    Operator:
       type: string
-      description: Provisioning state of the WebApplicationFirewallPolicy.
+      description: Describes operator to be matched
       enum:
-      - Creating
-      - Succeeded
-      - Failed
+      - Any
+      - IPMatch
+      - GeoMatch
+      - Equal
+      - Contains
+      - LessThan
+      - GreaterThan
+      - LessThanOrEqual
+      - GreaterThanOrEqual
+      - BeginsWith
+      - EndsWith
+      - RegEx
       x-ms-enum:
-        name: ProvisioningState
+        name: Operator
         modelAsString: true
         values:
-        - name: Creating
-          value: Creating
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-    CustomRuleEnabledState:
-      type: string
-      description: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
-      enum:
-      - Disabled
-      - Enabled
-      x-ms-enum:
-        name: CustomRuleEnabledState
-        modelAsString: true
-        values:
-        - name: Disabled
-          value: Disabled
-        - name: Enabled
-          value: Enabled
-    TransformType:
-      type: string
-      description: Describes what transforms were applied before matching.
-      enum:
-      - Lowercase
-      - Uppercase
-      - Trim
-      - UrlDecode
-      - UrlEncode
-      - RemoveNulls
-      x-ms-enum:
-        name: TransformType
-        modelAsString: true
-        values:
-        - name: Lowercase
-          value: Lowercase
-        - name: Uppercase
-          value: Uppercase
-        - name: Trim
-          value: Trim
-        - name: UrlDecode
-          value: UrlDecode
-        - name: UrlEncode
-          value: UrlEncode
-        - name: RemoveNulls
-          value: RemoveNulls
+        - name: Any
+          value: Any
+        - name: IPMatch
+          value: IPMatch
+        - name: GeoMatch
+          value: GeoMatch
+        - name: Equal
+          value: Equal
+        - name: Contains
+          value: Contains
+        - name: LessThan
+          value: LessThan
+        - name: GreaterThan
+          value: GreaterThan
+        - name: LessThanOrEqual
+          value: LessThanOrEqual
+        - name: GreaterThanOrEqual
+          value: GreaterThanOrEqual
+        - name: BeginsWith
+          value: BeginsWith
+        - name: EndsWith
+          value: EndsWith
+        - name: RegEx
+          value: RegEx
     CustomRule:
       type: object
       description: Defines the common attributes for a custom rule that can be included in a waf policy
@@ -429,6 +524,35 @@ components:
       - priority
       - matchConditions
       - action
+    PolicyEnabledState:
+      type: string
+      description: Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
+      enum:
+      - Disabled
+      - Enabled
+      x-ms-enum:
+        name: PolicyEnabledState
+        modelAsString: true
+        values:
+        - name: Disabled
+          value: Disabled
+        - name: Enabled
+          value: Enabled
+    CdnWebApplicationFirewallPolicyList:
+      type: object
+      description: Defines a list of WebApplicationFirewallPolicies for Azure CDN. It contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
+      properties:
+        value:
+          type: array
+          description: The CdnWebApplicationFirewallPolicy items on this page
+          items:
+            $ref: '#/components/schemas/CdnWebApplicationFirewallPolicy'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     ActionType:
       type: string
       description: Defines the action to take on rule match.
@@ -449,6 +573,116 @@ components:
           value: Log
         - name: Redirect
           value: Redirect
+    RateLimitRule:
+      type: object
+      description: Defines a rate limiting rule that can be included in a waf policy
+      properties:
+        rateLimitThreshold:
+          type: integer
+          format: int32
+          description: Defines rate limit threshold.
+          minimum: 0
+        rateLimitDurationInMinutes:
+          type: integer
+          format: int32
+          description: Defines rate limit duration. Default is 1 minute.
+          minimum: 0
+          maximum: 60
+      required:
+      - rateLimitThreshold
+      - rateLimitDurationInMinutes
+      allOf:
+      - $ref: '#/components/schemas/CustomRule'
+    ManagedRuleSetList:
+      type: object
+      description: Defines the list of managed rule sets for the policy.
+      properties:
+        managedRuleSets:
+          type: array
+          description: List of rule sets.
+          items:
+            $ref: '#/components/schemas/ManagedRuleSet'
+          x-ms-identifiers:
+          - ruleSetType
+          - ruleSetVersion
+    ProvisioningState:
+      type: string
+      description: Provisioning state of the WebApplicationFirewallPolicy.
+      enum:
+      - Creating
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: ProvisioningState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    CdnWebApplicationFirewallPolicyPatchParameters:
+      type: object
+      description: Properties required to update a CdnWebApplicationFirewallPolicy.
+      properties:
+        tags:
+          type: object
+          description: CdnWebApplicationFirewallPolicy tags
+          additionalProperties:
+            type: string
+    PolicyResourceState:
+      type: string
+      description: Resource status of the policy.
+      enum:
+      - Creating
+      - Enabling
+      - Enabled
+      - Disabling
+      - Disabled
+      - Deleting
+      x-ms-enum:
+        name: PolicyResourceState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Enabling
+          value: Enabling
+        - name: Enabled
+          value: Enabled
+        - name: Disabling
+          value: Disabling
+        - name: Disabled
+          value: Disabled
+        - name: Deleting
+          value: Deleting
+    ManagedRuleSet:
+      type: object
+      description: Defines a managed rule set.
+      properties:
+        ruleSetType:
+          type: string
+          description: Defines the rule set type to use.
+        ruleSetVersion:
+          type: string
+          description: Defines the version of the rule set to use.
+        anomalyScore:
+          type: integer
+          format: int32
+          description: 'Verizon only : If the rule set supports anomaly detection mode, this describes the threshold for blocking requests.'
+          minimum: 0
+          maximum: 20
+        ruleGroupOverrides:
+          type: array
+          description: Defines the rule overrides to apply to the rule set.
+          items:
+            $ref: '#/components/schemas/ManagedRuleGroupOverride'
+          x-ms-identifiers:
+          - ruleGroupName
+      required:
+      - ruleSetType
+      - ruleSetVersion
     RateLimitRuleList:
       type: object
       description: Defines contents of rate limit rules
@@ -460,24 +694,6 @@ components:
             $ref: '#/components/schemas/RateLimitRule'
           x-ms-identifiers:
           - name
-    CdnWebApplicationFirewallPolicy:
-      type: object
-      description: Defines web application firewall policy for Azure CDN.
-      properties:
-        properties:
-          $ref: '#/components/schemas/CdnWebApplicationFirewallPolicyProperties'
-          description: Properties of the web application firewall policy.
-          x-ms-client-flatten: true
-        etag:
-          type: string
-          description: Gets a unique read-only string that changes whenever the resource is updated.
-        sku:
-          $ref: '#/components/schemas/Sku'
-          description: The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
-      required:
-      - sku
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/TrackedResource
     MatchCondition:
       type: object
       description: Define match conditions
@@ -508,17 +724,41 @@ components:
       - matchVariable
       - operator
       - matchValue
-    CustomRuleList:
+    CdnWebApplicationFirewallPolicyProperties:
       type: object
-      description: Defines contents of custom rules
+      description: Defines CDN web application firewall policy properties.
       properties:
-        rules:
+        policySettings:
+          $ref: '#/components/schemas/policySettings'
+          description: Describes  policySettings for policy
+        rateLimitRules:
+          $ref: '#/components/schemas/RateLimitRuleList'
+          description: Describes rate limit rules inside the policy.
+        customRules:
+          $ref: '#/components/schemas/CustomRuleList'
+          description: Describes custom rules inside the policy.
+        managedRules:
+          $ref: '#/components/schemas/ManagedRuleSetList'
+          description: Describes managed rules inside the policy.
+        endpointLinks:
           type: array
-          description: List of rules
+          description: Describes Azure CDN endpoints associated with this Web Application Firewall policy.
           items:
-            $ref: '#/components/schemas/CustomRule'
-          x-ms-identifiers:
-          - name
+            $ref: '#/components/schemas/CdnEndpoint'
+          readOnly: true
+        extendedProperties:
+          type: object
+          description: Key-Value pair representing additional properties for Web Application Firewall policy.
+          additionalProperties:
+            type: string
+        provisioningState:
+          $ref: '#/components/schemas/ProvisioningState'
+          description: Provisioning state of the WebApplicationFirewallPolicy.
+          readOnly: true
+        resourceState:
+          $ref: '#/components/schemas/PolicyResourceState'
+          description: Resource status of the policy.
+          readOnly: true
     SkuName:
       type: string
       description: Name of the pricing tier.
@@ -566,221 +806,6 @@ components:
           value: StandardPlus_955BandWidth_ChinaCdn
         - name: StandardPlus_AvgBandWidth_ChinaCdn
           value: StandardPlus_AvgBandWidth_ChinaCdn
-    RateLimitRule:
-      type: object
-      description: Defines a rate limiting rule that can be included in a waf policy
-      properties:
-        rateLimitThreshold:
-          type: integer
-          format: int32
-          description: Defines rate limit threshold.
-          minimum: 0
-        rateLimitDurationInMinutes:
-          type: integer
-          format: int32
-          description: Defines rate limit duration. Default is 1 minute.
-          minimum: 0
-          maximum: 60
-      required:
-      - rateLimitThreshold
-      - rateLimitDurationInMinutes
-      allOf:
-      - $ref: '#/components/schemas/CustomRule'
-    PolicyMode:
-      type: string
-      description: Describes if it is in detection mode or prevention mode at policy level.
-      enum:
-      - Prevention
-      - Detection
-      x-ms-enum:
-        name: PolicyMode
-        modelAsString: true
-        values:
-        - name: Prevention
-          value: Prevention
-        - name: Detection
-          value: Detection
-    ManagedRuleOverride:
-      type: object
-      description: Defines a managed rule group override setting.
-      properties:
-        ruleId:
-          type: string
-          description: Identifier for the managed rule.
-        enabledState:
-          $ref: '#/components/schemas/ManagedRuleEnabledState'
-          description: Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
-        action:
-          $ref: '#/components/schemas/ActionType'
-          description: Describes the override action to be applied when rule matches.
-      required:
-      - ruleId
-    ManagedRuleSet:
-      type: object
-      description: Defines a managed rule set.
-      properties:
-        ruleSetType:
-          type: string
-          description: Defines the rule set type to use.
-        ruleSetVersion:
-          type: string
-          description: Defines the version of the rule set to use.
-        anomalyScore:
-          type: integer
-          format: int32
-          description: 'Verizon only : If the rule set supports anomaly detection mode, this describes the threshold for blocking requests.'
-          minimum: 0
-          maximum: 20
-        ruleGroupOverrides:
-          type: array
-          description: Defines the rule overrides to apply to the rule set.
-          items:
-            $ref: '#/components/schemas/ManagedRuleGroupOverride'
-          x-ms-identifiers:
-          - ruleGroupName
-      required:
-      - ruleSetType
-      - ruleSetVersion
-    PolicyResourceState:
-      type: string
-      description: Resource status of the policy.
-      enum:
-      - Creating
-      - Enabling
-      - Enabled
-      - Disabling
-      - Disabled
-      - Deleting
-      x-ms-enum:
-        name: PolicyResourceState
-        modelAsString: true
-        values:
-        - name: Creating
-          value: Creating
-        - name: Enabling
-          value: Enabling
-        - name: Enabled
-          value: Enabled
-        - name: Disabling
-          value: Disabling
-        - name: Disabled
-          value: Disabled
-        - name: Deleting
-          value: Deleting
-    PolicyEnabledState:
-      type: string
-      description: Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
-      enum:
-      - Disabled
-      - Enabled
-      x-ms-enum:
-        name: PolicyEnabledState
-        modelAsString: true
-        values:
-        - name: Disabled
-          value: Disabled
-        - name: Enabled
-          value: Enabled
-    CdnWebApplicationFirewallPolicyList:
-      type: object
-      description: Defines a list of WebApplicationFirewallPolicies for Azure CDN. It contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
-      properties:
-        value:
-          type: array
-          description: The CdnWebApplicationFirewallPolicy items on this page
-          items:
-            $ref: '#/components/schemas/CdnWebApplicationFirewallPolicy'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    CdnWebApplicationFirewallPolicyProperties:
-      type: object
-      description: Defines CDN web application firewall policy properties.
-      properties:
-        policySettings:
-          $ref: '#/components/schemas/policySettings'
-          description: Describes  policySettings for policy
-        rateLimitRules:
-          $ref: '#/components/schemas/RateLimitRuleList'
-          description: Describes rate limit rules inside the policy.
-        customRules:
-          $ref: '#/components/schemas/CustomRuleList'
-          description: Describes custom rules inside the policy.
-        managedRules:
-          $ref: '#/components/schemas/ManagedRuleSetList'
-          description: Describes managed rules inside the policy.
-        endpointLinks:
-          type: array
-          description: Describes Azure CDN endpoints associated with this Web Application Firewall policy.
-          items:
-            $ref: '#/components/schemas/CdnEndpoint'
-          readOnly: true
-        extendedProperties:
-          type: object
-          description: Key-Value pair representing additional properties for Web Application Firewall policy.
-          additionalProperties:
-            type: string
-        provisioningState:
-          $ref: '#/components/schemas/ProvisioningState'
-          description: Provisioning state of the WebApplicationFirewallPolicy.
-          readOnly: true
-        resourceState:
-          $ref: '#/components/schemas/PolicyResourceState'
-          description: Resource status of the policy.
-          readOnly: true
-    Sku:
-      type: object
-      description: 'Standard_Verizon = The SKU name for a Standard Verizon CDN profile.
-
-        Premium_Verizon = The SKU name for a Premium Verizon CDN profile.
-
-        Custom_Verizon = The SKU name for a Custom Verizon CDN profile.
-
-        Standard_Akamai = The SKU name for an Akamai CDN profile.
-
-        Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using GB based billing model.
-
-        Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
-
-        Standard_AzureFrontDoor =  The SKU name for an Azure Front Door Standard profile.
-
-        Premium_AzureFrontDoor = The SKU name for an Azure Front Door Premium profile.
-
-        Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5 peak bandwidth billing model.
-
-        Standard_AvgBandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model.
-
-        StandardPlus_ChinaCdn = The SKU name for a China CDN profile for live-streaming using GB based billing model.
-
-        StandardPlus_955BandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth billing model.
-
-        StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly average peak bandwidth billing model.'
-      properties:
-        name:
-          $ref: '#/components/schemas/SkuName'
-          description: Name of the pricing tier.
-    ManagedRuleSetList:
-      type: object
-      description: Defines the list of managed rule sets for the policy.
-      properties:
-        managedRuleSets:
-          type: array
-          description: List of rule sets.
-          items:
-            $ref: '#/components/schemas/ManagedRuleSet'
-          x-ms-identifiers:
-          - ruleSetType
-          - ruleSetVersion
-    CdnEndpoint:
-      type: object
-      description: Defines the ARM Resource ID for the linked endpoints
-      properties:
-        id:
-          type: string
-          description: ARM Resource ID string.
     ManagedRuleGroupOverride:
       type: object
       description: Defines a managed rule group override setting.
@@ -797,49 +822,20 @@ components:
           - ruleId
       required:
       - ruleGroupName
-    policySettings:
-      type: object
-      description: Defines contents of a web application firewall global configuration
-      properties:
-        enabledState:
-          $ref: '#/components/schemas/PolicyEnabledState'
-          description: describes if the policy is in enabled state or disabled state
-        mode:
-          $ref: '#/components/schemas/PolicyMode'
-          description: Describes if it is in detection mode or prevention mode at policy level.
-        defaultRedirectUrl:
-          type: string
-          description: If action type is redirect, this field represents the default redirect URL for the client.
-        defaultCustomBlockResponseStatusCode:
-          $ref: '#/components/schemas/PolicySettingsDefaultCustomBlockResponseStatusCode'
-          description: If the action type is block, this field defines the default customer overridable http response status code.
-        defaultCustomBlockResponseBody:
-          type: string
-          description: If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
-          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$
-    PolicySettingsDefaultCustomBlockResponseStatusCode:
-      type: number
-      description: If the action type is block, this field defines the default customer overridable http response status code.
+    PolicyMode:
+      type: string
+      description: Describes if it is in detection mode or prevention mode at policy level.
       enum:
-      - 200
-      - 403
-      - 405
-      - 406
-      - 429
+      - Prevention
+      - Detection
       x-ms-enum:
-        name: PolicySettingsDefaultCustomBlockResponseStatusCode
+        name: PolicyMode
         modelAsString: true
         values:
-        - name: '200'
-          value: 200
-        - name: '403'
-          value: 403
-        - name: '405'
-          value: 405
-        - name: '406'
-          value: 406
-        - name: '429'
-          value: 429
+        - name: Prevention
+          value: Prevention
+        - name: Detection
+          value: Detection
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -849,6 +845,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

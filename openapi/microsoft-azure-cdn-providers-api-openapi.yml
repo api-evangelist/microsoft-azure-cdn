@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Providers API
+  title: CdnManagementClient Providers API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged Providers across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -46,8 +46,6 @@ paths:
       - Providers
       summary: Check name availability
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   /providers/Microsoft.Cdn/edgenodes:
     get:
       operationId: EdgeNodes_List
@@ -76,26 +74,21 @@ paths:
       - Providers
       summary: Edge nodes list
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    CheckNameAvailabilityOutput:
+    CheckNameAvailabilityInput:
       type: object
-      description: Output of check name availability API.
+      description: Input of CheckNameAvailability API.
       properties:
-        nameAvailable:
-          type: boolean
-          description: Indicates whether the name is available.
-          readOnly: true
-        reason:
+        name:
           type: string
-          description: The reason why the name is not available.
-          readOnly: true
-        message:
-          type: string
-          description: The detailed error message describing why the name is not available.
-          readOnly: true
+          description: The resource name to validate.
+        type:
+          $ref: '#/components/schemas/ResourceType'
+          description: The type of the resource whose name is to be validated.
+      required:
+      - name
+      - type
     IpAddressGroup:
       type: object
       description: CDN Ip address group
@@ -117,40 +110,20 @@ components:
             $ref: '#/components/schemas/cidrIpAddress'
           x-ms-identifiers:
           - baseIpAddress
-    CheckNameAvailabilityInput:
-      type: object
-      description: Input of CheckNameAvailability API.
-      properties:
-        name:
-          type: string
-          description: The resource name to validate.
-        type:
-          $ref: '#/components/schemas/ResourceType'
-          description: The type of the resource whose name is to be validated.
-      required:
-      - name
-      - type
-    cidrIpAddress:
-      type: object
-      description: CIDR Ip address
-      properties:
-        baseIpAddress:
-          type: string
-          description: Ip address itself.
-        prefixLength:
-          type: integer
-          format: int32
-          description: The length of the prefix of the ip address.
-    EdgeNode:
-      type: object
-      description: Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
-      properties:
-        properties:
-          $ref: '#/components/schemas/EdgeNodeProperties'
-          description: The JSON object that contains the properties required to create an edgenode.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    ResourceType:
+      type: string
+      description: Type of CDN resource used in CheckNameAvailability.
+      enum:
+      - Microsoft.Cdn/Profiles/Endpoints
+      - Microsoft.Cdn/Profiles/AfdEndpoints
+      x-ms-enum:
+        name: ResourceType
+        modelAsString: true
+        values:
+        - name: Microsoft.Cdn/Profiles/Endpoints
+          value: Microsoft.Cdn/Profiles/Endpoints
+        - name: Microsoft.Cdn/Profiles/AfdEndpoints
+          value: Microsoft.Cdn/Profiles/AfdEndpoints
     EdgenodeResult:
       type: object
       description: Result of the request to list CDN edgenodes. It contains a list of ip address group and a URL link to get the next set of results.
@@ -166,6 +139,17 @@ components:
           description: The link to the next page of items
       required:
       - value
+    cidrIpAddress:
+      type: object
+      description: CIDR Ip address
+      properties:
+        baseIpAddress:
+          type: string
+          description: Ip address itself.
+        prefixLength:
+          type: integer
+          format: int32
+          description: The length of the prefix of the ip address.
     EdgeNodeProperties:
       type: object
       description: The JSON object that contains the properties required to create an edgenode.
@@ -179,20 +163,32 @@ components:
           - deliveryRegion
       required:
       - ipAddressGroups
-    ResourceType:
-      type: string
-      description: Type of CDN resource used in CheckNameAvailability.
-      enum:
-      - Microsoft.Cdn/Profiles/Endpoints
-      - Microsoft.Cdn/Profiles/AfdEndpoints
-      x-ms-enum:
-        name: ResourceType
-        modelAsString: true
-        values:
-        - name: Microsoft.Cdn/Profiles/Endpoints
-          value: Microsoft.Cdn/Profiles/Endpoints
-        - name: Microsoft.Cdn/Profiles/AfdEndpoints
-          value: Microsoft.Cdn/Profiles/AfdEndpoints
+    CheckNameAvailabilityOutput:
+      type: object
+      description: Output of check name availability API.
+      properties:
+        nameAvailable:
+          type: boolean
+          description: Indicates whether the name is available.
+          readOnly: true
+        reason:
+          type: string
+          description: The reason why the name is not available.
+          readOnly: true
+        message:
+          type: string
+          description: The detailed error message describing why the name is not available.
+          readOnly: true
+    EdgeNode:
+      type: object
+      description: Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
+      properties:
+        properties:
+          $ref: '#/components/schemas/EdgeNodeProperties'
+          description: The JSON object that contains the properties required to create an edgenode.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -202,6 +198,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

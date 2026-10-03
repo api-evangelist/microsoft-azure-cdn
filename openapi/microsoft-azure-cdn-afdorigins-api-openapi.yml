@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn AFD Origins API
+  title: CdnManagementClient AFD Origins API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged AFDOrigins across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -58,8 +58,6 @@ paths:
         nextLinkName: nextLink
       summary: AFD origins list by origin group
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}
   : get:
       operationId: AFDOrigins_Get
@@ -340,51 +338,20 @@ paths:
       x-ms-long-running-operation: true
       summary: AFD origins delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    ResourceReference:
-      type: object
-      description: Reference to another resource.
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-    SharedPrivateLinkResourceProperties:
-      type: object
-      description: Describes the properties of an existing Shared Private Link Resource to use when connecting to a private origin.
-      properties:
-        privateLink:
-          $ref: '#/components/schemas/ResourceReference'
-          description: The resource id of the resource the shared private link resource is for.
-        privateLinkLocation:
-          type: string
-          description: The location of the shared private link resource
-        groupId:
-          type: string
-          description: The group id from the provider of resource the shared private link resource is for.
-        requestMessage:
-          type: string
-          description: The request message for requesting approval of the shared private link resource.
-        status:
-          $ref: '#/components/schemas/SharedPrivateLinkResourceStatus'
-          description: Status of the shared private link resource. Can be Pending, Approved, Rejected, Disconnected, or Timeout.
-    AFDOriginListResult:
-      type: object
-      description: The response of a AFDOrigin list operation.
-      properties:
-        value:
-          type: array
-          description: The AFDOrigin items on this page
-          items:
-            $ref: '#/components/schemas/AFDOrigin'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
+    SharedPrivateLinkResourceStatus:
+      type: string
+      description: Status of the shared private link resource. Can be Pending, Approved, Rejected, Disconnected, or Timeout.
+      enum:
+      - Pending
+      - Approved
+      - Rejected
+      - Disconnected
+      - Timeout
+      x-ms-enum:
+        name: SharedPrivateLinkResourceStatus
+        modelAsString: false
     EnabledState:
       type: string
       description: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
@@ -399,6 +366,29 @@ components:
           value: Enabled
         - name: Disabled
           value: Disabled
+    AfdProvisioningState:
+      type: string
+      description: Provisioning status
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
     AFDOriginProperties:
       type: object
       description: The JSON object that contains the properties of the origin.
@@ -469,25 +459,42 @@ components:
         deploymentStatus:
           $ref: '#/components/schemas/DeploymentStatus'
           readOnly: true
-    DeploymentStatus:
-      type: string
-      enum:
-      - NotStarted
-      - InProgress
-      - Succeeded
-      - Failed
-      x-ms-enum:
-        name: DeploymentStatus
-        modelAsString: true
-        values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
+    AFDOrigin:
+      type: object
+      description: Azure Front Door origin is the source of the content being delivered via Azure Front Door. When the edge nodes represented by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the configured origins.
+      properties:
+        properties:
+          $ref: '#/components/schemas/AFDOriginProperties'
+          description: The JSON object that contains the properties of the origin.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    SharedPrivateLinkResourceProperties:
+      type: object
+      description: Describes the properties of an existing Shared Private Link Resource to use when connecting to a private origin.
+      properties:
+        privateLink:
+          $ref: '#/components/schemas/ResourceReference'
+          description: The resource id of the resource the shared private link resource is for.
+        privateLinkLocation:
+          type: string
+          description: The location of the shared private link resource
+        groupId:
+          type: string
+          description: The group id from the provider of resource the shared private link resource is for.
+        requestMessage:
+          type: string
+          description: The request message for requesting approval of the shared private link resource.
+        status:
+          $ref: '#/components/schemas/SharedPrivateLinkResourceStatus'
+          description: Status of the shared private link resource. Can be Pending, Approved, Rejected, Disconnected, or Timeout.
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
+      properties:
+        id:
+          type: string
+          description: Resource ID.
     AFDOriginUpdatePropertiesParameters:
       type: object
       description: The JSON object that contains the properties of the origin.
@@ -551,51 +558,6 @@ components:
           maxItems: 2
           items:
             type: string
-    AfdProvisioningState:
-      type: string
-      description: Provisioning status
-      enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
-      x-ms-enum:
-        name: AfdProvisioningState
-        modelAsString: true
-        values:
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
-    SharedPrivateLinkResourceStatus:
-      type: string
-      description: Status of the shared private link resource. Can be Pending, Approved, Rejected, Disconnected, or Timeout.
-      enum:
-      - Pending
-      - Approved
-      - Rejected
-      - Disconnected
-      - Timeout
-      x-ms-enum:
-        name: SharedPrivateLinkResourceStatus
-        modelAsString: false
-    AFDOrigin:
-      type: object
-      description: Azure Front Door origin is the source of the content being delivered via Azure Front Door. When the edge nodes represented by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the configured origins.
-      properties:
-        properties:
-          $ref: '#/components/schemas/AFDOriginProperties'
-          description: The JSON object that contains the properties of the origin.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     AFDOriginUpdateParameters:
       type: object
       description: AFDOrigin properties needed for origin update.
@@ -604,6 +566,40 @@ components:
           $ref: '#/components/schemas/AFDOriginUpdatePropertiesParameters'
           description: The JSON object that contains the properties of the origin.
           x-ms-client-flatten: true
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    AFDOriginListResult:
+      type: object
+      description: The response of a AFDOrigin list operation.
+      properties:
+        value:
+          type: array
+          description: The AFDOrigin items on this page
+          items:
+            $ref: '#/components/schemas/AFDOrigin'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     CertificateNameCheckValidationMode:
       type: string
       description: The validation mode for certificate name check at origin level. Only applicable when enforceCertificateNameCheck is true.
@@ -633,6 +629,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

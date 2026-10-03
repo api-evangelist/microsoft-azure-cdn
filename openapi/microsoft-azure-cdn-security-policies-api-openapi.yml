@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Security Policies API
+  title: CdnManagementClient Security Policies API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged SecurityPolicies across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -52,8 +52,6 @@ paths:
         nextLinkName: nextLink
       summary: Security policies list by profile
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}
   : get:
       operationId: SecurityPolicies_Get
@@ -304,25 +302,42 @@ paths:
       x-ms-long-running-operation: true
       summary: Security policies delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    SecurityPolicyListResult:
-      type: object
-      description: The response of a SecurityPolicy list operation.
-      properties:
-        value:
-          type: array
-          description: The SecurityPolicy items on this page
-          items:
-            $ref: '#/components/schemas/SecurityPolicy'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
+    AfdProvisioningState:
+      type: string
+      description: Provisioning status
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    SecurityPolicyType:
+      type: string
+      description: The type of the Security policy to create.
+      enum:
+      - WebApplicationFirewall
+      x-ms-enum:
+        name: SecurityPolicyType
+        modelAsString: true
+        values:
+        - name: WebApplicationFirewall
+          value: WebApplicationFirewall
     SecurityPolicyProperties:
       type: object
       description: The json object that contains properties required to create a security policy
@@ -347,16 +362,6 @@ components:
         propertyName: type
       required:
       - type
-    SecurityPolicy:
-      type: object
-      description: SecurityPolicy association for AzureFrontDoor profile
-      properties:
-        properties:
-          $ref: '#/components/schemas/SecurityPolicyProperties'
-          description: The json object that contains properties required to create a security policy
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     AFDStateProperties:
       type: object
       description: The tracking states for afd resources.
@@ -368,37 +373,6 @@ components:
         deploymentStatus:
           $ref: '#/components/schemas/DeploymentStatus'
           readOnly: true
-    AfdProvisioningState:
-      type: string
-      description: Provisioning status
-      enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
-      x-ms-enum:
-        name: AfdProvisioningState
-        modelAsString: true
-        values:
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
-    SecurityPolicyUpdateParameters:
-      type: object
-      description: The JSON object containing security policy update parameters.
-      properties:
-        properties:
-          $ref: '#/components/schemas/SecurityPolicyUpdateProperties'
-          description: The json object that contains properties required to update a security policy
-          x-ms-client-flatten: true
     SecurityPolicyUpdateProperties:
       type: object
       description: The json object that contains properties required to update a security policy
@@ -425,17 +399,39 @@ components:
           value: Succeeded
         - name: Failed
           value: Failed
-    SecurityPolicyType:
-      type: string
-      description: The type of the Security policy to create.
-      enum:
-      - WebApplicationFirewall
-      x-ms-enum:
-        name: SecurityPolicyType
-        modelAsString: true
-        values:
-        - name: WebApplicationFirewall
-          value: WebApplicationFirewall
+    SecurityPolicyListResult:
+      type: object
+      description: The response of a SecurityPolicy list operation.
+      properties:
+        value:
+          type: array
+          description: The SecurityPolicy items on this page
+          items:
+            $ref: '#/components/schemas/SecurityPolicy'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    SecurityPolicyUpdateParameters:
+      type: object
+      description: The JSON object containing security policy update parameters.
+      properties:
+        properties:
+          $ref: '#/components/schemas/SecurityPolicyUpdateProperties'
+          description: The json object that contains properties required to update a security policy
+          x-ms-client-flatten: true
+    SecurityPolicy:
+      type: object
+      description: SecurityPolicy association for AzureFrontDoor profile
+      properties:
+        properties:
+          $ref: '#/components/schemas/SecurityPolicyProperties'
+          description: The json object that contains properties required to create a security policy
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -445,6 +441,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json

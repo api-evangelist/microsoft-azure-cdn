@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Azure Cdn Routes API
+  title: CdnManagementClient Routes API
   version: '2026-07-01'
+  description: Use these APIs to manage Azure Front Door and CDN resources through the Azure Resource Manager. You must make sure that requests made to these resources are secure.
   x-typespec-generated:
   - emitter: '@azure-tools/typespec-autorest'
-  description: 'Operations tagged Routes across 2 of this provider''s published API definitions: microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-management-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://management.azure.com
 security:
@@ -58,8 +58,6 @@ paths:
         nextLinkName: nextLink
       summary: Routes list by endpoint
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}
   : get:
       operationId: Routes_Get
@@ -339,44 +337,8 @@ paths:
       x-ms-long-running-operation: true
       summary: Routes delete
       x-summary-source: derived
-    servers:
-    - url: https://management.azure.com
 components:
   schemas:
-    AFDEndpointProtocols:
-      type: string
-      description: Supported protocols for the customer's endpoint.
-      enum:
-      - Http
-      - Https
-      x-ms-enum:
-        name: AFDEndpointProtocols
-        modelAsString: true
-        values:
-        - name: Http
-          value: Http
-        - name: Https
-          value: Https
-    ResourceReference:
-      type: object
-      description: Reference to another resource.
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-    AfdRouteCacheConfiguration:
-      type: object
-      description: Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
-      properties:
-        queryStringCachingBehavior:
-          $ref: '#/components/schemas/AfdQueryStringCachingBehavior'
-          description: Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
-        queryParameters:
-          type: string
-          description: query parameters to include or exclude (comma separated).
-        compressionSettings:
-          $ref: '#/components/schemas/CompressionSettings'
-          description: compression settings.
     EnabledState:
       type: string
       description: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
@@ -391,46 +353,6 @@ components:
           value: Enabled
         - name: Disabled
           value: Disabled
-    AfdQueryStringCachingBehavior:
-      type: string
-      description: Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
-      enum:
-      - IgnoreQueryString
-      - UseQueryString
-      - IgnoreSpecifiedQueryStrings
-      - IncludeSpecifiedQueryStrings
-      x-ms-enum:
-        name: AfdQueryStringCachingBehavior
-        modelAsString: true
-        values:
-        - name: IgnoreQueryString
-          value: IgnoreQueryString
-        - name: UseQueryString
-          value: UseQueryString
-        - name: IgnoreSpecifiedQueryStrings
-          value: IgnoreSpecifiedQueryStrings
-        - name: IncludeSpecifiedQueryStrings
-          value: IncludeSpecifiedQueryStrings
-    CompressionSettings:
-      type: object
-      description: settings for compression.
-      properties:
-        contentTypesToCompress:
-          type: array
-          description: List of content types on which compression applies. The value should be a valid MIME type.
-          items:
-            type: string
-        isCompressionEnabled:
-          type: boolean
-          description: Indicates whether content compression is enabled on AzureFrontDoor. Default value is false. If compression is enabled, content will be served as compressed if user requests for a compressed version. Content won't be compressed on AzureFrontDoor when requested content is smaller than 1 byte or larger than 1 MB.
-    RouteUpdateParameters:
-      type: object
-      description: The domain JSON object required for domain creation or update.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RouteUpdatePropertiesParameters'
-          description: The JSON object that contains the properties of the domain to create.
-          x-ms-client-flatten: true
     AfdProvisioningState:
       type: string
       description: Provisioning status
@@ -454,40 +376,17 @@ components:
           value: Deleting
         - name: Creating
           value: Creating
-    RouteListResult:
+    ActivatedResourceReference:
       type: object
-      description: The response of a Route list operation.
+      description: Reference to another resource along with its state.
       properties:
-        value:
-          type: array
-          description: The Route items on this page
-          items:
-            $ref: '#/components/schemas/Route'
-        nextLink:
+        id:
           type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    DeploymentStatus:
-      type: string
-      enum:
-      - NotStarted
-      - InProgress
-      - Succeeded
-      - Failed
-      x-ms-enum:
-        name: DeploymentStatus
-        modelAsString: true
-        values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
+          description: Resource ID.
+        isActive:
+          type: boolean
+          description: Whether the resource is active or inactive
+          readOnly: true
     RouteProperties:
       type: object
       description: The JSON object that contains the properties of the Routes to create.
@@ -586,17 +485,99 @@ components:
         deploymentStatus:
           $ref: '#/components/schemas/DeploymentStatus'
           readOnly: true
-    ActivatedResourceReference:
+    AfdRouteCacheConfiguration:
       type: object
-      description: Reference to another resource along with its state.
+      description: Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
+      properties:
+        queryStringCachingBehavior:
+          $ref: '#/components/schemas/AfdQueryStringCachingBehavior'
+          description: Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
+        queryParameters:
+          type: string
+          description: query parameters to include or exclude (comma separated).
+        compressionSettings:
+          $ref: '#/components/schemas/CompressionSettings'
+          description: compression settings.
+    CompressionSettings:
+      type: object
+      description: settings for compression.
+      properties:
+        contentTypesToCompress:
+          type: array
+          description: List of content types on which compression applies. The value should be a valid MIME type.
+          items:
+            type: string
+        isCompressionEnabled:
+          type: boolean
+          description: Indicates whether content compression is enabled on AzureFrontDoor. Default value is false. If compression is enabled, content will be served as compressed if user requests for a compressed version. Content won't be compressed on AzureFrontDoor when requested content is smaller than 1 byte or larger than 1 MB.
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
       properties:
         id:
           type: string
           description: Resource ID.
-        isActive:
-          type: boolean
-          description: Whether the resource is active or inactive
-          readOnly: true
+    AFDEndpointProtocols:
+      type: string
+      description: Supported protocols for the customer's endpoint.
+      enum:
+      - Http
+      - Https
+      x-ms-enum:
+        name: AFDEndpointProtocols
+        modelAsString: true
+        values:
+        - name: Http
+          value: Http
+        - name: Https
+          value: Https
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    RouteUpdateParameters:
+      type: object
+      description: The domain JSON object required for domain creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RouteUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the domain to create.
+          x-ms-client-flatten: true
+    AfdQueryStringCachingBehavior:
+      type: string
+      description: Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
+      enum:
+      - IgnoreQueryString
+      - UseQueryString
+      - IgnoreSpecifiedQueryStrings
+      - IncludeSpecifiedQueryStrings
+      x-ms-enum:
+        name: AfdQueryStringCachingBehavior
+        modelAsString: true
+        values:
+        - name: IgnoreQueryString
+          value: IgnoreQueryString
+        - name: UseQueryString
+          value: UseQueryString
+        - name: IgnoreSpecifiedQueryStrings
+          value: IgnoreSpecifiedQueryStrings
+        - name: IncludeSpecifiedQueryStrings
+          value: IncludeSpecifiedQueryStrings
     RouteUpdatePropertiesParameters:
       type: object
       description: The JSON object that contains the properties of the domain to create.
@@ -698,6 +679,21 @@ components:
           x-ms-client-flatten: true
       allOf:
       - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    RouteListResult:
+      type: object
+      description: The response of a Route list operation.
+      properties:
+        value:
+          type: array
+          description: The Route items on this page
+          items:
+            $ref: '#/components/schemas/Route'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -707,6 +703,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-x-refined-from:
-- microsoft-azure-cdn-management-openapi.json
-- microsoft-azure-cdn-management-openapi.json
