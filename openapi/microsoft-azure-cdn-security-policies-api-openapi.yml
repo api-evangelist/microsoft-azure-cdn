@@ -304,6 +304,111 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    SecurityPolicyPropertiesParameters:
+      type: object
+      description: The json object containing security policy parameters
+      properties:
+        type:
+          $ref: '#/components/schemas/SecurityPolicyType'
+          description: The type of the Security policy to create.
+      discriminator:
+        propertyName: type
+      required:
+      - type
+    SecurityPolicyListResult:
+      type: object
+      description: The response of a SecurityPolicy list operation.
+      properties:
+        value:
+          type: array
+          description: The SecurityPolicy items on this page
+          items:
+            $ref: '#/components/schemas/SecurityPolicy'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    SecurityPolicy:
+      type: object
+      description: SecurityPolicy association for AzureFrontDoor profile
+      properties:
+        properties:
+          $ref: '#/components/schemas/SecurityPolicyProperties'
+          description: The json object that contains properties required to create a security policy
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    SecurityPolicyProperties:
+      type: object
+      description: The json object that contains properties required to create a security policy
+      properties:
+        profileName:
+          type: string
+          description: The name of the profile which holds the security policy.
+          readOnly: true
+        parameters:
+          $ref: '#/components/schemas/SecurityPolicyPropertiesParameters'
+          description: object which contains security policy parameters
+      allOf:
+      - $ref: '#/components/schemas/AFDStateProperties'
+    SecurityPolicyType:
+      type: string
+      description: The type of the Security policy to create.
+      enum:
+      - WebApplicationFirewall
+      x-ms-enum:
+        name: SecurityPolicyType
+        modelAsString: true
+        values:
+        - name: WebApplicationFirewall
+          value: WebApplicationFirewall
+    AFDStateProperties:
+      type: object
+      description: The tracking states for afd resources.
+      properties:
+        provisioningState:
+          $ref: '#/components/schemas/AfdProvisioningState'
+          description: Provisioning status
+          readOnly: true
+        deploymentStatus:
+          $ref: '#/components/schemas/DeploymentStatus'
+          readOnly: true
+    SecurityPolicyUpdateParameters:
+      type: object
+      description: The JSON object containing security policy update parameters.
+      properties:
+        properties:
+          $ref: '#/components/schemas/SecurityPolicyUpdateProperties'
+          description: The json object that contains properties required to update a security policy
+          x-ms-client-flatten: true
+    SecurityPolicyUpdateProperties:
+      type: object
+      description: The json object that contains properties required to update a security policy
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SecurityPolicyPropertiesParameters'
+          description: object which contains security policy parameters
     AfdProvisioningState:
       type: string
       description: Provisioning status
@@ -327,111 +432,6 @@ components:
           value: Deleting
         - name: Creating
           value: Creating
-    SecurityPolicyType:
-      type: string
-      description: The type of the Security policy to create.
-      enum:
-      - WebApplicationFirewall
-      x-ms-enum:
-        name: SecurityPolicyType
-        modelAsString: true
-        values:
-        - name: WebApplicationFirewall
-          value: WebApplicationFirewall
-    SecurityPolicyProperties:
-      type: object
-      description: The json object that contains properties required to create a security policy
-      properties:
-        profileName:
-          type: string
-          description: The name of the profile which holds the security policy.
-          readOnly: true
-        parameters:
-          $ref: '#/components/schemas/SecurityPolicyPropertiesParameters'
-          description: object which contains security policy parameters
-      allOf:
-      - $ref: '#/components/schemas/AFDStateProperties'
-    SecurityPolicyPropertiesParameters:
-      type: object
-      description: The json object containing security policy parameters
-      properties:
-        type:
-          $ref: '#/components/schemas/SecurityPolicyType'
-          description: The type of the Security policy to create.
-      discriminator:
-        propertyName: type
-      required:
-      - type
-    AFDStateProperties:
-      type: object
-      description: The tracking states for afd resources.
-      properties:
-        provisioningState:
-          $ref: '#/components/schemas/AfdProvisioningState'
-          description: Provisioning status
-          readOnly: true
-        deploymentStatus:
-          $ref: '#/components/schemas/DeploymentStatus'
-          readOnly: true
-    SecurityPolicyUpdateProperties:
-      type: object
-      description: The json object that contains properties required to update a security policy
-      properties:
-        parameters:
-          $ref: '#/components/schemas/SecurityPolicyPropertiesParameters'
-          description: object which contains security policy parameters
-    DeploymentStatus:
-      type: string
-      enum:
-      - NotStarted
-      - InProgress
-      - Succeeded
-      - Failed
-      x-ms-enum:
-        name: DeploymentStatus
-        modelAsString: true
-        values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-    SecurityPolicyListResult:
-      type: object
-      description: The response of a SecurityPolicy list operation.
-      properties:
-        value:
-          type: array
-          description: The SecurityPolicy items on this page
-          items:
-            $ref: '#/components/schemas/SecurityPolicy'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    SecurityPolicyUpdateParameters:
-      type: object
-      description: The JSON object containing security policy update parameters.
-      properties:
-        properties:
-          $ref: '#/components/schemas/SecurityPolicyUpdateProperties'
-          description: The json object that contains properties required to update a security policy
-          x-ms-client-flatten: true
-    SecurityPolicy:
-      type: object
-      description: SecurityPolicy association for AzureFrontDoor profile
-      properties:
-        properties:
-          $ref: '#/components/schemas/SecurityPolicyProperties'
-          description: The json object that contains properties required to create a security policy
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2

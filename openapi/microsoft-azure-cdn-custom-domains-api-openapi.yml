@@ -392,92 +392,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CustomDomainListResult:
-      type: object
-      description: The response of a CustomDomain list operation.
-      properties:
-        value:
-          type: array
-          description: The CustomDomain items on this page
-          items:
-            $ref: '#/components/schemas/CustomDomain'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    CustomDomainProperties:
-      type: object
-      description: The JSON object that contains the properties of the custom domain to create.
-      properties:
-        hostName:
-          type: string
-          description: The host name of the custom domain. Must be a domain name.
-        resourceState:
-          $ref: '#/components/schemas/CustomDomainResourceState'
-          description: Resource status of the custom domain.
-          readOnly: true
-        customHttpsProvisioningState:
-          $ref: '#/components/schemas/CustomHttpsProvisioningState'
-          description: Provisioning status of the custom domain.
-          readOnly: true
-        customHttpsProvisioningSubstate:
-          $ref: '#/components/schemas/CustomHttpsProvisioningSubstate'
-          description: Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
-          readOnly: true
-        customHttpsParameters:
-          $ref: '#/components/schemas/CustomDomainHttpsParameters'
-          description: Certificate parameters for securing custom HTTPS
-        validationData:
-          type: string
-          description: Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
-        provisioningState:
-          $ref: '#/components/schemas/CustomHttpsProvisioningState'
-          description: Provisioning status of Custom Https of the custom domain.
-          readOnly: true
-      required:
-      - hostName
-    CustomDomainHttpsParameters:
-      type: object
-      description: The JSON object that contains the properties to secure a custom domain.
-      properties:
-        certificateSource:
-          $ref: '#/components/schemas/CertificateSource'
-          description: Defines the source of the SSL certificate.
-        protocolType:
-          $ref: '#/components/schemas/ProtocolType'
-          description: Defines the TLS extension protocol that is used for secure delivery.
-        minimumTlsVersion:
-          $ref: '#/components/schemas/MinimumTlsVersion'
-          description: TLS protocol version that will be used for Https
-      discriminator:
-        propertyName: certificateSource
-      required:
-      - certificateSource
-      - protocolType
-    CustomDomainParameters:
-      type: object
-      description: The customDomain JSON object required for custom domain creation or update.
-      properties:
-        properties:
-          $ref: '#/components/schemas/CustomDomainPropertiesParameters'
-          description: The JSON object that contains the properties of the custom domain to create.
-          x-ms-client-flatten: true
-    CertificateSource:
-      type: string
-      description: Defines the source of the SSL certificate.
-      enum:
-      - AzureKeyVault
-      - Cdn
-      x-ms-enum:
-        name: CertificateSource
-        modelAsString: true
-        values:
-        - name: AzureKeyVault
-          value: AzureKeyVault
-        - name: Cdn
-          value: Cdn
     CustomHttpsProvisioningSubstate:
       type: string
       description: Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
@@ -516,30 +430,15 @@ components:
           value: DeletingCertificate
         - name: CertificateDeleted
           value: CertificateDeleted
-    ProtocolType:
-      type: string
-      description: Defines the TLS extension protocol that is used for secure delivery.
-      enum:
-      - ServerNameIndication
-      - IPBased
-      x-ms-enum:
-        name: ProtocolType
-        modelAsString: true
-        values:
-        - name: ServerNameIndication
-          value: ServerNameIndication
-        - name: IPBased
-          value: IPBased
-    MinimumTlsVersion:
-      type: string
-      description: TLS protocol version that will be used for Https
-      enum:
-      - None
-      - TLS10
-      - TLS12
-      x-ms-enum:
-        name: MinimumTlsVersion
-        modelAsString: false
+    CustomDomainPropertiesParameters:
+      type: object
+      description: The JSON object that contains the properties of the custom domain to create.
+      properties:
+        hostName:
+          type: string
+          description: The host name of the custom domain. Must be a domain name.
+      required:
+      - hostName
     CustomDomain:
       type: object
       description: Friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes, e.g. www.contoso.com.
@@ -550,23 +449,6 @@ components:
           x-ms-client-flatten: true
       allOf:
       - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
-    CustomDomainResourceState:
-      type: string
-      description: Resource status of the custom domain.
-      enum:
-      - Creating
-      - Active
-      - Deleting
-      x-ms-enum:
-        name: CustomDomainResourceState
-        modelAsString: true
-        values:
-        - name: Creating
-          value: Creating
-        - name: Active
-          value: Active
-        - name: Deleting
-          value: Deleting
     CustomHttpsProvisioningState:
       type: string
       description: Provisioning status of the custom domain.
@@ -590,15 +472,133 @@ components:
           value: Disabled
         - name: Failed
           value: Failed
-    CustomDomainPropertiesParameters:
+    ProtocolType:
+      type: string
+      description: Defines the TLS extension protocol that is used for secure delivery.
+      enum:
+      - ServerNameIndication
+      - IPBased
+      x-ms-enum:
+        name: ProtocolType
+        modelAsString: true
+        values:
+        - name: ServerNameIndication
+          value: ServerNameIndication
+        - name: IPBased
+          value: IPBased
+    CustomDomainProperties:
       type: object
       description: The JSON object that contains the properties of the custom domain to create.
       properties:
         hostName:
           type: string
           description: The host name of the custom domain. Must be a domain name.
+        resourceState:
+          $ref: '#/components/schemas/CustomDomainResourceState'
+          description: Resource status of the custom domain.
+          readOnly: true
+        customHttpsProvisioningState:
+          $ref: '#/components/schemas/CustomHttpsProvisioningState'
+          description: Provisioning status of the custom domain.
+          readOnly: true
+        customHttpsProvisioningSubstate:
+          $ref: '#/components/schemas/CustomHttpsProvisioningSubstate'
+          description: Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
+          readOnly: true
+        customHttpsParameters:
+          $ref: '#/components/schemas/CustomDomainHttpsParameters'
+          description: Certificate parameters for securing custom HTTPS
+        validationData:
+          type: string
+          description: Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
+        provisioningState:
+          $ref: '#/components/schemas/CustomHttpsProvisioningState'
+          description: Provisioning status of Custom Https of the custom domain.
+          readOnly: true
       required:
       - hostName
+    CustomDomainListResult:
+      type: object
+      description: The response of a CustomDomain list operation.
+      properties:
+        value:
+          type: array
+          description: The CustomDomain items on this page
+          items:
+            $ref: '#/components/schemas/CustomDomain'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    CertificateSource:
+      type: string
+      description: Defines the source of the SSL certificate.
+      enum:
+      - AzureKeyVault
+      - Cdn
+      x-ms-enum:
+        name: CertificateSource
+        modelAsString: true
+        values:
+        - name: AzureKeyVault
+          value: AzureKeyVault
+        - name: Cdn
+          value: Cdn
+    CustomDomainHttpsParameters:
+      type: object
+      description: The JSON object that contains the properties to secure a custom domain.
+      properties:
+        certificateSource:
+          $ref: '#/components/schemas/CertificateSource'
+          description: Defines the source of the SSL certificate.
+        protocolType:
+          $ref: '#/components/schemas/ProtocolType'
+          description: Defines the TLS extension protocol that is used for secure delivery.
+        minimumTlsVersion:
+          $ref: '#/components/schemas/MinimumTlsVersion'
+          description: TLS protocol version that will be used for Https
+      discriminator:
+        propertyName: certificateSource
+      required:
+      - certificateSource
+      - protocolType
+    CustomDomainParameters:
+      type: object
+      description: The customDomain JSON object required for custom domain creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/CustomDomainPropertiesParameters'
+          description: The JSON object that contains the properties of the custom domain to create.
+          x-ms-client-flatten: true
+    CustomDomainResourceState:
+      type: string
+      description: Resource status of the custom domain.
+      enum:
+      - Creating
+      - Active
+      - Deleting
+      x-ms-enum:
+        name: CustomDomainResourceState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Active
+          value: Active
+        - name: Deleting
+          value: Deleting
+    MinimumTlsVersion:
+      type: string
+      description: TLS protocol version that will be used for Https
+      enum:
+      - None
+      - TLS10
+      - TLS12
+      x-ms-enum:
+        name: MinimumTlsVersion
+        modelAsString: false
   securitySchemes:
     azure_auth:
       type: oauth2

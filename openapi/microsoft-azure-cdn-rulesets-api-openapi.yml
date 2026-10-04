@@ -273,6 +273,87 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UsagesListResult:
+      type: object
+      description: The list usages operation response.
+      properties:
+        value:
+          type: array
+          description: The Usage items on this page
+          items:
+            $ref: '#/components/schemas/Usage'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    RuleSet:
+      type: object
+      description: Friendly RuleSet name mapping to the any RuleSet or secret related information.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RuleSetProperties'
+          description: The JSON object that contains the properties of the Rule Set to create.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    UsageName:
+      type: object
+      description: The usage names.
+      properties:
+        value:
+          type: string
+          description: A string describing the resource name.
+        localizedValue:
+          type: string
+          description: A localized string describing the resource name.
+    Usage:
+      type: object
+      description: Describes resource usage.
+      properties:
+        id:
+          type: string
+          description: Resource identifier.
+          readOnly: true
+        unit:
+          $ref: '#/components/schemas/UsageUnit'
+          description: An enum describing the unit of measurement.
+        currentValue:
+          type: integer
+          format: int64
+          description: The current value of the usage.
+        limit:
+          type: integer
+          format: int64
+          description: The limit of usage.
+        name:
+          $ref: '#/components/schemas/UsageName'
+          description: The name of the type of usage.
+      required:
+      - unit
+      - currentValue
+      - limit
+      - name
     RuleSetProperties:
       type: object
       description: The JSON object that contains the properties of the Rule Set to create.
@@ -304,117 +385,6 @@ components:
           - ruleName
       allOf:
       - $ref: '#/components/schemas/AFDStateProperties'
-    AfdProvisioningState:
-      type: string
-      description: Provisioning status
-      enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
-      x-ms-enum:
-        name: AfdProvisioningState
-        modelAsString: true
-        values:
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
-    RuleSet:
-      type: object
-      description: Friendly RuleSet name mapping to the any RuleSet or secret related information.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RuleSetProperties'
-          description: The JSON object that contains the properties of the Rule Set to create.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
-    BatchRuleProperties:
-      type: object
-      description: The JSON object that contains a rule with its name for batch mode operations.
-      properties:
-        ruleName:
-          type: string
-          description: Name of the rule.
-          minLength: 1
-          maxLength: 60
-          pattern: ^[a-zA-Z][a-zA-Z0-9]{0,59}$
-          x-ms-mutability:
-          - read
-          - create
-        ruleSetName:
-          type: string
-          description: The name of the rule set containing the rule.
-          readOnly: true
-        order:
-          type: integer
-          format: int32
-          description: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and actions listed in it will always be applied.
-        conditions:
-          type: array
-          description: A list of conditions that must be matched for the actions to be executed
-          items:
-            $ref: '#/components/schemas/DeliveryRuleCondition'
-          x-ms-identifiers:
-          - name
-        actions:
-          type: array
-          description: A list of actions that are executed when all the conditions of a rule are satisfied.
-          items:
-            $ref: '#/components/schemas/DeliveryRuleAction'
-          x-ms-identifiers:
-          - name
-        matchProcessingBehavior:
-          type: string
-          description: If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue.
-          default: Continue
-          enum:
-          - Continue
-          - Stop
-          x-ms-enum:
-            name: MatchProcessingBehavior
-            modelAsString: true
-            values:
-            - name: Continue
-              value: Continue
-            - name: Stop
-              value: Stop
-      required:
-      - ruleName
-    UsagesListResult:
-      type: object
-      description: The list usages operation response.
-      properties:
-        value:
-          type: array
-          description: The Usage items on this page
-          items:
-            $ref: '#/components/schemas/Usage'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    UsageUnit:
-      type: string
-      description: An enum describing the unit of measurement.
-      enum:
-      - Count
-      x-ms-enum:
-        name: UsageUnit
-        modelAsString: true
-        values:
-        - name: Count
-          value: Count
     DeliveryRuleCondition:
       type: object
       description: A condition for the delivery rule.
@@ -425,140 +395,6 @@ components:
       discriminator:
         propertyName: name
       required:
-      - name
-    DeliveryRuleAction:
-      type: object
-      description: An action for the delivery rule.
-      properties:
-        name:
-          $ref: '#/components/schemas/DeliveryRuleActionName'
-          description: The name of the action for the delivery rule.
-      discriminator:
-        propertyName: name
-      required:
-      - name
-    RuleSetListResult:
-      type: object
-      description: The response of a RuleSet list operation.
-      properties:
-        value:
-          type: array
-          description: The RuleSet items on this page
-          items:
-            $ref: '#/components/schemas/RuleSet'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    AFDStateProperties:
-      type: object
-      description: The tracking states for afd resources.
-      properties:
-        provisioningState:
-          $ref: '#/components/schemas/AfdProvisioningState'
-          description: Provisioning status
-          readOnly: true
-        deploymentStatus:
-          $ref: '#/components/schemas/DeploymentStatus'
-          readOnly: true
-    DeliveryRuleActionName:
-      type: string
-      description: The name of the action for the delivery rule.
-      enum:
-      - CacheExpiration
-      - CacheKeyQueryString
-      - ModifyRequestHeader
-      - ModifyResponseHeader
-      - UrlRedirect
-      - UrlRewrite
-      - UrlSigning
-      - OriginGroupOverride
-      - RouteConfigurationOverride
-      - EdgeAction
-      - AfdUrlSigning
-      x-ms-enum:
-        name: DeliveryRuleActionName
-        modelAsString: true
-        values:
-        - name: CacheExpiration
-          value: CacheExpiration
-        - name: CacheKeyQueryString
-          value: CacheKeyQueryString
-        - name: ModifyRequestHeader
-          value: ModifyRequestHeader
-        - name: ModifyResponseHeader
-          value: ModifyResponseHeader
-        - name: UrlRedirect
-          value: UrlRedirect
-        - name: UrlRewrite
-          value: UrlRewrite
-        - name: UrlSigning
-          value: UrlSigning
-        - name: OriginGroupOverride
-          value: OriginGroupOverride
-        - name: RouteConfigurationOverride
-          value: RouteConfigurationOverride
-        - name: EdgeAction
-          value: EdgeAction
-        - name: AfdUrlSigning
-          value: AfdUrlSigning
-    UsageName:
-      type: object
-      description: The usage names.
-      properties:
-        value:
-          type: string
-          description: A string describing the resource name.
-        localizedValue:
-          type: string
-          description: A localized string describing the resource name.
-    DeploymentStatus:
-      type: string
-      enum:
-      - NotStarted
-      - InProgress
-      - Succeeded
-      - Failed
-      x-ms-enum:
-        name: DeploymentStatus
-        modelAsString: true
-        values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-    Usage:
-      type: object
-      description: Describes resource usage.
-      properties:
-        id:
-          type: string
-          description: Resource identifier.
-          readOnly: true
-        unit:
-          $ref: '#/components/schemas/UsageUnit'
-          description: An enum describing the unit of measurement.
-        currentValue:
-          type: integer
-          format: int64
-          description: The current value of the usage.
-        limit:
-          type: integer
-          format: int64
-          description: The limit of usage.
-        name:
-          $ref: '#/components/schemas/UsageName'
-          description: The name of the type of usage.
-      required:
-      - unit
-      - currentValue
-      - limit
       - name
     MatchVariable:
       type: string
@@ -625,6 +461,170 @@ components:
           value: HostName
         - name: SslProtocol
           value: SslProtocol
+    AFDStateProperties:
+      type: object
+      description: The tracking states for afd resources.
+      properties:
+        provisioningState:
+          $ref: '#/components/schemas/AfdProvisioningState'
+          description: Provisioning status
+          readOnly: true
+        deploymentStatus:
+          $ref: '#/components/schemas/DeploymentStatus'
+          readOnly: true
+    RuleSetListResult:
+      type: object
+      description: The response of a RuleSet list operation.
+      properties:
+        value:
+          type: array
+          description: The RuleSet items on this page
+          items:
+            $ref: '#/components/schemas/RuleSet'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    DeliveryRuleActionName:
+      type: string
+      description: The name of the action for the delivery rule.
+      enum:
+      - CacheExpiration
+      - CacheKeyQueryString
+      - ModifyRequestHeader
+      - ModifyResponseHeader
+      - UrlRedirect
+      - UrlRewrite
+      - UrlSigning
+      - OriginGroupOverride
+      - RouteConfigurationOverride
+      - EdgeAction
+      - AfdUrlSigning
+      x-ms-enum:
+        name: DeliveryRuleActionName
+        modelAsString: true
+        values:
+        - name: CacheExpiration
+          value: CacheExpiration
+        - name: CacheKeyQueryString
+          value: CacheKeyQueryString
+        - name: ModifyRequestHeader
+          value: ModifyRequestHeader
+        - name: ModifyResponseHeader
+          value: ModifyResponseHeader
+        - name: UrlRedirect
+          value: UrlRedirect
+        - name: UrlRewrite
+          value: UrlRewrite
+        - name: UrlSigning
+          value: UrlSigning
+        - name: OriginGroupOverride
+          value: OriginGroupOverride
+        - name: RouteConfigurationOverride
+          value: RouteConfigurationOverride
+        - name: EdgeAction
+          value: EdgeAction
+        - name: AfdUrlSigning
+          value: AfdUrlSigning
+    BatchRuleProperties:
+      type: object
+      description: The JSON object that contains a rule with its name for batch mode operations.
+      properties:
+        ruleName:
+          type: string
+          description: Name of the rule.
+          minLength: 1
+          maxLength: 60
+          pattern: ^[a-zA-Z][a-zA-Z0-9]{0,59}$
+          x-ms-mutability:
+          - read
+          - create
+        ruleSetName:
+          type: string
+          description: The name of the rule set containing the rule.
+          readOnly: true
+        order:
+          type: integer
+          format: int32
+          description: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and actions listed in it will always be applied.
+        conditions:
+          type: array
+          description: A list of conditions that must be matched for the actions to be executed
+          items:
+            $ref: '#/components/schemas/DeliveryRuleCondition'
+          x-ms-identifiers:
+          - name
+        actions:
+          type: array
+          description: A list of actions that are executed when all the conditions of a rule are satisfied.
+          items:
+            $ref: '#/components/schemas/DeliveryRuleAction'
+          x-ms-identifiers:
+          - name
+        matchProcessingBehavior:
+          type: string
+          description: If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue.
+          default: Continue
+          enum:
+          - Continue
+          - Stop
+          x-ms-enum:
+            name: MatchProcessingBehavior
+            modelAsString: true
+            values:
+            - name: Continue
+              value: Continue
+            - name: Stop
+              value: Stop
+      required:
+      - ruleName
+    UsageUnit:
+      type: string
+      description: An enum describing the unit of measurement.
+      enum:
+      - Count
+      x-ms-enum:
+        name: UsageUnit
+        modelAsString: true
+        values:
+        - name: Count
+          value: Count
+    AfdProvisioningState:
+      type: string
+      description: Provisioning status
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: AfdProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    DeliveryRuleAction:
+      type: object
+      description: An action for the delivery rule.
+      properties:
+        name:
+          $ref: '#/components/schemas/DeliveryRuleActionName'
+          description: The name of the action for the delivery rule.
+      discriminator:
+        propertyName: name
+      required:
+      - name
   securitySchemes:
     azure_auth:
       type: oauth2

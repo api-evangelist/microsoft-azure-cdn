@@ -321,62 +321,43 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ResponseBasedOriginErrorDetectionParameters:
+    HealthProbeParameters:
       type: object
-      description: The JSON object that contains the properties to determine origin health using real requests/responses.
+      description: The JSON object that contains the properties to send health probes to origin.
       properties:
-        responseBasedDetectedErrorTypes:
-          $ref: '#/components/schemas/ResponseBasedDetectedErrorTypes'
-          description: Type of response errors for real user requests for which origin will be deemed unhealthy
-        responseBasedFailoverThresholdPercentage:
+        probePath:
+          type: string
+          description: The path relative to the origin that is used to determine the health of the origin.
+        probeRequestType:
+          $ref: '#/components/schemas/HealthProbeRequestType'
+          description: The type of health probe request that is made.
+        probeProtocol:
+          $ref: '#/components/schemas/ProbeProtocol'
+          description: Protocol to use for health probe.
+        probeIntervalInSeconds:
           type: integer
           format: int32
-          description: The percentage of failed requests in the sample where failover should trigger.
-          minimum: 0
-          maximum: 100
-        httpErrorRanges:
-          type: array
-          description: The list of Http status code ranges that are considered as server errors for origin and it is marked as unhealthy.
-          items:
-            $ref: '#/components/schemas/HttpErrorRangeParameters'
-          x-ms-identifiers: []
-    ProbeProtocol:
-      type: string
-      description: Protocol to use for health probe.
-      enum:
-      - NotSet
-      - Http
-      - Https
-      x-ms-enum:
-        name: ProbeProtocol
-        modelAsString: false
-    ResponseBasedDetectedErrorTypes:
-      type: string
-      description: Type of response errors for real user requests for which origin will be deemed unhealthy
-      enum:
-      - None
-      - TcpErrorsOnly
-      - TcpAndHttpErrors
-      x-ms-enum:
-        name: ResponseBasedDetectedErrorTypes
-        modelAsString: false
-    OriginGroupResourceState:
-      type: string
-      description: Resource status of the origin group.
-      enum:
-      - Creating
-      - Active
-      - Deleting
-      x-ms-enum:
-        name: OriginGroupResourceState
-        modelAsString: true
-        values:
-        - name: Creating
-          value: Creating
-        - name: Active
-          value: Active
-        - name: Deleting
-          value: Deleting
+          description: The number of seconds between health probes.Default is 240sec.
+          minimum: 1
+          maximum: 255
+    OriginGroupUpdateParameters:
+      type: object
+      description: Origin group properties needed for origin group creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/OriginGroupUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+    OriginGroup:
+      type: object
+      description: Origin group comprising of origins is used for load balancing to origins when the content cannot be served from CDN.
+      properties:
+        properties:
+          $ref: '#/components/schemas/OriginGroupProperties'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     OriginGroupProperties:
       type: object
       description: The JSON object that contains the properties of the origin group.
@@ -391,32 +372,6 @@ components:
           readOnly: true
       allOf:
       - $ref: '#/components/schemas/OriginGroupUpdatePropertiesParameters'
-    HttpErrorRangeParameters:
-      type: object
-      description: The JSON object that represents the range for http status codes
-      properties:
-        begin:
-          type: integer
-          format: int32
-          description: The inclusive start of the http status code range.
-          minimum: 100
-          maximum: 999
-        end:
-          type: integer
-          format: int32
-          description: The inclusive end of the http status code range.
-          minimum: 100
-          maximum: 999
-    OriginGroup:
-      type: object
-      description: Origin group comprising of origins is used for load balancing to origins when the content cannot be served from CDN.
-      properties:
-        properties:
-          $ref: '#/components/schemas/OriginGroupProperties'
-          description: The JSON object that contains the properties of the origin group.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     OriginGroupUpdatePropertiesParameters:
       type: object
       description: The JSON object that contains the properties of the origin group.
@@ -438,6 +393,57 @@ components:
         responseBasedOriginErrorDetectionSettings:
           $ref: '#/components/schemas/ResponseBasedOriginErrorDetectionParameters'
           description: The JSON object that contains the properties to determine origin health using real requests/responses. This property is currently not supported.
+    OriginGroupResourceState:
+      type: string
+      description: Resource status of the origin group.
+      enum:
+      - Creating
+      - Active
+      - Deleting
+      x-ms-enum:
+        name: OriginGroupResourceState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Active
+          value: Active
+        - name: Deleting
+          value: Deleting
+    ResponseBasedOriginErrorDetectionParameters:
+      type: object
+      description: The JSON object that contains the properties to determine origin health using real requests/responses.
+      properties:
+        responseBasedDetectedErrorTypes:
+          $ref: '#/components/schemas/ResponseBasedDetectedErrorTypes'
+          description: Type of response errors for real user requests for which origin will be deemed unhealthy
+        responseBasedFailoverThresholdPercentage:
+          type: integer
+          format: int32
+          description: The percentage of failed requests in the sample where failover should trigger.
+          minimum: 0
+          maximum: 100
+        httpErrorRanges:
+          type: array
+          description: The list of Http status code ranges that are considered as server errors for origin and it is marked as unhealthy.
+          items:
+            $ref: '#/components/schemas/HttpErrorRangeParameters'
+          x-ms-identifiers: []
+    OriginGroupListResult:
+      type: object
+      description: The response of a OriginGroup list operation.
+      properties:
+        value:
+          type: array
+          description: The OriginGroup items on this page
+          items:
+            $ref: '#/components/schemas/OriginGroup'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     OriginGroupProvisioningState:
       type: string
       description: Provisioning status of the origin group.
@@ -461,47 +467,6 @@ components:
           value: Deleting
         - name: Creating
           value: Creating
-    ResourceReference:
-      type: object
-      description: Reference to another resource.
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-    HealthProbeParameters:
-      type: object
-      description: The JSON object that contains the properties to send health probes to origin.
-      properties:
-        probePath:
-          type: string
-          description: The path relative to the origin that is used to determine the health of the origin.
-        probeRequestType:
-          $ref: '#/components/schemas/HealthProbeRequestType'
-          description: The type of health probe request that is made.
-        probeProtocol:
-          $ref: '#/components/schemas/ProbeProtocol'
-          description: Protocol to use for health probe.
-        probeIntervalInSeconds:
-          type: integer
-          format: int32
-          description: The number of seconds between health probes.Default is 240sec.
-          minimum: 1
-          maximum: 255
-    OriginGroupListResult:
-      type: object
-      description: The response of a OriginGroup list operation.
-      properties:
-        value:
-          type: array
-          description: The OriginGroup items on this page
-          items:
-            $ref: '#/components/schemas/OriginGroup'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
     HealthProbeRequestType:
       type: string
       description: The type of health probe request that is made.
@@ -512,14 +477,49 @@ components:
       x-ms-enum:
         name: HealthProbeRequestType
         modelAsString: false
-    OriginGroupUpdateParameters:
+    ResponseBasedDetectedErrorTypes:
+      type: string
+      description: Type of response errors for real user requests for which origin will be deemed unhealthy
+      enum:
+      - None
+      - TcpErrorsOnly
+      - TcpAndHttpErrors
+      x-ms-enum:
+        name: ResponseBasedDetectedErrorTypes
+        modelAsString: false
+    ResourceReference:
       type: object
-      description: Origin group properties needed for origin group creation or update.
+      description: Reference to another resource.
       properties:
-        properties:
-          $ref: '#/components/schemas/OriginGroupUpdatePropertiesParameters'
-          description: The JSON object that contains the properties of the origin group.
-          x-ms-client-flatten: true
+        id:
+          type: string
+          description: Resource ID.
+    HttpErrorRangeParameters:
+      type: object
+      description: The JSON object that represents the range for http status codes
+      properties:
+        begin:
+          type: integer
+          format: int32
+          description: The inclusive start of the http status code range.
+          minimum: 100
+          maximum: 999
+        end:
+          type: integer
+          format: int32
+          description: The inclusive end of the http status code range.
+          minimum: 100
+          maximum: 999
+    ProbeProtocol:
+      type: string
+      description: Protocol to use for health probe.
+      enum:
+      - NotSet
+      - Http
+      - Https
+      x-ms-enum:
+        name: ProbeProtocol
+        modelAsString: false
   securitySchemes:
     azure_auth:
       type: oauth2

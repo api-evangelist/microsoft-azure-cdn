@@ -350,23 +350,110 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    OriginAuthenticationProperties:
+    AFDOriginGroupUpdateParameters:
       type: object
-      description: The JSON object that contains the properties of the origin authentication settings.
+      description: AFDOrigin group properties needed for origin group creation or update.
       properties:
-        type:
-          $ref: '#/components/schemas/OriginAuthenticationType'
-          description: The type of the authentication for the origin.
-        userAssignedIdentity:
-          $ref: '#/components/schemas/ResourceReference'
-          description: The user assigned managed identity to use for the origin authentication if type is UserAssignedIdentity.
-        scope:
+        properties:
+          $ref: '#/components/schemas/AFDOriginGroupUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the origin group.
+          x-ms-client-flatten: true
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
+      properties:
+        id:
           type: string
-          format: uri
-          description: The scope used when requesting token from Microsoft Entra. For example, for Azure Blob Storage, scope could be "https://storage.azure.com/.default".
-        tokenDestinationHeader:
-          $ref: '#/components/schemas/OriginAuthenticationTokenDestinationHeader'
-          description: The HTTP request header where the origin authentication token will be placed when forwarding the request to the origin. If not specified, the service will use the `Authorization` header for backward compatibility.
+          description: Resource ID.
+    HealthProbeParameters:
+      type: object
+      description: The JSON object that contains the properties to send health probes to origin.
+      properties:
+        probePath:
+          type: string
+          description: The path relative to the origin that is used to determine the health of the origin.
+        probeRequestType:
+          $ref: '#/components/schemas/HealthProbeRequestType'
+          description: The type of health probe request that is made.
+        probeProtocol:
+          $ref: '#/components/schemas/ProbeProtocol'
+          description: Protocol to use for health probe.
+        probeIntervalInSeconds:
+          type: integer
+          format: int32
+          description: The number of seconds between health probes.Default is 240sec.
+          minimum: 1
+          maximum: 255
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    EnabledState:
+      type: string
+      description: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
+      enum:
+      - Enabled
+      - Disabled
+      x-ms-enum:
+        name: EnabledState
+        modelAsString: true
+        values:
+        - name: Enabled
+          value: Enabled
+        - name: Disabled
+          value: Disabled
+    Usage:
+      type: object
+      description: Describes resource usage.
+      properties:
+        id:
+          type: string
+          description: Resource identifier.
+          readOnly: true
+        unit:
+          $ref: '#/components/schemas/UsageUnit'
+          description: An enum describing the unit of measurement.
+        currentValue:
+          type: integer
+          format: int64
+          description: The current value of the usage.
+        limit:
+          type: integer
+          format: int64
+          description: The limit of usage.
+        name:
+          $ref: '#/components/schemas/UsageName'
+          description: The name of the type of usage.
+      required:
+      - unit
+      - currentValue
+      - limit
+      - name
+    HealthProbeRequestType:
+      type: string
+      description: The type of health probe request that is made.
+      enum:
+      - NotSet
+      - GET
+      - HEAD
+      x-ms-enum:
+        name: HealthProbeRequestType
+        modelAsString: false
     AfdProvisioningState:
       type: string
       description: Provisioning status
@@ -390,55 +477,69 @@ components:
           value: Deleting
         - name: Creating
           value: Creating
-    AFDOriginGroupUpdatePropertiesParameters:
+    UsagesListResult:
       type: object
-      description: The JSON object that contains the properties of the origin group.
+      description: The list usages operation response.
       properties:
-        profileName:
+        value:
+          type: array
+          description: The Usage items on this page
+          items:
+            $ref: '#/components/schemas/Usage'
+        nextLink:
           type: string
-          description: The name of the profile which holds the origin group.
-          readOnly: true
-        loadBalancingSettings:
-          $ref: '#/components/schemas/LoadBalancingSettingsParameters'
-          description: Load balancing settings for a backend pool
-        healthProbeSettings:
-          $ref: '#/components/schemas/HealthProbeParameters'
-          description: Health probe settings to the origin that is used to determine the health of the origin.
-        trafficRestorationTimeToHealedOrNewEndpointsInMinutes:
-          type: integer
-          format: int32
-          description: Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. This property is currently not supported.
-          minimum: 0
-          maximum: 50
-        sessionAffinityState:
-          $ref: '#/components/schemas/EnabledState'
-          description: Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
-        authentication:
-          $ref: '#/components/schemas/OriginAuthenticationProperties'
-          description: Authentication settings for origin in origin group.
-    ResourceReference:
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    OriginAuthenticationProperties:
       type: object
-      description: Reference to another resource.
+      description: The JSON object that contains the properties of the origin authentication settings.
       properties:
-        id:
+        type:
+          $ref: '#/components/schemas/OriginAuthenticationType'
+          description: The type of the authentication for the origin.
+        userAssignedIdentity:
+          $ref: '#/components/schemas/ResourceReference'
+          description: The user assigned managed identity to use for the origin authentication if type is UserAssignedIdentity.
+        scope:
           type: string
-          description: Resource ID.
-    LoadBalancingSettingsParameters:
+          format: uri
+          description: The scope used when requesting token from Microsoft Entra. For example, for Azure Blob Storage, scope could be "https://storage.azure.com/.default".
+        tokenDestinationHeader:
+          $ref: '#/components/schemas/OriginAuthenticationTokenDestinationHeader'
+          description: The HTTP request header where the origin authentication token will be placed when forwarding the request to the origin. If not specified, the service will use the `Authorization` header for backward compatibility.
+    UsageName:
       type: object
-      description: Round-Robin load balancing settings for a backend pool
+      description: The usage names.
       properties:
-        sampleSize:
-          type: integer
-          format: int32
-          description: The number of samples to consider for load balancing decisions
-        successfulSamplesRequired:
-          type: integer
-          format: int32
-          description: The number of samples within the sample period that must succeed
-        additionalLatencyInMilliseconds:
-          type: integer
-          format: int32
-          description: The additional latency in milliseconds for probes to fall into the lowest latency bucket
+        value:
+          type: string
+          description: A string describing the resource name.
+        localizedValue:
+          type: string
+          description: A localized string describing the resource name.
+    UsageUnit:
+      type: string
+      description: An enum describing the unit of measurement.
+      enum:
+      - Count
+      x-ms-enum:
+        name: UsageUnit
+        modelAsString: true
+        values:
+        - name: Count
+          value: Count
+    ProbeProtocol:
+      type: string
+      description: Protocol to use for health probe.
+      enum:
+      - NotSet
+      - Http
+      - Https
+      x-ms-enum:
+        name: ProbeProtocol
+        modelAsString: false
     AFDOriginGroupProperties:
       type: object
       description: The JSON object that contains the properties of the origin group.
@@ -472,165 +573,32 @@ components:
         deploymentStatus:
           $ref: '#/components/schemas/DeploymentStatus'
           readOnly: true
-    UsagesListResult:
+    AFDOriginGroupUpdatePropertiesParameters:
       type: object
-      description: The list usages operation response.
+      description: The JSON object that contains the properties of the origin group.
       properties:
-        value:
-          type: array
-          description: The Usage items on this page
-          items:
-            $ref: '#/components/schemas/Usage'
-        nextLink:
+        profileName:
           type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    HealthProbeParameters:
-      type: object
-      description: The JSON object that contains the properties to send health probes to origin.
-      properties:
-        probePath:
-          type: string
-          description: The path relative to the origin that is used to determine the health of the origin.
-        probeRequestType:
-          $ref: '#/components/schemas/HealthProbeRequestType'
-          description: The type of health probe request that is made.
-        probeProtocol:
-          $ref: '#/components/schemas/ProbeProtocol'
-          description: Protocol to use for health probe.
-        probeIntervalInSeconds:
+          description: The name of the profile which holds the origin group.
+          readOnly: true
+        loadBalancingSettings:
+          $ref: '#/components/schemas/LoadBalancingSettingsParameters'
+          description: Load balancing settings for a backend pool
+        healthProbeSettings:
+          $ref: '#/components/schemas/HealthProbeParameters'
+          description: Health probe settings to the origin that is used to determine the health of the origin.
+        trafficRestorationTimeToHealedOrNewEndpointsInMinutes:
           type: integer
           format: int32
-          description: The number of seconds between health probes.Default is 240sec.
-          minimum: 1
-          maximum: 255
-    UsageName:
-      type: object
-      description: The usage names.
-      properties:
-        value:
-          type: string
-          description: A string describing the resource name.
-        localizedValue:
-          type: string
-          description: A localized string describing the resource name.
-    Usage:
-      type: object
-      description: Describes resource usage.
-      properties:
-        id:
-          type: string
-          description: Resource identifier.
-          readOnly: true
-        unit:
-          $ref: '#/components/schemas/UsageUnit'
-          description: An enum describing the unit of measurement.
-        currentValue:
-          type: integer
-          format: int64
-          description: The current value of the usage.
-        limit:
-          type: integer
-          format: int64
-          description: The limit of usage.
-        name:
-          $ref: '#/components/schemas/UsageName'
-          description: The name of the type of usage.
-      required:
-      - unit
-      - currentValue
-      - limit
-      - name
-    EnabledState:
-      type: string
-      description: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
-      enum:
-      - Enabled
-      - Disabled
-      x-ms-enum:
-        name: EnabledState
-        modelAsString: true
-        values:
-        - name: Enabled
-          value: Enabled
-        - name: Disabled
-          value: Disabled
-    DeploymentStatus:
-      type: string
-      enum:
-      - NotStarted
-      - InProgress
-      - Succeeded
-      - Failed
-      x-ms-enum:
-        name: DeploymentStatus
-        modelAsString: true
-        values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-    OriginAuthenticationType:
-      type: string
-      description: The type of the authentication for the origin.
-      enum:
-      - SystemAssignedIdentity
-      - UserAssignedIdentity
-      x-ms-enum:
-        name: OriginAuthenticationType
-        modelAsString: true
-        values:
-        - name: SystemAssignedIdentity
-          value: SystemAssignedIdentity
-        - name: UserAssignedIdentity
-          value: UserAssignedIdentity
-    ProbeProtocol:
-      type: string
-      description: Protocol to use for health probe.
-      enum:
-      - NotSet
-      - Http
-      - Https
-      x-ms-enum:
-        name: ProbeProtocol
-        modelAsString: false
-    AFDOriginGroup:
-      type: object
-      description: AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from Azure Front Door.
-      properties:
-        properties:
-          $ref: '#/components/schemas/AFDOriginGroupProperties'
-          description: The JSON object that contains the properties of the origin group.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
-    UsageUnit:
-      type: string
-      description: An enum describing the unit of measurement.
-      enum:
-      - Count
-      x-ms-enum:
-        name: UsageUnit
-        modelAsString: true
-        values:
-        - name: Count
-          value: Count
-    HealthProbeRequestType:
-      type: string
-      description: The type of health probe request that is made.
-      enum:
-      - NotSet
-      - GET
-      - HEAD
-      x-ms-enum:
-        name: HealthProbeRequestType
-        modelAsString: false
+          description: Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. This property is currently not supported.
+          minimum: 0
+          maximum: 50
+        sessionAffinityState:
+          $ref: '#/components/schemas/EnabledState'
+          description: Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
+        authentication:
+          $ref: '#/components/schemas/OriginAuthenticationProperties'
+          description: Authentication settings for origin in origin group.
     OriginAuthenticationTokenDestinationHeader:
       type: string
       description: The HTTP request header where the origin authentication token is placed when forwarding the request to the origin.
@@ -647,14 +615,16 @@ components:
         - name: XAzureAuthorization
           value: X-Azure-Authorization
           description: Place the token in the `X-Azure-Authorization` request header to avoid conflicts with an existing `Authorization` header set by the client.
-    AFDOriginGroupUpdateParameters:
+    AFDOriginGroup:
       type: object
-      description: AFDOrigin group properties needed for origin group creation or update.
+      description: AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from Azure Front Door.
       properties:
         properties:
-          $ref: '#/components/schemas/AFDOriginGroupUpdatePropertiesParameters'
+          $ref: '#/components/schemas/AFDOriginGroupProperties'
           description: The JSON object that contains the properties of the origin group.
           x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     AFDOriginGroupListResult:
       type: object
       description: The response of a AFDOriginGroup list operation.
@@ -670,6 +640,36 @@ components:
           description: The link to the next page of items
       required:
       - value
+    OriginAuthenticationType:
+      type: string
+      description: The type of the authentication for the origin.
+      enum:
+      - SystemAssignedIdentity
+      - UserAssignedIdentity
+      x-ms-enum:
+        name: OriginAuthenticationType
+        modelAsString: true
+        values:
+        - name: SystemAssignedIdentity
+          value: SystemAssignedIdentity
+        - name: UserAssignedIdentity
+          value: UserAssignedIdentity
+    LoadBalancingSettingsParameters:
+      type: object
+      description: Round-Robin load balancing settings for a backend pool
+      properties:
+        sampleSize:
+          type: integer
+          format: int32
+          description: The number of samples to consider for load balancing decisions
+        successfulSamplesRequired:
+          type: integer
+          format: int32
+          description: The number of samples within the sample period that must succeed
+        additionalLatencyInMilliseconds:
+          type: integer
+          format: int32
+          description: The additional latency in milliseconds for probes to fall into the lowest latency bucket
   securitySchemes:
     azure_auth:
       type: oauth2

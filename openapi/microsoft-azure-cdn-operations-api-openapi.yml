@@ -45,6 +45,49 @@ paths:
     - url: https://management.azure.com
 components:
   schemas:
+    OperationDisplay:
+      type: object
+      description: The object that represents the operation.
+      properties:
+        provider:
+          type: string
+          description: 'Service provider: Microsoft.Cdn'
+          readOnly: true
+        resource:
+          type: string
+          description: 'Resource on which the operation is performed: Profile, endpoint, etc.'
+          readOnly: true
+        operation:
+          type: string
+          description: 'Operation type: Read, write, delete, etc.'
+          readOnly: true
+        description:
+          type: string
+          description: Description of operation.
+          readOnly: true
+    Operation:
+      type: object
+      description: CDN REST API operation
+      properties:
+        name:
+          type: string
+          description: 'Operation name: {provider}/{resource}/{operation}'
+          readOnly: true
+        isDataAction:
+          type: boolean
+          description: Indicates whether the operation is a data action
+        display:
+          $ref: '#/components/schemas/OperationDisplay'
+          description: The object that represents the operation.
+        origin:
+          type: string
+          description: The origin of operations.
+          readOnly: true
+        properties:
+          $ref: '#/components/schemas/OperationProperties'
+          description: Properties of operation, include metric specifications.
+          x-ms-client-flatten: true
+          x-ms-client-name: operationProperties
     LogSpecification:
       type: object
       description: Log specification of operation.
@@ -61,6 +104,19 @@ components:
         logFilterPattern:
           type: string
           description: Pattern to filter based on name
+    DimensionProperties:
+      type: object
+      description: 'Type of operation: get, read, delete, etc.'
+      properties:
+        name:
+          type: string
+          description: Name of dimension.
+        displayName:
+          type: string
+          description: Display name of dimension.
+        internalName:
+          type: string
+          description: Internal name of dimension.
     ServiceSpecification:
       type: object
       description: One property of operation, include log specifications.
@@ -79,6 +135,14 @@ components:
             $ref: '#/components/schemas/MetricSpecification'
           x-ms-identifiers:
           - name
+    MetricAvailability:
+      type: object
+      description: Retention policy of a resource metric.
+      properties:
+        timeGrain:
+          type: string
+        blobDuration:
+          type: string
     MetricSpecification:
       type: object
       description: Metric specification of operation.
@@ -125,77 +189,6 @@ components:
         isInternal:
           type: boolean
           description: Property to specify metric is internal or not.
-    Operation:
-      type: object
-      description: CDN REST API operation
-      properties:
-        name:
-          type: string
-          description: 'Operation name: {provider}/{resource}/{operation}'
-          readOnly: true
-        isDataAction:
-          type: boolean
-          description: Indicates whether the operation is a data action
-        display:
-          $ref: '#/components/schemas/OperationDisplay'
-          description: The object that represents the operation.
-        origin:
-          type: string
-          description: The origin of operations.
-          readOnly: true
-        properties:
-          $ref: '#/components/schemas/OperationProperties'
-          description: Properties of operation, include metric specifications.
-          x-ms-client-flatten: true
-          x-ms-client-name: operationProperties
-    OperationDisplay:
-      type: object
-      description: The object that represents the operation.
-      properties:
-        provider:
-          type: string
-          description: 'Service provider: Microsoft.Cdn'
-          readOnly: true
-        resource:
-          type: string
-          description: 'Resource on which the operation is performed: Profile, endpoint, etc.'
-          readOnly: true
-        operation:
-          type: string
-          description: 'Operation type: Read, write, delete, etc.'
-          readOnly: true
-        description:
-          type: string
-          description: Description of operation.
-          readOnly: true
-    OperationProperties:
-      type: object
-      description: Properties of operation, include metric specifications.
-      properties:
-        serviceSpecification:
-          $ref: '#/components/schemas/ServiceSpecification'
-          description: One property of operation, include metric specifications.
-    DimensionProperties:
-      type: object
-      description: 'Type of operation: get, read, delete, etc.'
-      properties:
-        name:
-          type: string
-          description: Name of dimension.
-        displayName:
-          type: string
-          description: Display name of dimension.
-        internalName:
-          type: string
-          description: Internal name of dimension.
-    MetricAvailability:
-      type: object
-      description: Retention policy of a resource metric.
-      properties:
-        timeGrain:
-          type: string
-        blobDuration:
-          type: string
     OperationsListResult:
       type: object
       description: Result of the request to list CDN operations. It contains a list of operations and a URL link to get the next set of results.
@@ -211,6 +204,13 @@ components:
           description: URL to get the next set of operation list results if there are any.
       required:
       - value
+    OperationProperties:
+      type: object
+      description: Properties of operation, include metric specifications.
+      properties:
+        serviceSpecification:
+          $ref: '#/components/schemas/ServiceSpecification'
+          description: One property of operation, include metric specifications.
     Operation_2:
       type: object
       properties:
@@ -229,6 +229,15 @@ components:
               type: string
         isDataAction:
           type: boolean
+    OperationList:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation_2'
+        nextLink:
+          type: string
     ErrorResponse:
       type: object
       properties:
@@ -241,15 +250,6 @@ components:
               type: string
             target:
               type: string
-    OperationList:
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/Operation_2'
-        nextLink:
-          type: string
   parameters:
     apiVersion:
       name: api-version

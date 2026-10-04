@@ -321,6 +321,46 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    OriginProperties:
+      type: object
+      description: The JSON object that contains the properties of the origin.
+      properties:
+        resourceState:
+          $ref: '#/components/schemas/OriginResourceState'
+          description: Resource status of the origin.
+          readOnly: true
+        provisioningState:
+          $ref: '#/components/schemas/OriginProvisioningState'
+          description: Provisioning status of the origin.
+          readOnly: true
+        privateEndpointStatus:
+          $ref: '#/components/schemas/PrivateEndpointStatus'
+          description: The approval status for the connection to the Private Link
+          readOnly: true
+        hostName:
+          type: string
+          description: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique across all origins in an endpoint.
+      required:
+      - hostName
+      allOf:
+      - $ref: '#/components/schemas/OriginUpdatePropertiesParameters'
+    OriginResourceState:
+      type: string
+      description: Resource status of the origin.
+      enum:
+      - Creating
+      - Active
+      - Deleting
+      x-ms-enum:
+        name: OriginResourceState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Active
+          value: Active
+        - name: Deleting
+          value: Deleting
     OriginProvisioningState:
       type: string
       description: Provisioning status of the origin.
@@ -344,16 +384,6 @@ components:
           value: Deleting
         - name: Creating
           value: Creating
-    Origin:
-      type: object
-      description: CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the configured origins.
-      properties:
-        properties:
-          $ref: '#/components/schemas/OriginProperties'
-          description: The JSON object that contains the properties of the origin.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     OriginListResult:
       type: object
       description: The response of a Origin list operation.
@@ -369,14 +399,29 @@ components:
           description: The link to the next page of items
       required:
       - value
-    OriginUpdateParameters:
-      type: object
-      description: Origin properties needed for origin update.
-      properties:
-        properties:
-          $ref: '#/components/schemas/OriginUpdatePropertiesParameters'
-          description: The JSON object that contains the properties of the origin.
-          x-ms-client-flatten: true
+    PrivateEndpointStatus:
+      type: string
+      description: The approval status for the connection to the Private Link
+      enum:
+      - Pending
+      - Approved
+      - Rejected
+      - Disconnected
+      - Timeout
+      x-ms-enum:
+        name: PrivateEndpointStatus
+        modelAsString: true
+        values:
+        - name: Pending
+          value: Pending
+        - name: Approved
+          value: Approved
+        - name: Rejected
+          value: Rejected
+        - name: Disconnected
+          value: Disconnected
+        - name: Timeout
+          value: Timeout
     OriginUpdatePropertiesParameters:
       type: object
       description: The JSON object that contains the properties of the origin.
@@ -426,69 +471,24 @@ components:
         privateLinkApprovalMessage:
           type: string
           description: A custom message to be included in the approval request to connect to the Private Link.
-    OriginResourceState:
-      type: string
-      description: Resource status of the origin.
-      enum:
-      - Creating
-      - Active
-      - Deleting
-      x-ms-enum:
-        name: OriginResourceState
-        modelAsString: true
-        values:
-        - name: Creating
-          value: Creating
-        - name: Active
-          value: Active
-        - name: Deleting
-          value: Deleting
-    PrivateEndpointStatus:
-      type: string
-      description: The approval status for the connection to the Private Link
-      enum:
-      - Pending
-      - Approved
-      - Rejected
-      - Disconnected
-      - Timeout
-      x-ms-enum:
-        name: PrivateEndpointStatus
-        modelAsString: true
-        values:
-        - name: Pending
-          value: Pending
-        - name: Approved
-          value: Approved
-        - name: Rejected
-          value: Rejected
-        - name: Disconnected
-          value: Disconnected
-        - name: Timeout
-          value: Timeout
-    OriginProperties:
+    OriginUpdateParameters:
       type: object
-      description: The JSON object that contains the properties of the origin.
+      description: Origin properties needed for origin update.
       properties:
-        resourceState:
-          $ref: '#/components/schemas/OriginResourceState'
-          description: Resource status of the origin.
-          readOnly: true
-        provisioningState:
-          $ref: '#/components/schemas/OriginProvisioningState'
-          description: Provisioning status of the origin.
-          readOnly: true
-        privateEndpointStatus:
-          $ref: '#/components/schemas/PrivateEndpointStatus'
-          description: The approval status for the connection to the Private Link
-          readOnly: true
-        hostName:
-          type: string
-          description: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique across all origins in an endpoint.
-      required:
-      - hostName
+        properties:
+          $ref: '#/components/schemas/OriginUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the origin.
+          x-ms-client-flatten: true
+    Origin:
+      type: object
+      description: CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the configured origins.
+      properties:
+        properties:
+          $ref: '#/components/schemas/OriginProperties'
+          description: The JSON object that contains the properties of the origin.
+          x-ms-client-flatten: true
       allOf:
-      - $ref: '#/components/schemas/OriginUpdatePropertiesParameters'
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2
