@@ -218,7 +218,8 @@ apis:
   description: The Endpoints API from Microsoft Azure Cdn — 8 operation(s) for endpoints.
   humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
   baseURL: https://management.azure.com/
-  tags:
+  tags: []
+  tags_raw:
   - Endpoints
   properties:
   - type: OpenAPI
@@ -357,6 +358,8 @@ apis:
   humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
   baseURL: https://management.azure.com/
   tags:
+  - Rulesets
+  tags_raw:
   - RuleSets
   properties:
   - type: OpenAPI
@@ -403,6 +406,8 @@ apis:
   humanURL: https://learn.microsoft.com/en-us/rest/api/cdn/
   baseURL: https://management.azure.com/
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
@@ -468,6 +473,9 @@ apis:
     url: >-
       https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/Cdn/stable/2026-07-01
 common:
+- type: CapabilityMap
+  url: capabilities/microsoft-azure-cdn-capability-edges.yml
+  name: Microsoft Azure Cdn Business Capability Map
 - type: TrustCenter
   url: security/microsoft-azure-cdn-trust-center.yml
 - type: VulnerabilityDisclosure
