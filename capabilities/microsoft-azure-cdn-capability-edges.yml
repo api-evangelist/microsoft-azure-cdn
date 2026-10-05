@@ -1,0 +1,112 @@
+slug: microsoft-azure-cdn
+provider: Microsoft Azure Cdn
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 10
+edges:
+- tag: Endpoints
+  spec_file: microsoft-azure-cdn-endpoints-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: '"Endpoints_Create", "Endpoints_PurgeContent  Endpoints purge content", "Endpoints_Start"/"Endpoints_Stop"'
+  reason: Lifecycle and runtime control of CDN delivery endpoints (create, start/stop, purge/load cached
+    content) is management of cloud network/content-delivery infrastructure.
+- tag: Custom Domains
+  spec_file: microsoft-azure-cdn-custom-domains-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"CustomDomains_EnableCustomHttps  Custom domains enable custom https" with schemas CertificateSource,
+    MinimumTlsVersion, CustomHttpsProvisioningState'
+  reason: Binding customer hostnames and TLS settings to CDN endpoints is configuration of cloud delivery
+    infrastructure, i.e. IT Infrastructure Management. Not a business-domain capability.
+- tag: OriginGroups
+  spec_file: microsoft-azure-cdn-origingroups-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"OriginGroups_Create  Origin groups create" with schemas HealthProbeParameters, ProbeProtocol,
+    ResponseBasedDetectedErrorTypes'
+  reason: Configuration of backend origin groups and health probing for CDN traffic routing is cloud delivery
+    infrastructure configuration.
+- tag: Origins
+  spec_file: microsoft-azure-cdn-origins-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"Origins_Create  Origins create" under /endpoints/{endpointName}/origins with schemas OriginProperties,
+    PrivateEndpointStatus'
+  reason: CRUD over CDN origin servers backing an endpoint — infrastructure resource configuration, not
+    a business process.
+- tag: Profiles
+  spec_file: microsoft-azure-cdn-profiles-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"Profiles_Create", "Profiles_CdnMigrateToAfd  Profiles cdn migrate to afd", "Profiles_ListResourceUsage"'
+  reason: Lifecycle of CDN/Front Door profile resources including SKU, migration and resource-usage checks
+    — management of cloud content-delivery infrastructure.
+- tag: AFDEndpoints
+  spec_file: microsoft-azure-cdn-afdendpoints-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: AFDEndpoints_Create; AFDEndpoints_PurgeContent  AFD endpoints purge content
+  reason: Lifecycle and cache-purge operations for CDN delivery endpoints — cloud/network infrastructure
+    management, not content marketing or product management.
+- tag: AFDOriginGroups
+  spec_file: microsoft-azure-cdn-afdorigingroups-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: AFDOriginGroups_Create; schemas LoadBalancingSettingsParameters, HealthProbeParameters
+  reason: Configures origin groups with load-balancing and health-probe settings behind the CDN — cloud
+    network infrastructure configuration.
+- tag: AFDOrigins
+  spec_file: microsoft-azure-cdn-afdorigins-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: AFDOrigins_Create  AFD origins create; schema AFDOriginProperties
+  reason: CRUD over backend origins served through the CDN, including private-link settings — infrastructure
+    resource configuration.
+- tag: CdnWebApplicationFirewallPolicies
+  spec_file: microsoft-azure-cdn-cdnwebapplicationfirewallpolicies-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: '"Policies_CreateOrUpdate  Policies create or update" on cdnWebApplicationFirewallPolicies
+    with schemas CustomRule, RateLimitRule, ManagedRuleSetList, WafMatchVariable'
+  reason: Operations manage Web Application Firewall policies — custom rules, managed rule sets, rate
+    limiting — i.e. configuration of protective security controls in front of web traffic. That is cybersecurity
+    control management; the specific L2 (security architecture vs threat detection) is not clearly determined,
+    so only the L1 is asserted.
+- tag: Routes
+  spec_file: microsoft-azure-cdn-routes-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: '"Routes_Create  Routes create" under /afdEndpoints/{endpointName}/routes with schemas AfdRouteCacheConfiguration,
+    CompressionSettings'
+  reason: Front Door route configuration (path patterns, caching, compression, protocols) is traffic-delivery
+    infrastructure configuration.
