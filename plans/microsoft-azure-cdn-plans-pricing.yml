@@ -160,3 +160,35 @@ related_products:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units:
+  - data
+  - request
+  plans:
+  - name: Azure Content Delivery Network from Microsoft (classic) — Standard (S3)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - data
+    periods:
+    - month
+  - name: Azure Standard CDN from Microsoft (classic) — Routing Rules Engine add-on
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - other
+    - request
+    periods:
+    - month
+  - name: Azure Standard CDN from Microsoft (classic) — WAF
+    access: other
+    model: metered
+    model_how: stated
+    units: []
+    periods: []
