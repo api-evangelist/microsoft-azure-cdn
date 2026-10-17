@@ -376,231 +376,26 @@ components:
           x-ms-client-flatten: true
       allOf:
       - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
-    AfdServerTlsGroup:
-      type: string
-      description: Supported key-exchange groups and curves. The ML-KEM groups are hybrid post-quantum groups.
-      enum:
-      - SecP256r1MLKEM768
-      - SecP384r1MLKEM1024
-      - X25519MLKEM768
-      - prime256v1
-      - X25519
-      - secp384r1
-      - secp521r1
-      x-ms-enum:
-        name: AfdServerTlsGroup
-        modelAsString: true
-        values:
-        - name: SecP256r1MLKEM768
-          value: SecP256r1MLKEM768
-          description: Hybrid post-quantum group combining secp256r1 with ML-KEM-768.
-        - name: SecP384r1MLKEM1024
-          value: SecP384r1MLKEM1024
-          description: Hybrid post-quantum group combining secp384r1 with ML-KEM-1024.
-        - name: X25519MLKEM768
-          value: X25519MLKEM768
-          description: Hybrid post-quantum group combining X25519 with ML-KEM-768.
-        - name: prime256v1
-          value: prime256v1
-          description: The prime256v1 elliptic curve group.
-        - name: X25519
-          value: X25519
-          description: The X25519 elliptic curve group.
-        - name: secp384r1
-          value: secp384r1
-          description: The secp384r1 elliptic curve group.
-        - name: secp521r1
-          value: secp521r1
-          description: The secp521r1 elliptic curve group.
-    MtlsScenarioType:
-      type: string
-      description: Supported scenarios for establishing mTLS connection.
-      enum:
-      - ClientCertificateRequiredAndValidated
-      - ClientCertificateRequiredAndOriginValidates
-      - ClientCertificateValidatedIfPresented
-      - CompleteMtlsPassthroughToOrigin
-      x-ms-enum:
-        name: MtlsScenarioType
-        modelAsString: true
-        values:
-        - name: ClientCertificateRequiredAndValidated
-          value: ClientCertificateRequiredAndValidated
-        - name: ClientCertificateRequiredAndOriginValidates
-          value: ClientCertificateRequiredAndOriginValidates
-        - name: ClientCertificateValidatedIfPresented
-          value: ClientCertificateValidatedIfPresented
-        - name: CompleteMtlsPassthroughToOrigin
-          value: CompleteMtlsPassthroughToOrigin
-    DomainValidationProperties:
+    AFDDomainUpdatePropertiesParameters:
       type: object
-      description: The JSON object that contains the properties to validate a domain.
+      description: The JSON object that contains the properties of the domain to create.
       properties:
-        validationToken:
+        profileName:
           type: string
-          description: Challenge used for DNS TXT record or file based validation
+          description: The name of the profile which holds the domain.
           readOnly: true
-        expirationDate:
-          type: string
-          description: The date time that the token expires
-          readOnly: true
-    AFDDomainHttpsCustomizedCipherSuiteSet:
-      type: object
-      description: Customized cipher suite set object that will be used for Https when cipherSuiteSetType is Customized.
-      properties:
-        cipherSuiteSetForTls12:
-          type: array
-          description: Cipher suites for TLS 1.2. Required at least one in minimumTlsVersion TLS 1.2.
-          items:
-            $ref: '#/components/schemas/AfdCustomizedCipherSuiteForTls12'
-        cipherSuiteSetForTls13:
-          type: array
-          description: Cipher suites for TLS 1.3. Required at least one in minimumTlsVersion TLS 1.2, TLS 1.3.
-          items:
-            $ref: '#/components/schemas/AfdCustomizedCipherSuiteForTls13'
-    ResourceReference:
-      type: object
-      description: Reference to another resource.
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-    AfdMinimumTlsVersion:
-      type: string
-      description: TLS protocol version that will be used for Https when cipherSuiteSetType is Customized.
-      enum:
-      - TLS10
-      - TLS12
-      - TLS13
-      x-ms-enum:
-        name: AfdMinimumTlsVersion
-        modelAsString: false
-    AfdCertificateType:
-      type: string
-      description: Defines the source of the SSL certificate.
-      enum:
-      - CustomerCertificate
-      - ManagedCertificate
-      - AzureFirstPartyManagedCertificate
-      x-ms-enum:
-        name: AfdCertificateType
-        modelAsString: true
-        values:
-        - name: CustomerCertificate
-          value: CustomerCertificate
-        - name: ManagedCertificate
-          value: ManagedCertificate
-        - name: AzureFirstPartyManagedCertificate
-          value: AzureFirstPartyManagedCertificate
-    DeploymentStatus:
-      type: string
-      enum:
-      - NotStarted
-      - InProgress
-      - Succeeded
-      - Failed
-      x-ms-enum:
-        name: DeploymentStatus
-        modelAsString: true
-        values:
-        - name: NotStarted
-          value: NotStarted
-        - name: InProgress
-          value: InProgress
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-    AFDDomainHttpsParameters:
-      type: object
-      description: The JSON object that contains the properties to secure a domain.
-      properties:
-        certificateType:
-          $ref: '#/components/schemas/AfdCertificateType'
-          description: Defines the source of the SSL certificate.
-        cipherSuiteSetType:
-          $ref: '#/components/schemas/AfdCipherSuiteSetType'
-          description: cipher suite set type that will be used for Https
-        minimumTlsVersion:
-          $ref: '#/components/schemas/AfdMinimumTlsVersion'
-          description: TLS protocol version that will be used for Https when cipherSuiteSetType is Customized.
-        customizedCipherSuiteSet:
-          $ref: '#/components/schemas/AFDDomainHttpsCustomizedCipherSuiteSet'
-          description: Customized cipher suites object that will be used for Https when cipherSuiteSetType is Customized.
-        serverTlsGroupPolicy:
-          $ref: '#/components/schemas/AfdServerTlsGroupPolicy'
-          description: Server TLS group policy that will be used for Https.
-        serverTlsGroups:
-          type: array
-          description: Server TLS groups that will be used for Https when serverTlsGroupPolicy is Custom.
-          items:
-            $ref: '#/components/schemas/AfdServerTlsGroup'
-        secret:
+        tlsSettings:
+          $ref: '#/components/schemas/AFDDomainHttpsParameters'
+          description: The configuration specifying how to enable HTTPS for the domain - using AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor managed certificate by default.
+        mtlsSettings:
+          $ref: '#/components/schemas/AFDDomainMtlsParameters'
+          description: The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server certificate(s) to use.
+        azureDnsZone:
           $ref: '#/components/schemas/ResourceReference'
-          description: Resource reference to the secret. ie. subs/rg/profile/secret
-      required:
-      - certificateType
-    AfdCustomizedCipherSuiteForTls13:
-      type: string
-      enum:
-      - TLS_AES_128_GCM_SHA256
-      - TLS_AES_256_GCM_SHA384
-      x-ms-enum:
-        name: AfdCustomizedCipherSuiteForTls13
-        modelAsString: true
-        values:
-        - name: TLS_AES_128_GCM_SHA256
-          value: TLS_AES_128_GCM_SHA256
-        - name: TLS_AES_256_GCM_SHA384
-          value: TLS_AES_256_GCM_SHA384
-    AFDDomainListResult:
-      type: object
-      description: The response of a AFDDomain list operation.
-      properties:
-        value:
-          type: array
-          description: The AFDDomain items on this page
-          items:
-            $ref: '#/components/schemas/AFDDomain'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    AFDDomainUpdateParameters:
-      type: object
-      description: The domain JSON object required for domain creation or update.
-      properties:
-        properties:
-          $ref: '#/components/schemas/AFDDomainUpdatePropertiesParameters'
-          description: The JSON object that contains the properties of the domain to create.
-          x-ms-client-flatten: true
-    AfdCustomizedCipherSuiteForTls12:
-      type: string
-      enum:
-      - ECDHE_RSA_AES128_GCM_SHA256
-      - ECDHE_RSA_AES256_GCM_SHA384
-      - DHE_RSA_AES256_GCM_SHA384
-      - DHE_RSA_AES128_GCM_SHA256
-      - ECDHE_RSA_AES128_SHA256
-      - ECDHE_RSA_AES256_SHA384
-      x-ms-enum:
-        name: AfdCustomizedCipherSuiteForTls12
-        modelAsString: true
-        values:
-        - name: ECDHE_RSA_AES128_GCM_SHA256
-          value: ECDHE_RSA_AES128_GCM_SHA256
-        - name: ECDHE_RSA_AES256_GCM_SHA384
-          value: ECDHE_RSA_AES256_GCM_SHA384
-        - name: DHE_RSA_AES256_GCM_SHA384
-          value: DHE_RSA_AES256_GCM_SHA384
-        - name: DHE_RSA_AES128_GCM_SHA256
-          value: DHE_RSA_AES128_GCM_SHA256
-        - name: ECDHE_RSA_AES128_SHA256
-          value: ECDHE_RSA_AES128_SHA256
-        - name: ECDHE_RSA_AES256_SHA384
-          value: ECDHE_RSA_AES256_SHA384
+          description: Resource reference to the Azure DNS zone
+        preValidatedCustomDomainResourceId:
+          $ref: '#/components/schemas/ResourceReference'
+          description: Resource reference to the Azure resource where custom domain ownership was prevalidated
     AfdProvisioningState:
       type: string
       description: Provisioning status
@@ -644,6 +439,109 @@ components:
         - name: Custom
           value: Custom
           description: Uses the server TLS groups specified by serverTlsGroups.
+    AFDDomainUpdateParameters:
+      type: object
+      description: The domain JSON object required for domain creation or update.
+      properties:
+        properties:
+          $ref: '#/components/schemas/AFDDomainUpdatePropertiesParameters'
+          description: The JSON object that contains the properties of the domain to create.
+          x-ms-client-flatten: true
+    AFDDomainHttpsParameters:
+      type: object
+      description: The JSON object that contains the properties to secure a domain.
+      properties:
+        certificateType:
+          $ref: '#/components/schemas/AfdCertificateType'
+          description: Defines the source of the SSL certificate.
+        cipherSuiteSetType:
+          $ref: '#/components/schemas/AfdCipherSuiteSetType'
+          description: cipher suite set type that will be used for Https
+        minimumTlsVersion:
+          $ref: '#/components/schemas/AfdMinimumTlsVersion'
+          description: TLS protocol version that will be used for Https when cipherSuiteSetType is Customized.
+        customizedCipherSuiteSet:
+          $ref: '#/components/schemas/AFDDomainHttpsCustomizedCipherSuiteSet'
+          description: Customized cipher suites object that will be used for Https when cipherSuiteSetType is Customized.
+        serverTlsGroupPolicy:
+          $ref: '#/components/schemas/AfdServerTlsGroupPolicy'
+          description: Server TLS group policy that will be used for Https.
+        serverTlsGroups:
+          type: array
+          description: Server TLS groups that will be used for Https when serverTlsGroupPolicy is Custom.
+          items:
+            $ref: '#/components/schemas/AfdServerTlsGroup'
+        secret:
+          $ref: '#/components/schemas/ResourceReference'
+          description: Resource reference to the secret. ie. subs/rg/profile/secret
+      required:
+      - certificateType
+    AfdCustomizedCipherSuiteForTls13:
+      type: string
+      enum:
+      - TLS_AES_128_GCM_SHA256
+      - TLS_AES_256_GCM_SHA384
+      x-ms-enum:
+        name: AfdCustomizedCipherSuiteForTls13
+        modelAsString: true
+        values:
+        - name: TLS_AES_128_GCM_SHA256
+          value: TLS_AES_128_GCM_SHA256
+        - name: TLS_AES_256_GCM_SHA384
+          value: TLS_AES_256_GCM_SHA384
+    AfdCertificateType:
+      type: string
+      description: Defines the source of the SSL certificate.
+      enum:
+      - CustomerCertificate
+      - ManagedCertificate
+      - AzureFirstPartyManagedCertificate
+      x-ms-enum:
+        name: AfdCertificateType
+        modelAsString: true
+        values:
+        - name: CustomerCertificate
+          value: CustomerCertificate
+        - name: ManagedCertificate
+          value: ManagedCertificate
+        - name: AzureFirstPartyManagedCertificate
+          value: AzureFirstPartyManagedCertificate
+    AfdServerTlsGroup:
+      type: string
+      description: Supported key-exchange groups and curves. The ML-KEM groups are hybrid post-quantum groups.
+      enum:
+      - SecP256r1MLKEM768
+      - SecP384r1MLKEM1024
+      - X25519MLKEM768
+      - prime256v1
+      - X25519
+      - secp384r1
+      - secp521r1
+      x-ms-enum:
+        name: AfdServerTlsGroup
+        modelAsString: true
+        values:
+        - name: SecP256r1MLKEM768
+          value: SecP256r1MLKEM768
+          description: Hybrid post-quantum group combining secp256r1 with ML-KEM-768.
+        - name: SecP384r1MLKEM1024
+          value: SecP384r1MLKEM1024
+          description: Hybrid post-quantum group combining secp384r1 with ML-KEM-1024.
+        - name: X25519MLKEM768
+          value: X25519MLKEM768
+          description: Hybrid post-quantum group combining X25519 with ML-KEM-768.
+        - name: prime256v1
+          value: prime256v1
+          description: The prime256v1 elliptic curve group.
+        - name: X25519
+          value: X25519
+          description: The X25519 elliptic curve group.
+        - name: secp384r1
+          value: secp384r1
+          description: The secp384r1 elliptic curve group.
+        - name: secp521r1
+          value: secp521r1
+          description: The secp521r1 elliptic curve group.
     DomainValidationState:
       type: string
       description: Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. DCV stands for DomainControlValidation.
@@ -679,6 +577,84 @@ components:
           value: RefreshingValidationToken
         - name: InternalError
           value: InternalError
+    DomainValidationProperties:
+      type: object
+      description: The JSON object that contains the properties to validate a domain.
+      properties:
+        validationToken:
+          type: string
+          description: Challenge used for DNS TXT record or file based validation
+          readOnly: true
+        expirationDate:
+          type: string
+          description: The date time that the token expires
+          readOnly: true
+    AfdCustomizedCipherSuiteForTls12:
+      type: string
+      enum:
+      - ECDHE_RSA_AES128_GCM_SHA256
+      - ECDHE_RSA_AES256_GCM_SHA384
+      - DHE_RSA_AES256_GCM_SHA384
+      - DHE_RSA_AES128_GCM_SHA256
+      - ECDHE_RSA_AES128_SHA256
+      - ECDHE_RSA_AES256_SHA384
+      x-ms-enum:
+        name: AfdCustomizedCipherSuiteForTls12
+        modelAsString: true
+        values:
+        - name: ECDHE_RSA_AES128_GCM_SHA256
+          value: ECDHE_RSA_AES128_GCM_SHA256
+        - name: ECDHE_RSA_AES256_GCM_SHA384
+          value: ECDHE_RSA_AES256_GCM_SHA384
+        - name: DHE_RSA_AES256_GCM_SHA384
+          value: DHE_RSA_AES256_GCM_SHA384
+        - name: DHE_RSA_AES128_GCM_SHA256
+          value: DHE_RSA_AES128_GCM_SHA256
+        - name: ECDHE_RSA_AES128_SHA256
+          value: ECDHE_RSA_AES128_SHA256
+        - name: ECDHE_RSA_AES256_SHA384
+          value: ECDHE_RSA_AES256_SHA384
+    MtlsScenarioType:
+      type: string
+      description: Supported scenarios for establishing mTLS connection.
+      enum:
+      - ClientCertificateRequiredAndValidated
+      - ClientCertificateRequiredAndOriginValidates
+      - ClientCertificateValidatedIfPresented
+      - CompleteMtlsPassthroughToOrigin
+      x-ms-enum:
+        name: MtlsScenarioType
+        modelAsString: true
+        values:
+        - name: ClientCertificateRequiredAndValidated
+          value: ClientCertificateRequiredAndValidated
+        - name: ClientCertificateRequiredAndOriginValidates
+          value: ClientCertificateRequiredAndOriginValidates
+        - name: ClientCertificateValidatedIfPresented
+          value: ClientCertificateValidatedIfPresented
+        - name: CompleteMtlsPassthroughToOrigin
+          value: CompleteMtlsPassthroughToOrigin
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+    AFDDomainHttpsCustomizedCipherSuiteSet:
+      type: object
+      description: Customized cipher suite set object that will be used for Https when cipherSuiteSetType is Customized.
+      properties:
+        cipherSuiteSetForTls12:
+          type: array
+          description: Cipher suites for TLS 1.2. Required at least one in minimumTlsVersion TLS 1.2.
+          items:
+            $ref: '#/components/schemas/AfdCustomizedCipherSuiteForTls12'
+        cipherSuiteSetForTls13:
+          type: array
+          description: Cipher suites for TLS 1.3. Required at least one in minimumTlsVersion TLS 1.2, TLS 1.3.
+          items:
+            $ref: '#/components/schemas/AfdCustomizedCipherSuiteForTls13'
     AfdCipherSuiteSetType:
       type: string
       description: cipher suite set type that will be used for Https
@@ -699,6 +675,61 @@ components:
           value: TLS12_2022
         - name: TLS12_2023
           value: TLS12_2023
+    AFDDomainListResult:
+      type: object
+      description: The response of a AFDDomain list operation.
+      properties:
+        value:
+          type: array
+          description: The AFDDomain items on this page
+          items:
+            $ref: '#/components/schemas/AFDDomain'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    DeploymentStatus:
+      type: string
+      enum:
+      - NotStarted
+      - InProgress
+      - Succeeded
+      - Failed
+      x-ms-enum:
+        name: DeploymentStatus
+        modelAsString: true
+        values:
+        - name: NotStarted
+          value: NotStarted
+        - name: InProgress
+          value: InProgress
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+    AFDDomainMtlsParameters:
+      type: object
+      description: Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot be configured for custom domains with wildcard host names.
+      properties:
+        scenario:
+          $ref: '#/components/schemas/MtlsScenarioType'
+          description: Supported scenarios for establishing mTLS connection.
+      discriminator:
+        propertyName: scenario
+      required:
+      - scenario
+    AfdMinimumTlsVersion:
+      type: string
+      description: TLS protocol version that will be used for Https when cipherSuiteSetType is Customized.
+      enum:
+      - TLS10
+      - TLS12
+      - TLS13
+      x-ms-enum:
+        name: AfdMinimumTlsVersion
+        modelAsString: false
     AFDDomainProperties:
       type: object
       description: The JSON object that contains the properties of the domain to create.
@@ -744,37 +775,6 @@ components:
           readOnly: true
       required:
       - hostName
-    AFDDomainMtlsParameters:
-      type: object
-      description: Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot be configured for custom domains with wildcard host names.
-      properties:
-        scenario:
-          $ref: '#/components/schemas/MtlsScenarioType'
-          description: Supported scenarios for establishing mTLS connection.
-      discriminator:
-        propertyName: scenario
-      required:
-      - scenario
-    AFDDomainUpdatePropertiesParameters:
-      type: object
-      description: The JSON object that contains the properties of the domain to create.
-      properties:
-        profileName:
-          type: string
-          description: The name of the profile which holds the domain.
-          readOnly: true
-        tlsSettings:
-          $ref: '#/components/schemas/AFDDomainHttpsParameters'
-          description: The configuration specifying how to enable HTTPS for the domain - using AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor managed certificate by default.
-        mtlsSettings:
-          $ref: '#/components/schemas/AFDDomainMtlsParameters'
-          description: The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server certificate(s) to use.
-        azureDnsZone:
-          $ref: '#/components/schemas/ResourceReference'
-          description: Resource reference to the Azure DNS zone
-        preValidatedCustomDomainResourceId:
-          $ref: '#/components/schemas/ResourceReference'
-          description: Resource reference to the Azure resource where custom domain ownership was prevalidated
   securitySchemes:
     azure_auth:
       type: oauth2

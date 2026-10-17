@@ -1595,127 +1595,53 @@ paths:
       description: Azure Resource Manager
 components:
   schemas:
-    MigrateResultProperties:
+    RankingsResponseTablesPropertiesItemsItem:
       type: object
       properties:
-        migratedProfileResourceId:
-          $ref: '#/components/schemas/ResourceReference'
-          description: Arm resource id of the migrated profile
-          readOnly: true
-    ContinentsResponseContinentsItem:
-      type: object
-      properties:
-        id:
-          type: string
-    ResourcesResponseEndpointsItem:
-      type: object
-      properties:
-        id:
-          type: string
         name:
           type: string
-        history:
-          type: boolean
-        customDomains:
+        metrics:
           type: array
           items:
-            $ref: '#/components/schemas/ResourcesResponseEndpointsPropertiesItemsItem'
-    MetricsResponse:
-      type: object
-      description: Metrics Response
-      properties:
-        dateTimeBegin:
-          type: string
-          format: date-time
-        dateTimeEnd:
-          type: string
-          format: date-time
-        granularity:
-          $ref: '#/components/schemas/MetricsGranularity'
-        series:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricsResponseSeriesItem'
+            $ref: '#/components/schemas/RankingsResponseTablesPropertiesItemsMetricsItem'
           x-ms-identifiers: []
-    Profile:
+    WafMetricsSeriesUnit:
+      type: string
+      enum:
+      - count
+      x-ms-enum:
+        name: WafMetricsSeriesUnit
+        modelAsString: true
+        values:
+        - name: count
+          value: count
+    ProfileUpdateParameters:
       type: object
-      description: A profile is a logical grouping of endpoints that share the same settings.
+      description: Properties required to update a profile.
       properties:
-        properties:
-          $ref: '#/components/schemas/ProfileProperties'
-          description: The JSON object that contains the properties required to create a profile.
-          x-ms-client-flatten: true
-        sku:
-          $ref: '#/components/schemas/Sku'
-          description: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature list and rate) of the profile.
-        kind:
-          type: string
-          description: Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD profile.
-          readOnly: true
+        tags:
+          type: object
+          description: Profile tags
+          additionalProperties:
+            type: string
         identity:
           $ref: ../../../../../../common-types/resource-management/v6/managedidentity.json#/definitions/ManagedServiceIdentity
-          description: The managed service identities assigned to this resource.
-      required:
-      - sku
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/TrackedResource
-    ResourceReference:
-      type: object
-      description: Reference to another resource.
-      properties:
-        id:
-          type: string
-          description: Resource ID.
-    WafMetricsResponseSeriesPropertiesItemsItem:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-    ValidateSecretInput:
-      type: object
-      description: Input of the secret to be validated.
-      properties:
-        secretType:
-          $ref: '#/components/schemas/SecretType'
-          description: The secret type.
-        secretSource:
-          $ref: '#/components/schemas/ResourceReference'
-          description: Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}
-        secretVersion:
-          type: string
-          description: Secret version, if customer is using a specific version.
-      required:
-      - secretType
-      - secretSource
-    CheckHostNameAvailabilityInput:
-      type: object
-      description: Input of CheckHostNameAvailability API.
-      properties:
-        hostName:
-          type: string
-          description: The host name to validate.
-      required:
-      - hostName
-    WafMetricsResponseSeriesItem:
-      type: object
-      properties:
-        metric:
-          type: string
-        unit:
-          $ref: '#/components/schemas/WafMetricsSeriesUnit'
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/WafMetricsResponseSeriesPropertiesItemsItem'
-          x-ms-identifiers:
-          - name
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems'
-          x-ms-identifiers: []
+          description: Managed service identity (system assigned and/or user assigned identities).
+        properties:
+          $ref: '#/components/schemas/ProfilePropertiesUpdateParameters'
+          description: The JSON object containing profile update parameters.
+          x-ms-client-flatten: true
+    UsageUnit:
+      type: string
+      description: An enum describing the unit of measurement.
+      enum:
+      - Count
+      x-ms-enum:
+        name: UsageUnit
+        modelAsString: true
+        values:
+        - name: Count
+          value: Count
     CanMigrateDefaultSku:
       type: string
       description: Recommended sku for the migration
@@ -1730,31 +1656,74 @@ components:
           value: Standard_AzureFrontDoor
         - name: Premium_AzureFrontDoor
           value: Premium_AzureFrontDoor
-    ProfileChangeSkuWafMapping:
+    SupportedOptimizationTypesListResult:
       type: object
-      description: Parameters required for profile upgrade.
+      description: The result of the GetSupportedOptimizationTypes API
       properties:
-        securityPolicyName:
+        supportedOptimizationTypes:
+          type: array
+          description: Supported optimization types for a profile.
+          items:
+            $ref: '#/components/schemas/OptimizationType'
+          readOnly: true
+    CheckEndpointNameAvailabilityInput:
+      type: object
+      description: Input of CheckNameAvailability API.
+      properties:
+        name:
           type: string
-          description: The security policy name.
-        changeToWafPolicy:
-          $ref: '#/components/schemas/ResourceReference'
-          description: The new waf resource for the security policy to use.
+          description: The resource name to validate.
+        type:
+          $ref: '#/components/schemas/ResourceType'
+          description: The type of the resource whose name is to be validated.
+        autoGeneratedDomainNameLabelScope:
+          $ref: '#/components/schemas/AutoGeneratedDomainNameLabelScope'
+          description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
       required:
-      - securityPolicyName
-      - changeToWafPolicy
-    WafRankingsResponseDataItem:
-      type: object
-      properties:
-        groupValues:
-          type: array
-          items:
-            type: string
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems'
-          x-ms-identifiers: []
+      - name
+      - type
+    ResourceType:
+      type: string
+      description: Type of CDN resource used in CheckNameAvailability.
+      enum:
+      - Microsoft.Cdn/Profiles/Endpoints
+      - Microsoft.Cdn/Profiles/AfdEndpoints
+      x-ms-enum:
+        name: ResourceType
+        modelAsString: true
+        values:
+        - name: Microsoft.Cdn/Profiles/Endpoints
+          value: Microsoft.Cdn/Profiles/Endpoints
+        - name: Microsoft.Cdn/Profiles/AfdEndpoints
+          value: Microsoft.Cdn/Profiles/AfdEndpoints
+    ScrubbingRuleEntryMatchVariable:
+      type: string
+      description: The variable to be scrubbed from the logs.
+      enum:
+      - RequestIPAddress
+      - RequestUri
+      - QueryStringArgNames
+      x-ms-enum:
+        name: ScrubbingRuleEntryMatchVariable
+        modelAsString: true
+        values:
+        - name: RequestIPAddress
+          value: RequestIPAddress
+        - name: RequestUri
+          value: RequestUri
+        - name: QueryStringArgNames
+          value: QueryStringArgNames
+    ScrubbingRuleEntryMatchOperator:
+      type: string
+      description: When matchVariable is a collection, operate on the selector to specify which elements in the collection this rule applies to.
+      enum:
+      - EqualsAny
+      x-ms-enum:
+        name: ScrubbingRuleEntryMatchOperator
+        modelAsString: true
+        values:
+        - name: EqualsAny
+          value: EqualsAny
     Usage:
       type: object
       description: Describes resource usage.
@@ -1782,107 +1751,6 @@ components:
       - currentValue
       - limit
       - name
-    SupportedOptimizationTypesListResult:
-      type: object
-      description: The result of the GetSupportedOptimizationTypes API
-      properties:
-        supportedOptimizationTypes:
-          type: array
-          description: Supported optimization types for a profile.
-          items:
-            $ref: '#/components/schemas/OptimizationType'
-          readOnly: true
-    ProfileProperties:
-      type: object
-      description: The JSON object that contains the properties required to create a profile.
-      properties:
-        resourceState:
-          $ref: '#/components/schemas/ProfileResourceState'
-          description: Resource status of the profile.
-          readOnly: true
-        provisioningState:
-          $ref: '#/components/schemas/ProfileProvisioningState'
-          description: Provisioning status of the profile.
-          readOnly: true
-        extendedProperties:
-          type: object
-          description: Key-Value pair representing additional properties for profiles.
-          additionalProperties:
-            type: string
-          readOnly: true
-        frontDoorId:
-          type: string
-          description: The Id of the frontdoor.
-          readOnly: true
-        originResponseTimeoutSeconds:
-          type: integer
-          format: int32
-          description: Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
-          minimum: 16
-        logScrubbing:
-          $ref: '#/components/schemas/ProfileLogScrubbing'
-          description: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
-    CanMigrateProperties:
-      type: object
-      properties:
-        canMigrate:
-          type: boolean
-          description: Flag that says if the profile can be migrated
-          readOnly: true
-        defaultSku:
-          $ref: '#/components/schemas/CanMigrateDefaultSku'
-          description: Recommended sku for the migration
-          readOnly: true
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/MigrationErrorType'
-          x-ms-identifiers: []
-    RankingsResponseTablesPropertiesItemsItem:
-      type: object
-      properties:
-        name:
-          type: string
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/RankingsResponseTablesPropertiesItemsMetricsItem'
-          x-ms-identifiers: []
-    ProfileLogScrubbing:
-      type: object
-      description: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
-      properties:
-        state:
-          $ref: '#/components/schemas/ProfileScrubbingState'
-          description: State of the log scrubbing config. Default value is Enabled.
-        scrubbingRules:
-          type: array
-          description: List of log scrubbing rules applied to the Azure Front Door profile logs.
-          items:
-            $ref: '#/components/schemas/ProfileScrubbingRules'
-          x-ms-identifiers: []
-    ResourceUsage:
-      type: object
-      description: Output of check resource usage API.
-      properties:
-        resourceType:
-          type: string
-          description: Resource type for which the usage is provided.
-          readOnly: true
-        unit:
-          $ref: '#/components/schemas/ResourceUsageUnit'
-          description: Unit of the usage. e.g. count.
-          readOnly: true
-        currentValue:
-          type: integer
-          format: int32
-          description: Actual value of usage on the specified resource type.
-          readOnly: true
-        limit:
-          type: integer
-          format: int32
-          description: Quota of the specified resource type.
-          readOnly: true
     RankingsResponseTablesPropertiesItemsMetricsItem:
       type: object
       properties:
@@ -1894,306 +1762,6 @@ components:
         percentage:
           type: number
           format: float
-    MigrationEndpointMapping:
-      type: object
-      description: CDN Endpoint Mapping.
-      properties:
-        migratedFrom:
-          type: string
-          description: Name of the classic CDN profile endpoint.
-        migratedTo:
-          type: string
-          description: Name of the newly created migrated Azure Frontdoor Standard/Premium profile endpoint. This name will replace the name of the classic CDN endpoint resource.
-    ResourcesResponse:
-      type: object
-      description: Resources Response
-      properties:
-        endpoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourcesResponseEndpointsItem'
-        customDomains:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourcesResponseCustomDomainsItem'
-    ResourcesResponseEndpointsPropertiesItemsItem:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        endpointId:
-          type: string
-        history:
-          type: boolean
-    ProfileResourceState:
-      type: string
-      description: Resource status of the profile.
-      enum:
-      - Creating
-      - Active
-      - Deleting
-      - Disabled
-      - Migrating
-      - Migrated
-      - PendingMigrationCommit
-      - CommittingMigration
-      - AbortingMigration
-      x-ms-enum:
-        name: ProfileResourceState
-        modelAsString: true
-        values:
-        - name: Creating
-          value: Creating
-        - name: Active
-          value: Active
-        - name: Deleting
-          value: Deleting
-        - name: Disabled
-          value: Disabled
-        - name: Migrating
-          value: Migrating
-        - name: Migrated
-          value: Migrated
-        - name: PendingMigrationCommit
-          value: PendingMigrationCommit
-        - name: CommittingMigration
-          value: CommittingMigration
-        - name: AbortingMigration
-          value: AbortingMigration
-    RankingsResponse:
-      type: object
-      description: Rankings Response
-      properties:
-        dateTimeBegin:
-          type: string
-          format: date-time
-        dateTimeEnd:
-          type: string
-          format: date-time
-        tables:
-          type: array
-          items:
-            $ref: '#/components/schemas/RankingsResponseTablesItem'
-          x-ms-identifiers: []
-    ProfileUpdateParameters:
-      type: object
-      description: Properties required to update a profile.
-      properties:
-        tags:
-          type: object
-          description: Profile tags
-          additionalProperties:
-            type: string
-        identity:
-          $ref: ../../../../../../common-types/resource-management/v6/managedidentity.json#/definitions/ManagedServiceIdentity
-          description: Managed service identity (system assigned and/or user assigned identities).
-        properties:
-          $ref: '#/components/schemas/ProfilePropertiesUpdateParameters'
-          description: The JSON object containing profile update parameters.
-          x-ms-client-flatten: true
-    ProfilePropertiesUpdateParameters:
-      type: object
-      description: The JSON object containing profile update parameters.
-      properties:
-        originResponseTimeoutSeconds:
-          type: integer
-          format: int32
-          description: Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
-          minimum: 16
-        logScrubbing:
-          $ref: '#/components/schemas/ProfileLogScrubbing'
-          description: Defines rules to scrub sensitive fields in logs
-    MigrationErrorType:
-      type: object
-      description: Error response indicates CDN service is not able to process the incoming request. The reason is provided in the error message.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          readOnly: true
-        resourceName:
-          type: string
-          description: Resource which has the problem.
-          readOnly: true
-        errorMessage:
-          type: string
-          description: Error message indicating why the operation failed.
-          readOnly: true
-        nextSteps:
-          type: string
-          description: Describes what needs to be done to fix the problem
-          readOnly: true
-    ProfileUpgradeParameters:
-      type: object
-      description: Parameters required for profile upgrade.
-      properties:
-        wafMappingList:
-          type: array
-          description: Web Application Firewall (WAF) and security policy mapping for the profile upgrade
-          items:
-            $ref: '#/components/schemas/ProfileChangeSkuWafMapping'
-          x-ms-identifiers: []
-      required:
-      - wafMappingList
-    CheckNameAvailabilityOutput:
-      type: object
-      description: Output of check name availability API.
-      properties:
-        nameAvailable:
-          type: boolean
-          description: Indicates whether the name is available.
-          readOnly: true
-        reason:
-          type: string
-          description: The reason why the name is not available.
-          readOnly: true
-        message:
-          type: string
-          description: The detailed error message describing why the name is not available.
-          readOnly: true
-    ProfileListResult:
-      type: object
-      description: The response of a Profile list operation.
-      properties:
-        value:
-          type: array
-          description: The Profile items on this page
-          items:
-            $ref: '#/components/schemas/Profile'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    CheckEndpointNameAvailabilityInput:
-      type: object
-      description: Input of CheckNameAvailability API.
-      properties:
-        name:
-          type: string
-          description: The resource name to validate.
-        type:
-          $ref: '#/components/schemas/ResourceType'
-          description: The type of the resource whose name is to be validated.
-        autoGeneratedDomainNameLabelScope:
-          $ref: '#/components/schemas/AutoGeneratedDomainNameLabelScope'
-          description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
-      required:
-      - name
-      - type
-    ProfileProvisioningState:
-      type: string
-      description: Provisioning status of the profile.
-      enum:
-      - Succeeded
-      - Failed
-      - Updating
-      - Deleting
-      - Creating
-      x-ms-enum:
-        name: ProfileProvisioningState
-        modelAsString: true
-        values:
-        - name: Succeeded
-          value: Succeeded
-        - name: Failed
-          value: Failed
-        - name: Updating
-          value: Updating
-        - name: Deleting
-          value: Deleting
-        - name: Creating
-          value: Creating
-    UsagesListResult:
-      type: object
-      description: The list usages operation response.
-      properties:
-        value:
-          type: array
-          description: The Usage items on this page
-          items:
-            $ref: '#/components/schemas/Usage'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    UsageName:
-      type: object
-      description: The usage names.
-      properties:
-        value:
-          type: string
-          description: A string describing the resource name.
-        localizedValue:
-          type: string
-          description: A localized string describing the resource name.
-    MetricsGranularity:
-      type: string
-      enum:
-      - PT5M
-      - PT1H
-      - P1D
-      x-ms-enum:
-        name: MetricsGranularity
-        modelAsString: true
-        values:
-        - name: PT5M
-          value: PT5M
-        - name: PT1H
-          value: PT1H
-        - name: P1D
-          value: P1D
-    MetricsResponseSeriesItem:
-      type: object
-      properties:
-        metric:
-          type: string
-        unit:
-          $ref: '#/components/schemas/MetricsSeriesUnit'
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricsResponseSeriesPropertiesItemsItem'
-          x-ms-identifiers:
-          - name
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems'
-          x-ms-identifiers: []
-    Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems:
-      type: object
-      properties:
-        dateTime:
-          type: string
-          format: date-time
-        value:
-          type: number
-          format: float
-    Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems:
-      type: object
-      properties:
-        dateTime:
-          type: string
-          format: date-time
-        value:
-          type: number
-          format: float
-    WafMetricsSeriesUnit:
-      type: string
-      enum:
-      - count
-      x-ms-enum:
-        name: WafMetricsSeriesUnit
-        modelAsString: true
-        values:
-        - name: count
-          value: count
     SsoUri:
       type: object
       description: The URI required to login to the supplemental portal from the Azure portal.
@@ -2202,88 +1770,13 @@ components:
           type: string
           description: The URI used to login to the supplemental portal.
           readOnly: true
-    OptimizationType:
-      type: string
-      description: Specifies what scenario the customer wants this CDN endpoint to optimize, e.g. Download, Media services. With this information we can apply scenario driven optimization.
-      enum:
-      - GeneralWebDelivery
-      - GeneralMediaStreaming
-      - VideoOnDemandMediaStreaming
-      - LargeFileDownload
-      - DynamicSiteAcceleration
-      x-ms-enum:
-        name: OptimizationType
-        modelAsString: true
-        values:
-        - name: GeneralWebDelivery
-          value: GeneralWebDelivery
-        - name: GeneralMediaStreaming
-          value: GeneralMediaStreaming
-        - name: VideoOnDemandMediaStreaming
-          value: VideoOnDemandMediaStreaming
-        - name: LargeFileDownload
-          value: LargeFileDownload
-        - name: DynamicSiteAcceleration
-          value: DynamicSiteAcceleration
-    SecretType:
-      type: string
-      description: The type of the secret resource.
-      enum:
-      - UrlSigningKey
-      - CustomerCertificate
-      - ManagedCertificate
-      - AzureFirstPartyManagedCertificate
-      - MtlsCertificateChain
-      x-ms-enum:
-        name: SecretType
-        modelAsString: true
-        values:
-        - name: UrlSigningKey
-          value: UrlSigningKey
-        - name: CustomerCertificate
-          value: CustomerCertificate
-        - name: ManagedCertificate
-          value: ManagedCertificate
-        - name: AzureFirstPartyManagedCertificate
-          value: AzureFirstPartyManagedCertificate
-        - name: MtlsCertificateChain
-          value: MtlsCertificateChain
-    Status:
-      type: string
-      description: The validation status.
-      enum:
-      - Valid
-      - Invalid
-      - AccessDenied
-      - CertificateExpired
-      x-ms-enum:
-        name: Status
-        modelAsString: true
-        values:
-        - name: Valid
-          value: Valid
-        - name: Invalid
-          value: Invalid
-        - name: AccessDenied
-          value: AccessDenied
-        - name: CertificateExpired
-          value: CertificateExpired
-    WafMetricsGranularity:
-      type: string
-      enum:
-      - PT5M
-      - PT1H
-      - P1D
-      x-ms-enum:
-        name: WafMetricsGranularity
-        modelAsString: true
-        values:
-        - name: PT5M
-          value: PT5M
-        - name: PT1H
-          value: PT1H
-        - name: P1D
-          value: P1D
+    WafMetricsResponseSeriesPropertiesItemsItem:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
     WafRankingsResponse:
       type: object
       description: Waf Rankings Response
@@ -2303,336 +1796,6 @@ components:
           items:
             $ref: '#/components/schemas/WafRankingsResponseDataItem'
           x-ms-identifiers: []
-    MigrateResult:
-      type: object
-      description: Result for migrate operation.
-      properties:
-        id:
-          type: string
-          format: arm-id
-          description: Resource ID.
-          readOnly: true
-        type:
-          type: string
-          description: Resource type.
-          readOnly: true
-        properties:
-          $ref: '#/components/schemas/MigrateResultProperties'
-          x-ms-client-flatten: true
-    UsageUnit:
-      type: string
-      description: An enum describing the unit of measurement.
-      enum:
-      - Count
-      x-ms-enum:
-        name: UsageUnit
-        modelAsString: true
-        values:
-        - name: Count
-          value: Count
-    ResourcesResponseCustomDomainsItem:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        endpointId:
-          type: string
-        history:
-          type: boolean
-    ResourceUsageUnit:
-      type: string
-      description: Unit of the usage. e.g. count.
-      enum:
-      - count
-      x-ms-enum:
-        name: ResourceUsageUnit
-        modelAsString: true
-        values:
-        - name: count
-          value: count
-    ContinentsResponse:
-      type: object
-      description: Continents Response
-      properties:
-        continents:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContinentsResponseContinentsItem'
-        countryOrRegions:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContinentsResponseCountryOrRegionsItem'
-    ScrubbingRuleEntryMatchVariable:
-      type: string
-      description: The variable to be scrubbed from the logs.
-      enum:
-      - RequestIPAddress
-      - RequestUri
-      - QueryStringArgNames
-      x-ms-enum:
-        name: ScrubbingRuleEntryMatchVariable
-        modelAsString: true
-        values:
-        - name: RequestIPAddress
-          value: RequestIPAddress
-        - name: RequestUri
-          value: RequestUri
-        - name: QueryStringArgNames
-          value: QueryStringArgNames
-    MetricsResponseSeriesPropertiesItemsItem:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-    ContinentsResponseCountryOrRegionsItem:
-      type: object
-      properties:
-        id:
-          type: string
-        continentId:
-          type: string
-    Sku:
-      type: object
-      description: 'Standard_Verizon = The SKU name for a Standard Verizon CDN profile.
-
-        Premium_Verizon = The SKU name for a Premium Verizon CDN profile.
-
-        Custom_Verizon = The SKU name for a Custom Verizon CDN profile.
-
-        Standard_Akamai = The SKU name for an Akamai CDN profile.
-
-        Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using GB based billing model.
-
-        Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
-
-        Standard_AzureFrontDoor =  The SKU name for an Azure Front Door Standard profile.
-
-        Premium_AzureFrontDoor = The SKU name for an Azure Front Door Premium profile.
-
-        Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5 peak bandwidth billing model.
-
-        Standard_AvgBandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model.
-
-        StandardPlus_ChinaCdn = The SKU name for a China CDN profile for live-streaming using GB based billing model.
-
-        StandardPlus_955BandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth billing model.
-
-        StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly average peak bandwidth billing model.'
-      properties:
-        name:
-          $ref: '#/components/schemas/SkuName'
-          description: Name of the pricing tier.
-    AutoGeneratedDomainNameLabelScope:
-      type: string
-      description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
-      enum:
-      - TenantReuse
-      - SubscriptionReuse
-      - ResourceGroupReuse
-      - NoReuse
-      x-ms-enum:
-        name: AutoGeneratedDomainNameLabelScope
-        modelAsString: true
-        values:
-        - name: TenantReuse
-          value: TenantReuse
-        - name: SubscriptionReuse
-          value: SubscriptionReuse
-        - name: ResourceGroupReuse
-          value: ResourceGroupReuse
-        - name: NoReuse
-          value: NoReuse
-    ScrubbingRuleEntryState:
-      type: string
-      description: Defines the state of a log scrubbing rule. Default value is enabled.
-      enum:
-      - Enabled
-      - Disabled
-      x-ms-enum:
-        name: ScrubbingRuleEntryState
-        modelAsString: true
-        values:
-        - name: Enabled
-          value: Enabled
-        - name: Disabled
-          value: Disabled
-    ProfileScrubbingRules:
-      type: object
-      description: Defines the contents of the log scrubbing rules.
-      properties:
-        matchVariable:
-          $ref: '#/components/schemas/ScrubbingRuleEntryMatchVariable'
-          description: The variable to be scrubbed from the logs.
-        selectorMatchOperator:
-          $ref: '#/components/schemas/ScrubbingRuleEntryMatchOperator'
-          description: When matchVariable is a collection, operate on the selector to specify which elements in the collection this rule applies to.
-        selector:
-          type: string
-          description: When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
-        state:
-          $ref: '#/components/schemas/ScrubbingRuleEntryState'
-          description: Defines the state of a log scrubbing rule. Default value is enabled.
-      required:
-      - matchVariable
-      - selectorMatchOperator
-    ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems:
-      type: object
-      properties:
-        metric:
-          type: string
-        value:
-          type: integer
-          format: int64
-        percentage:
-          type: number
-          format: double
-    ResourceUsageListResult:
-      type: object
-      description: Output of check resource usage API.
-      properties:
-        value:
-          type: array
-          description: The ResourceUsage items on this page
-          items:
-            $ref: '#/components/schemas/ResourceUsage'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    CanMigrateResult:
-      type: object
-      description: Result for canMigrate operation.
-      properties:
-        id:
-          type: string
-          format: arm-id
-          description: Resource ID.
-          readOnly: true
-        type:
-          type: string
-          description: Resource type.
-          readOnly: true
-        properties:
-          $ref: '#/components/schemas/CanMigrateProperties'
-          x-ms-client-flatten: true
-    ProfileScrubbingState:
-      type: string
-      description: State of the log scrubbing config. Default value is Enabled.
-      enum:
-      - Enabled
-      - Disabled
-      x-ms-enum:
-        name: ProfileScrubbingState
-        modelAsString: true
-        values:
-        - name: Enabled
-          value: Enabled
-        - name: Disabled
-          value: Disabled
-    ScrubbingRuleEntryMatchOperator:
-      type: string
-      description: When matchVariable is a collection, operate on the selector to specify which elements in the collection this rule applies to.
-      enum:
-      - EqualsAny
-      x-ms-enum:
-        name: ScrubbingRuleEntryMatchOperator
-        modelAsString: true
-        values:
-        - name: EqualsAny
-          value: EqualsAny
-    CdnMigrationToAfdParameters:
-      type: object
-      description: Request body for Migrate operation.
-      properties:
-        sku:
-          $ref: '#/components/schemas/Sku'
-          description: Sku for the migration
-        migrationEndpointMappings:
-          type: array
-          description: A name map between classic CDN endpoints and AFD Premium/Standard endpoints.
-          items:
-            $ref: '#/components/schemas/MigrationEndpointMapping'
-          x-ms-identifiers: []
-      required:
-      - sku
-    ValidateSecretOutput:
-      type: object
-      description: Output of the validated secret.
-      properties:
-        status:
-          $ref: '#/components/schemas/Status'
-          description: The validation status.
-        message:
-          type: string
-          description: Detailed error message
-    ResourceType:
-      type: string
-      description: Type of CDN resource used in CheckNameAvailability.
-      enum:
-      - Microsoft.Cdn/Profiles/Endpoints
-      - Microsoft.Cdn/Profiles/AfdEndpoints
-      x-ms-enum:
-        name: ResourceType
-        modelAsString: true
-        values:
-        - name: Microsoft.Cdn/Profiles/Endpoints
-          value: Microsoft.Cdn/Profiles/Endpoints
-        - name: Microsoft.Cdn/Profiles/AfdEndpoints
-          value: Microsoft.Cdn/Profiles/AfdEndpoints
-    WafMetricsResponse:
-      type: object
-      description: Waf Metrics Response
-      properties:
-        dateTimeBegin:
-          type: string
-          format: date-time
-        dateTimeEnd:
-          type: string
-          format: date-time
-        granularity:
-          $ref: '#/components/schemas/WafMetricsGranularity'
-        series:
-          type: array
-          items:
-            $ref: '#/components/schemas/WafMetricsResponseSeriesItem'
-          x-ms-identifiers: []
-    RankingsResponseTablesItem:
-      type: object
-      properties:
-        ranking:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/RankingsResponseTablesPropertiesItemsItem'
-          x-ms-identifiers:
-          - name
-    CheckEndpointNameAvailabilityOutput:
-      type: object
-      description: Output of check name availability API.
-      properties:
-        nameAvailable:
-          type: boolean
-          description: Indicates whether the name is available.
-          readOnly: true
-        availableHostname:
-          type: string
-          description: Returns the available hostname generated based on the AutoGeneratedDomainNameLabelScope when the name is available, otherwise it returns empty string
-          readOnly: true
-        reason:
-          type: string
-          description: The reason why the name is not available.
-          readOnly: true
-        message:
-          type: string
-          description: The detailed error message describing why the name is not available.
-          readOnly: true
     SkuName:
       type: string
       description: Name of the pricing tier.
@@ -2680,6 +1843,688 @@ components:
           value: StandardPlus_955BandWidth_ChinaCdn
         - name: StandardPlus_AvgBandWidth_ChinaCdn
           value: StandardPlus_AvgBandWidth_ChinaCdn
+    MigrateResultProperties:
+      type: object
+      properties:
+        migratedProfileResourceId:
+          $ref: '#/components/schemas/ResourceReference'
+          description: Arm resource id of the migrated profile
+          readOnly: true
+    ValidateSecretOutput:
+      type: object
+      description: Output of the validated secret.
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+          description: The validation status.
+        message:
+          type: string
+          description: Detailed error message
+    ProfileScrubbingState:
+      type: string
+      description: State of the log scrubbing config. Default value is Enabled.
+      enum:
+      - Enabled
+      - Disabled
+      x-ms-enum:
+        name: ProfileScrubbingState
+        modelAsString: true
+        values:
+        - name: Enabled
+          value: Enabled
+        - name: Disabled
+          value: Disabled
+    AutoGeneratedDomainNameLabelScope:
+      type: string
+      description: Indicates the endpoint name reuse scope. The default value is TenantReuse.
+      enum:
+      - TenantReuse
+      - SubscriptionReuse
+      - ResourceGroupReuse
+      - NoReuse
+      x-ms-enum:
+        name: AutoGeneratedDomainNameLabelScope
+        modelAsString: true
+        values:
+        - name: TenantReuse
+          value: TenantReuse
+        - name: SubscriptionReuse
+          value: SubscriptionReuse
+        - name: ResourceGroupReuse
+          value: ResourceGroupReuse
+        - name: NoReuse
+          value: NoReuse
+    ProfileProperties:
+      type: object
+      description: The JSON object that contains the properties required to create a profile.
+      properties:
+        resourceState:
+          $ref: '#/components/schemas/ProfileResourceState'
+          description: Resource status of the profile.
+          readOnly: true
+        provisioningState:
+          $ref: '#/components/schemas/ProfileProvisioningState'
+          description: Provisioning status of the profile.
+          readOnly: true
+        extendedProperties:
+          type: object
+          description: Key-Value pair representing additional properties for profiles.
+          additionalProperties:
+            type: string
+          readOnly: true
+        frontDoorId:
+          type: string
+          description: The Id of the frontdoor.
+          readOnly: true
+        originResponseTimeoutSeconds:
+          type: integer
+          format: int32
+          description: Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
+          minimum: 16
+        logScrubbing:
+          $ref: '#/components/schemas/ProfileLogScrubbing'
+          description: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+    MetricsGranularity:
+      type: string
+      enum:
+      - PT5M
+      - PT1H
+      - P1D
+      x-ms-enum:
+        name: MetricsGranularity
+        modelAsString: true
+        values:
+        - name: PT5M
+          value: PT5M
+        - name: PT1H
+          value: PT1H
+        - name: P1D
+          value: P1D
+    Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: float
+    Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: float
+    WafMetricsResponse:
+      type: object
+      description: Waf Metrics Response
+      properties:
+        dateTimeBegin:
+          type: string
+          format: date-time
+        dateTimeEnd:
+          type: string
+          format: date-time
+        granularity:
+          $ref: '#/components/schemas/WafMetricsGranularity'
+        series:
+          type: array
+          items:
+            $ref: '#/components/schemas/WafMetricsResponseSeriesItem'
+          x-ms-identifiers: []
+    CheckEndpointNameAvailabilityOutput:
+      type: object
+      description: Output of check name availability API.
+      properties:
+        nameAvailable:
+          type: boolean
+          description: Indicates whether the name is available.
+          readOnly: true
+        availableHostname:
+          type: string
+          description: Returns the available hostname generated based on the AutoGeneratedDomainNameLabelScope when the name is available, otherwise it returns empty string
+          readOnly: true
+        reason:
+          type: string
+          description: The reason why the name is not available.
+          readOnly: true
+        message:
+          type: string
+          description: The detailed error message describing why the name is not available.
+          readOnly: true
+    ResourcesResponseEndpointsPropertiesItemsItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        endpointId:
+          type: string
+        history:
+          type: boolean
+    ScrubbingRuleEntryState:
+      type: string
+      description: Defines the state of a log scrubbing rule. Default value is enabled.
+      enum:
+      - Enabled
+      - Disabled
+      x-ms-enum:
+        name: ScrubbingRuleEntryState
+        modelAsString: true
+        values:
+        - name: Enabled
+          value: Enabled
+        - name: Disabled
+          value: Disabled
+    RankingsResponseTablesItem:
+      type: object
+      properties:
+        ranking:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RankingsResponseTablesPropertiesItemsItem'
+          x-ms-identifiers:
+          - name
+    ResourceUsageListResult:
+      type: object
+      description: Output of check resource usage API.
+      properties:
+        value:
+          type: array
+          description: The ResourceUsage items on this page
+          items:
+            $ref: '#/components/schemas/ResourceUsage'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    ResourceUsage:
+      type: object
+      description: Output of check resource usage API.
+      properties:
+        resourceType:
+          type: string
+          description: Resource type for which the usage is provided.
+          readOnly: true
+        unit:
+          $ref: '#/components/schemas/ResourceUsageUnit'
+          description: Unit of the usage. e.g. count.
+          readOnly: true
+        currentValue:
+          type: integer
+          format: int32
+          description: Actual value of usage on the specified resource type.
+          readOnly: true
+        limit:
+          type: integer
+          format: int32
+          description: Quota of the specified resource type.
+          readOnly: true
+    OptimizationType:
+      type: string
+      description: Specifies what scenario the customer wants this CDN endpoint to optimize, e.g. Download, Media services. With this information we can apply scenario driven optimization.
+      enum:
+      - GeneralWebDelivery
+      - GeneralMediaStreaming
+      - VideoOnDemandMediaStreaming
+      - LargeFileDownload
+      - DynamicSiteAcceleration
+      x-ms-enum:
+        name: OptimizationType
+        modelAsString: true
+        values:
+        - name: GeneralWebDelivery
+          value: GeneralWebDelivery
+        - name: GeneralMediaStreaming
+          value: GeneralMediaStreaming
+        - name: VideoOnDemandMediaStreaming
+          value: VideoOnDemandMediaStreaming
+        - name: LargeFileDownload
+          value: LargeFileDownload
+        - name: DynamicSiteAcceleration
+          value: DynamicSiteAcceleration
+    Sku:
+      type: object
+      description: 'Standard_Verizon = The SKU name for a Standard Verizon CDN profile.
+
+        Premium_Verizon = The SKU name for a Premium Verizon CDN profile.
+
+        Custom_Verizon = The SKU name for a Custom Verizon CDN profile.
+
+        Standard_Akamai = The SKU name for an Akamai CDN profile.
+
+        Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using GB based billing model.
+
+        Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
+
+        Standard_AzureFrontDoor =  The SKU name for an Azure Front Door Standard profile.
+
+        Premium_AzureFrontDoor = The SKU name for an Azure Front Door Premium profile.
+
+        Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5 peak bandwidth billing model.
+
+        Standard_AvgBandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model.
+
+        StandardPlus_ChinaCdn = The SKU name for a China CDN profile for live-streaming using GB based billing model.
+
+        StandardPlus_955BandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth billing model.
+
+        StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly average peak bandwidth billing model.'
+      properties:
+        name:
+          $ref: '#/components/schemas/SkuName'
+          description: Name of the pricing tier.
+    ProfileScrubbingRules:
+      type: object
+      description: Defines the contents of the log scrubbing rules.
+      properties:
+        matchVariable:
+          $ref: '#/components/schemas/ScrubbingRuleEntryMatchVariable'
+          description: The variable to be scrubbed from the logs.
+        selectorMatchOperator:
+          $ref: '#/components/schemas/ScrubbingRuleEntryMatchOperator'
+          description: When matchVariable is a collection, operate on the selector to specify which elements in the collection this rule applies to.
+        selector:
+          type: string
+          description: When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
+        state:
+          $ref: '#/components/schemas/ScrubbingRuleEntryState'
+          description: Defines the state of a log scrubbing rule. Default value is enabled.
+      required:
+      - matchVariable
+      - selectorMatchOperator
+    ProfileUpgradeParameters:
+      type: object
+      description: Parameters required for profile upgrade.
+      properties:
+        wafMappingList:
+          type: array
+          description: Web Application Firewall (WAF) and security policy mapping for the profile upgrade
+          items:
+            $ref: '#/components/schemas/ProfileChangeSkuWafMapping'
+          x-ms-identifiers: []
+      required:
+      - wafMappingList
+    ResourcesResponseCustomDomainsItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        endpointId:
+          type: string
+        history:
+          type: boolean
+    RankingsResponse:
+      type: object
+      description: Rankings Response
+      properties:
+        dateTimeBegin:
+          type: string
+          format: date-time
+        dateTimeEnd:
+          type: string
+          format: date-time
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/RankingsResponseTablesItem'
+          x-ms-identifiers: []
+    ValidateSecretInput:
+      type: object
+      description: Input of the secret to be validated.
+      properties:
+        secretType:
+          $ref: '#/components/schemas/SecretType'
+          description: The secret type.
+        secretSource:
+          $ref: '#/components/schemas/ResourceReference'
+          description: Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}
+        secretVersion:
+          type: string
+          description: Secret version, if customer is using a specific version.
+      required:
+      - secretType
+      - secretSource
+    ProfilePropertiesUpdateParameters:
+      type: object
+      description: The JSON object containing profile update parameters.
+      properties:
+        originResponseTimeoutSeconds:
+          type: integer
+          format: int32
+          description: Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
+          minimum: 16
+        logScrubbing:
+          $ref: '#/components/schemas/ProfileLogScrubbing'
+          description: Defines rules to scrub sensitive fields in logs
+    UsageName:
+      type: object
+      description: The usage names.
+      properties:
+        value:
+          type: string
+          description: A string describing the resource name.
+        localizedValue:
+          type: string
+          description: A localized string describing the resource name.
+    WafMetricsResponseSeriesItem:
+      type: object
+      properties:
+        metric:
+          type: string
+        unit:
+          $ref: '#/components/schemas/WafMetricsSeriesUnit'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/WafMetricsResponseSeriesPropertiesItemsItem'
+          x-ms-identifiers:
+          - name
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems'
+          x-ms-identifiers: []
+    MetricsResponseSeriesItem:
+      type: object
+      properties:
+        metric:
+          type: string
+        unit:
+          $ref: '#/components/schemas/MetricsSeriesUnit'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricsResponseSeriesPropertiesItemsItem'
+          x-ms-identifiers:
+          - name
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems'
+          x-ms-identifiers: []
+    Profile:
+      type: object
+      description: A profile is a logical grouping of endpoints that share the same settings.
+      properties:
+        properties:
+          $ref: '#/components/schemas/ProfileProperties'
+          description: The JSON object that contains the properties required to create a profile.
+          x-ms-client-flatten: true
+        sku:
+          $ref: '#/components/schemas/Sku'
+          description: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature list and rate) of the profile.
+        kind:
+          type: string
+          description: Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD profile.
+          readOnly: true
+        identity:
+          $ref: ../../../../../../common-types/resource-management/v6/managedidentity.json#/definitions/ManagedServiceIdentity
+          description: The managed service identities assigned to this resource.
+      required:
+      - sku
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/TrackedResource
+    ProfileProvisioningState:
+      type: string
+      description: Provisioning status of the profile.
+      enum:
+      - Succeeded
+      - Failed
+      - Updating
+      - Deleting
+      - Creating
+      x-ms-enum:
+        name: ProfileProvisioningState
+        modelAsString: true
+        values:
+        - name: Succeeded
+          value: Succeeded
+        - name: Failed
+          value: Failed
+        - name: Updating
+          value: Updating
+        - name: Deleting
+          value: Deleting
+        - name: Creating
+          value: Creating
+    UsagesListResult:
+      type: object
+      description: The list usages operation response.
+      properties:
+        value:
+          type: array
+          description: The Usage items on this page
+          items:
+            $ref: '#/components/schemas/Usage'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    ContinentsResponseContinentsItem:
+      type: object
+      properties:
+        id:
+          type: string
+    CanMigrateResult:
+      type: object
+      description: Result for canMigrate operation.
+      properties:
+        id:
+          type: string
+          format: arm-id
+          description: Resource ID.
+          readOnly: true
+        type:
+          type: string
+          description: Resource type.
+          readOnly: true
+        properties:
+          $ref: '#/components/schemas/CanMigrateProperties'
+          x-ms-client-flatten: true
+    ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems:
+      type: object
+      properties:
+        metric:
+          type: string
+        value:
+          type: integer
+          format: int64
+        percentage:
+          type: number
+          format: double
+    ProfileResourceState:
+      type: string
+      description: Resource status of the profile.
+      enum:
+      - Creating
+      - Active
+      - Deleting
+      - Disabled
+      - Migrating
+      - Migrated
+      - PendingMigrationCommit
+      - CommittingMigration
+      - AbortingMigration
+      x-ms-enum:
+        name: ProfileResourceState
+        modelAsString: true
+        values:
+        - name: Creating
+          value: Creating
+        - name: Active
+          value: Active
+        - name: Deleting
+          value: Deleting
+        - name: Disabled
+          value: Disabled
+        - name: Migrating
+          value: Migrating
+        - name: Migrated
+          value: Migrated
+        - name: PendingMigrationCommit
+          value: PendingMigrationCommit
+        - name: CommittingMigration
+          value: CommittingMigration
+        - name: AbortingMigration
+          value: AbortingMigration
+    CheckNameAvailabilityOutput:
+      type: object
+      description: Output of check name availability API.
+      properties:
+        nameAvailable:
+          type: boolean
+          description: Indicates whether the name is available.
+          readOnly: true
+        reason:
+          type: string
+          description: The reason why the name is not available.
+          readOnly: true
+        message:
+          type: string
+          description: The detailed error message describing why the name is not available.
+          readOnly: true
+    CheckHostNameAvailabilityInput:
+      type: object
+      description: Input of CheckHostNameAvailability API.
+      properties:
+        hostName:
+          type: string
+          description: The host name to validate.
+      required:
+      - hostName
+    MigrateResult:
+      type: object
+      description: Result for migrate operation.
+      properties:
+        id:
+          type: string
+          format: arm-id
+          description: Resource ID.
+          readOnly: true
+        type:
+          type: string
+          description: Resource type.
+          readOnly: true
+        properties:
+          $ref: '#/components/schemas/MigrateResultProperties'
+          x-ms-client-flatten: true
+    WafRankingsResponseDataItem:
+      type: object
+      properties:
+        groupValues:
+          type: array
+          items:
+            type: string
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems'
+          x-ms-identifiers: []
+    CdnMigrationToAfdParameters:
+      type: object
+      description: Request body for Migrate operation.
+      properties:
+        sku:
+          $ref: '#/components/schemas/Sku'
+          description: Sku for the migration
+        migrationEndpointMappings:
+          type: array
+          description: A name map between classic CDN endpoints and AFD Premium/Standard endpoints.
+          items:
+            $ref: '#/components/schemas/MigrationEndpointMapping'
+          x-ms-identifiers: []
+      required:
+      - sku
+    ProfileListResult:
+      type: object
+      description: The response of a Profile list operation.
+      properties:
+        value:
+          type: array
+          description: The Profile items on this page
+          items:
+            $ref: '#/components/schemas/Profile'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    ProfileChangeSkuWafMapping:
+      type: object
+      description: Parameters required for profile upgrade.
+      properties:
+        securityPolicyName:
+          type: string
+          description: The security policy name.
+        changeToWafPolicy:
+          $ref: '#/components/schemas/ResourceReference'
+          description: The new waf resource for the security policy to use.
+      required:
+      - securityPolicyName
+      - changeToWafPolicy
+    SecretType:
+      type: string
+      description: The type of the secret resource.
+      enum:
+      - UrlSigningKey
+      - CustomerCertificate
+      - ManagedCertificate
+      - AzureFirstPartyManagedCertificate
+      - MtlsCertificateChain
+      x-ms-enum:
+        name: SecretType
+        modelAsString: true
+        values:
+        - name: UrlSigningKey
+          value: UrlSigningKey
+        - name: CustomerCertificate
+          value: CustomerCertificate
+        - name: ManagedCertificate
+          value: ManagedCertificate
+        - name: AzureFirstPartyManagedCertificate
+          value: AzureFirstPartyManagedCertificate
+        - name: MtlsCertificateChain
+          value: MtlsCertificateChain
+    WafMetricsGranularity:
+      type: string
+      enum:
+      - PT5M
+      - PT1H
+      - P1D
+      x-ms-enum:
+        name: WafMetricsGranularity
+        modelAsString: true
+        values:
+        - name: PT5M
+          value: PT5M
+        - name: PT1H
+          value: PT1H
+        - name: P1D
+          value: P1D
+    MigrationEndpointMapping:
+      type: object
+      description: CDN Endpoint Mapping.
+      properties:
+        migratedFrom:
+          type: string
+          description: Name of the classic CDN profile endpoint.
+        migratedTo:
+          type: string
+          description: Name of the newly created migrated Azure Frontdoor Standard/Premium profile endpoint. This name will replace the name of the classic CDN endpoint resource.
     MetricsSeriesUnit:
       type: string
       enum:
@@ -2699,6 +2544,161 @@ components:
           value: bitsPerSecond
         - name: milliSeconds
           value: milliSeconds
+    MetricsResponseSeriesPropertiesItemsItem:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    ContinentsResponse:
+      type: object
+      description: Continents Response
+      properties:
+        continents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContinentsResponseContinentsItem'
+        countryOrRegions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContinentsResponseCountryOrRegionsItem'
+    ContinentsResponseCountryOrRegionsItem:
+      type: object
+      properties:
+        id:
+          type: string
+        continentId:
+          type: string
+    Status:
+      type: string
+      description: The validation status.
+      enum:
+      - Valid
+      - Invalid
+      - AccessDenied
+      - CertificateExpired
+      x-ms-enum:
+        name: Status
+        modelAsString: true
+        values:
+        - name: Valid
+          value: Valid
+        - name: Invalid
+          value: Invalid
+        - name: AccessDenied
+          value: AccessDenied
+        - name: CertificateExpired
+          value: CertificateExpired
+    ResourceUsageUnit:
+      type: string
+      description: Unit of the usage. e.g. count.
+      enum:
+      - count
+      x-ms-enum:
+        name: ResourceUsageUnit
+        modelAsString: true
+        values:
+        - name: count
+          value: count
+    ResourceReference:
+      type: object
+      description: Reference to another resource.
+      properties:
+        id:
+          type: string
+          description: Resource ID.
+    ResourcesResponseEndpointsItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        history:
+          type: boolean
+        customDomains:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourcesResponseEndpointsPropertiesItemsItem'
+    MetricsResponse:
+      type: object
+      description: Metrics Response
+      properties:
+        dateTimeBegin:
+          type: string
+          format: date-time
+        dateTimeEnd:
+          type: string
+          format: date-time
+        granularity:
+          $ref: '#/components/schemas/MetricsGranularity'
+        series:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricsResponseSeriesItem'
+          x-ms-identifiers: []
+    ResourcesResponse:
+      type: object
+      description: Resources Response
+      properties:
+        endpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourcesResponseEndpointsItem'
+        customDomains:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourcesResponseCustomDomainsItem'
+    CanMigrateProperties:
+      type: object
+      properties:
+        canMigrate:
+          type: boolean
+          description: Flag that says if the profile can be migrated
+          readOnly: true
+        defaultSku:
+          $ref: '#/components/schemas/CanMigrateDefaultSku'
+          description: Recommended sku for the migration
+          readOnly: true
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/MigrationErrorType'
+          x-ms-identifiers: []
+    ProfileLogScrubbing:
+      type: object
+      description: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+      properties:
+        state:
+          $ref: '#/components/schemas/ProfileScrubbingState'
+          description: State of the log scrubbing config. Default value is Enabled.
+        scrubbingRules:
+          type: array
+          description: List of log scrubbing rules applied to the Azure Front Door profile logs.
+          items:
+            $ref: '#/components/schemas/ProfileScrubbingRules'
+          x-ms-identifiers: []
+    MigrationErrorType:
+      type: object
+      description: Error response indicates CDN service is not able to process the incoming request. The reason is provided in the error message.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          readOnly: true
+        resourceName:
+          type: string
+          description: Resource which has the problem.
+          readOnly: true
+        errorMessage:
+          type: string
+          description: Error message indicating why the operation failed.
+          readOnly: true
+        nextSteps:
+          type: string
+          description: Describes what needs to be done to fix the problem
+          readOnly: true
     Resource:
       type: object
       properties:
@@ -2744,13 +2744,6 @@ components:
             target:
               type: string
   parameters:
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: The API version to use for this operation.
-      schema:
-        type: string
     resourceGroupName:
       name: resourceGroupName
       in: path
@@ -2763,6 +2756,13 @@ components:
       in: path
       required: true
       description: The ID of the target subscription.
+      schema:
+        type: string
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: The API version to use for this operation.
       schema:
         type: string
   securitySchemes:

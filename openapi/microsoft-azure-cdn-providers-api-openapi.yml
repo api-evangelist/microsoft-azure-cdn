@@ -76,22 +76,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CheckNameAvailabilityOutput:
-      type: object
-      description: Output of check name availability API.
-      properties:
-        nameAvailable:
-          type: boolean
-          description: Indicates whether the name is available.
-          readOnly: true
-        reason:
-          type: string
-          description: The reason why the name is not available.
-          readOnly: true
-        message:
-          type: string
-          description: The detailed error message describing why the name is not available.
-          readOnly: true
     cidrIpAddress:
       type: object
       description: CIDR Ip address
@@ -103,19 +87,30 @@ components:
           type: integer
           format: int32
           description: The length of the prefix of the ip address.
-    EdgeNodeProperties:
+    EdgeNode:
       type: object
-      description: The JSON object that contains the properties required to create an edgenode.
+      description: Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
       properties:
-        ipAddressGroups:
-          type: array
-          description: List of ip address groups.
-          items:
-            $ref: '#/components/schemas/IpAddressGroup'
-          x-ms-identifiers:
-          - deliveryRegion
-      required:
-      - ipAddressGroups
+        properties:
+          $ref: '#/components/schemas/EdgeNodeProperties'
+          description: The JSON object that contains the properties required to create an edgenode.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
+    ResourceType:
+      type: string
+      description: Type of CDN resource used in CheckNameAvailability.
+      enum:
+      - Microsoft.Cdn/Profiles/Endpoints
+      - Microsoft.Cdn/Profiles/AfdEndpoints
+      x-ms-enum:
+        name: ResourceType
+        modelAsString: true
+        values:
+        - name: Microsoft.Cdn/Profiles/Endpoints
+          value: Microsoft.Cdn/Profiles/Endpoints
+        - name: Microsoft.Cdn/Profiles/AfdEndpoints
+          value: Microsoft.Cdn/Profiles/AfdEndpoints
     EdgenodeResult:
       type: object
       description: Result of the request to list CDN edgenodes. It contains a list of ip address group and a URL link to get the next set of results.
@@ -131,20 +126,6 @@ components:
           description: The link to the next page of items
       required:
       - value
-    ResourceType:
-      type: string
-      description: Type of CDN resource used in CheckNameAvailability.
-      enum:
-      - Microsoft.Cdn/Profiles/Endpoints
-      - Microsoft.Cdn/Profiles/AfdEndpoints
-      x-ms-enum:
-        name: ResourceType
-        modelAsString: true
-        values:
-        - name: Microsoft.Cdn/Profiles/Endpoints
-          value: Microsoft.Cdn/Profiles/Endpoints
-        - name: Microsoft.Cdn/Profiles/AfdEndpoints
-          value: Microsoft.Cdn/Profiles/AfdEndpoints
     CheckNameAvailabilityInput:
       type: object
       description: Input of CheckNameAvailability API.
@@ -158,16 +139,6 @@ components:
       required:
       - name
       - type
-    EdgeNode:
-      type: object
-      description: Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
-      properties:
-        properties:
-          $ref: '#/components/schemas/EdgeNodeProperties'
-          description: The JSON object that contains the properties required to create an edgenode.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v6/types.json#/definitions/ProxyResource
     IpAddressGroup:
       type: object
       description: CDN Ip address group
@@ -189,6 +160,35 @@ components:
             $ref: '#/components/schemas/cidrIpAddress'
           x-ms-identifiers:
           - baseIpAddress
+    CheckNameAvailabilityOutput:
+      type: object
+      description: Output of check name availability API.
+      properties:
+        nameAvailable:
+          type: boolean
+          description: Indicates whether the name is available.
+          readOnly: true
+        reason:
+          type: string
+          description: The reason why the name is not available.
+          readOnly: true
+        message:
+          type: string
+          description: The detailed error message describing why the name is not available.
+          readOnly: true
+    EdgeNodeProperties:
+      type: object
+      description: The JSON object that contains the properties required to create an edgenode.
+      properties:
+        ipAddressGroups:
+          type: array
+          description: List of ip address groups.
+          items:
+            $ref: '#/components/schemas/IpAddressGroup'
+          x-ms-identifiers:
+          - deliveryRegion
+      required:
+      - ipAddressGroups
   securitySchemes:
     azure_auth:
       type: oauth2
