@@ -2,6 +2,7 @@
   "provider": "microsoft-azure-cdn",
   "sources": [
     "_original/microsoft-azure-cdn-management-openapi.json",
+    "_original/microsoft-azure-cdn-openapi.json",
     "_ae-authored/microsoft-azure-cdn-openapi.yml"
   ],
   "outputs": [
@@ -22,7 +23,8 @@
     "microsoft-azure-cdn-rules-api-openapi.yml",
     "microsoft-azure-cdn-secrets-api-openapi.yml",
     "microsoft-azure-cdn-securitypolicies-api-openapi.yml",
-    "microsoft-azure-cdn-subscriptions-api-openapi.yml"
+    "microsoft-azure-cdn-subscriptions-api-openapi.yml",
+    "microsoft-azure-cdn-webapps-api-openapi.yml"
   ],
   "archived": [
     "deleted 2 superseded output(s) from the previous generation"
@@ -31,7 +33,7 @@
   "warnings": [],
   "notes": [
     "1 archived document(s) dropped as subsets of other archived documents",
-    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "microsoft-azure-cdn-management-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
     "microsoft-azure-cdn-management-openapi.json: tagged paths POST /providers/Microsoft.Cdn/checkNameAvailability -> Providers",
     "microsoft-azure-cdn-management-openapi.json: tagged paths GET /providers/Microsoft.Cdn/edgenodes -> Providers",
@@ -44,11 +46,13 @@
     "microsoft-azure-cdn-management-openapi.json: tagged paths POST /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/migrate -> Subscriptions",
     "microsoft-azure-cdn-management-openapi.json: declared missing tag: Providers",
     "microsoft-azure-cdn-management-openapi.json: declared missing tag: Subscriptions",
+    "microsoft-azure-cdn-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "microsoft-azure-cdn-openapi.json: declared missing tag: WebApps",
     "microsoft-azure-cdn-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "tag 'Operations' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml): per-path servers applied",
     "tag 'Profiles' spans 2 source specs (microsoft-azure-cdn-management-openapi.json, microsoft-azure-cdn-openapi.yml): per-path servers applied",
     "superseded outputs removed: microsoft-azure-cdn-custom-domains-api-openapi.yml, microsoft-azure-cdn-security-policies-api-openapi.yml",
-    "apis.yml register: written (+2 apis, 18 total)"
+    "apis.yml register: written (+3 apis, 19 total)"
   ],
   "skipped": [
     "_original/microsoft-azure-cdn-management-openapi_2.json: archived document superseded by a larger archived document",
