@@ -1,4 +1,4 @@
-# microsoft-azure-cdn (microsoft-azure-cdn)
+# Microsoft Azure Cdn
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,50 +64,185 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Azure Content Delivery Network (CDN) caches static web content at strategically placed locations to provide maximum throughput for delivering content to users.
+Azure Content Delivery Network (CDN) caches static web content at strategically placed edge locations to deliver it to users with maximum throughput and minimum latency. The product is operated through the Microsoft.Cdn Azure Resource Manager resource provider, a 115-operation REST contract on management.azure.com that manages CDN profiles, delivery endpoints, origins, origin groups, custom domains and web application firewall policies, and that also serves the Azure Front Door Standard and Premium resource family. Authentication is Microsoft Entra ID OAuth 2.0 with authorization decided by Azure RBAC. Azure CDN Standard from Microsoft (classic) is on a published retirement path: it stopped accepting new instances in 2025 and retires on 30 September 2027, with Microsoft directing customers to Azure Front Door and shipping a validate/migrate/commit API path for the move.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cdn/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cdn/refs/heads/main/apis.yml)
+**Areas:** CDN · Edge · Caching · Cloud Infrastructure · Networking · Web Performance · Microsoft Azure · Content Delivery · Web Application Firewall
 
-## Timestamps
+## Microsoft Azure Cdn on APIs.io
 
-- **Created:** 2026-03-13
-- **Modified:** 2026-05-19
+Everything profiled for Microsoft Azure Cdn is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/microsoft-azure-cdn/](https://apis.io/providers/microsoft-azure-cdn/)** — or go straight to one of the APIs or properties below.
 
-## APIs
+### APIs (18)
 
-### Azure CDN REST API
+- [microsoft-azure-cdn Operations API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-operations-api/) — Operations operations
+- [microsoft-azure-cdn Profiles API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-profiles-api/) — Profiles operations
+- [Microsoft Azure Cdn AFD Domains API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-afddomains-api/) — The AFDDomains API from Microsoft Azure Cdn — 3 operation(s) for afddomains.
+- [Microsoft Azure Cdn AFD Endpoints API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-afdendpoints-api/) — The AFDEndpoints API from Microsoft Azure Cdn — 5 operation(s) for afdendpoints.
+- [Microsoft Azure Cdn AFD Origin Groups API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-afdorigingroups-api/) — The AFDOriginGroups API from Microsoft Azure Cdn — 3 operation(s) for afdorigingroups.
+- [Microsoft Azure Cdn AFD Origins API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-afdorigins-api/) — The AFDOrigins API from Microsoft Azure Cdn — 2 operation(s) for afdorigins.
+- [Microsoft Azure Cdn Cdn Web Application Firewall Policies API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-cdnwebapplicationfirewallpolicies-api/) — The CdnWebApplicationFirewallPolicies API from Microsoft Azure Cdn — 2 operation(s) for cdnwebapplicationfirewallpolicies.
+- [Microsoft Azure Cdn Endpoints API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-endpoints-api/) — The Endpoints API from Microsoft Azure Cdn — 8 operation(s) for endpoints.
+- [Microsoft Azure Cdn Origin Groups API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-origingroups-api/) — The OriginGroups API from Microsoft Azure Cdn — 2 operation(s) for origingroups.
+- [Microsoft Azure Cdn Origins API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-origins-api/) — The Origins API from Microsoft Azure Cdn — 2 operation(s) for origins.
+- [Microsoft Azure Cdn Providers API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-providers-api/) — The Providers API from Microsoft Azure Cdn — 2 operation(s) for providers.
+- [Microsoft Azure Cdn Routes API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-routes-api/) — The Routes API from Microsoft Azure Cdn — 2 operation(s) for routes.
+- [Microsoft Azure Cdn Rules API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-rules-api/) — The Rules API from Microsoft Azure Cdn — 2 operation(s) for rules.
+- [Microsoft Azure Cdn Rule Sets API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-rulesets-api/) — The RuleSets API from Microsoft Azure Cdn — 3 operation(s) for rulesets.
+- [Microsoft Azure Cdn Secrets API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-secrets-api/) — The Secrets API from Microsoft Azure Cdn — 2 operation(s) for secrets.
+- [Microsoft Azure Cdn Subscriptions API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-subscriptions-api/) — The Subscriptions API from Microsoft Azure Cdn — 7 operation(s) for subscriptions.
+- [Microsoft Azure Cdn Custom Domains API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-custom-domains-api/) — The Custom Domains API from Microsoft Azure Cdn — 4 operation(s) for custom domains.
+- [Microsoft Azure Cdn Security Policies API](https://apis.io/apis/microsoft-azure-cdn/microsoft-azure-cdn-security-policies-api/) — The Security Policies API from Microsoft Azure Cdn — 2 operation(s) for security policies.
 
-Azure CDN REST API enables management of content delivery network profiles, endpoints, and custom domains. It supports configuring caching rules, compression, geo-filtering, custom HTTPS, and purging cached content across global edge locations.
+### Published properties
 
-- **Human URL:** [https://learn.microsoft.com/en-us/rest/api/cdn/](https://learn.microsoft.com/en-us/rest/api/cdn/)
-- **Base URL:** `https://management.azure.com/`
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-#### Tags
+#### MCP servers (1)
 
-- Caching
-- CDN
-- Content Delivery
-- Edge
-- Performance
+Model Context Protocol servers that expose the API to agents.
 
-#### Properties
+- [microsoft-azure-cdn-mcp.yml](https://apis.io/servers/microsoft-azure-cdn/microsoft-azure-cdn-mcp-yml/)
 
-- [OpenAPI](openapi/microsoft-azure-cdn-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/microsoft-azure-cdn.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/microsoft-azure-cdn.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Documentation](https://learn.microsoft.com/en-us/rest/api/cdn/)
+#### Agentic access (1)
 
-## Common Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [GitHub Organization](https://github.com/Azure)
-- [Portal](https://portal.azure.com/)
+- [Microsoft Azure Cdn Agentic Access](https://apis.io/agentic-access/microsoft-azure-cdn/microsoft-azure-cdn-agentic-access/)
+
+#### Collections (3)
+
+Postman and Open Collection request collections.
+
+- [Azure CDN REST API](https://apis.io/collections/microsoft-azure-cdn/open-microsoft-azure-cdn/)
+- [Azure CDN REST Operations API](https://apis.io/collections/microsoft-azure-cdn/open-microsoft-azure-cdn-operations-api/)
+- [Azure CDN REST Operations Profiles API](https://apis.io/collections/microsoft-azure-cdn/open-microsoft-azure-cdn-profiles-api/)
+
+#### Overlays (19)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Microsoft Azure Cdn Afddomains Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-afddomains-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Afdendpoints Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-afdendpoints-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Afdorigingroups Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-afdorigingroups-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Afdorigins Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-afdorigins-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Cdnwebapplicationfirewallpolicies Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-cdnwebapplicationfirewallpolicies-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Custom Domains Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-custom-domains-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Endpoints Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-endpoints-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Management Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-management-overlay/)
+- [Microsoft Azure Cdn Operations Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-operations-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Origingroups Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-origingroups-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Origins Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-origins-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Profiles Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-profiles-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Providers Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-providers-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Routes Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-routes-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Rules Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-rules-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Rulesets Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-rulesets-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Secrets Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-secrets-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Security Policies Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-security-policies-api-phrasing-overlay/)
+- [Microsoft Azure Cdn Subscriptions Api Phrasing Overlay](https://apis.io/overlays/microsoft-azure-cdn/microsoft-azure-cdn-subscriptions-api-phrasing-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Microsoft Azure Cdn Authentication](https://apis.io/security/microsoft-azure-cdn/microsoft-azure-cdn-authentication/)
+- [Microsoft Azure Cdn Domain Security](https://apis.io/security/microsoft-azure-cdn/microsoft-azure-cdn-domain-security/)
+- [Microsoft Azure Cdn Trust Center](https://apis.io/security/microsoft-azure-cdn/microsoft-azure-cdn-trust-center/)
+- [Microsoft Azure Cdn Vulnerability Disclosure](https://apis.io/security/microsoft-azure-cdn/microsoft-azure-cdn-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Microsoft Azure Cdn Scopes](https://apis.io/scopes/microsoft-azure-cdn/microsoft-azure-cdn-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Microsoft Azure Cdn Plans Pricing](https://apis.io/plans/microsoft-azure-cdn/microsoft-azure-cdn-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Microsoft Azure Cdn Rate Limits](https://apis.io/rate-limits/microsoft-azure-cdn/microsoft-azure-cdn-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Microsoft Azure Cdn Finops](https://apis.io/finops/microsoft-azure-cdn/microsoft-azure-cdn-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.microsoft.com/)
+- [Documentation](https://learn.microsoft.com/en-us/azure/frontdoor/)
+- [Getting started](https://learn.microsoft.com/en-us/azure/frontdoor/create-front-door-portal)
+- [API reference](https://learn.microsoft.com/en-us/rest/api/cdn/profiles)
 - [Pricing](https://azure.microsoft.com/en-us/pricing/)
-- [Terms of Service](https://www.microsoft.com/en-us/legal/terms-of-use)
-- [Privacy Policy](https://privacy.microsoft.com/en-us/privacystatement)
+- [Sign up](https://azure.microsoft.com/en-us/free/)
 - [Support](https://support.microsoft.com/)
-- [L L Ms Txt](https://portal.azure.com/llms.txt)
+- [Blog](https://azure.microsoft.com/en-us/blog/feed/)
+- [Compliance](https://learn.microsoft.com/en-us/azure/compliance/)
+- [Terms of service](https://www.microsoft.com/en-us/legal/terms-of-use)
+- [Privacy policy](https://privacy.microsoft.com/en-us/privacystatement)
+- [GitHub](https://github.com/Azure)
+- [Status](https://azure.status.microsoft/en-us/status)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 71.3** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 46.2 |
+| Contract governance | 18.2 |
+| Operational transparency | 84.2 |
+| Developer ergonomics | 73.2 |
+| Access clarity | 92.1 |
+
+**Agent readiness 35.9** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | verified |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 45.1** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/microsoft-azure-cdn/](https://apis.io/providers/microsoft-azure-cdn/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Microsoft Azure Cdn: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/microsoft-azure-cdn/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
