@@ -1,0 +1,194 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: microsoft-azure-cdn
+providerId: microsoft-azure-cdn
+generated: '2026-09-17'
+method: searched
+source: https://azure.microsoft.com/en-us/pricing/details/cdn/
+created: '2026-05-04'
+modified: '2026-09-17'
+tags:
+  - Pricing
+  - Content Delivery
+  - Usage Based
+description: >-
+  Published Azure CDN pricing, read from the Microsoft pricing page on 2026-09-17. This REPLACES the
+  2026-05-04 API Evangelist scaffold, which invented Free / Professional / Enterprise tiers with
+  request quotas. Azure CDN has no request-quota tiers at all: it is metered on outbound data transfer
+  per geographic zone with volume bands, and the MANAGEMENT API (Microsoft.Cdn, the contract this repo
+  catalogues) is not separately billed — ARM management calls are free and governed by throttling
+  rather than price. See rate-limits/microsoft-azure-cdn-rate-limits.yml.
+plan_count: 3
+billing_model: usage-based (metered outbound data transfer, per zone, per volume band)
+currency: USD
+api_billed_separately: false
+retirement_notice: >-
+  The pricing page itself carries the retirement notice: "Azure CDN Standard from Microsoft (classic)
+  is in the process of retiring. As of October 1, 2025, no new instances will be created. On
+  September 30, 2027, it will be retired."
+zones:
+  note: Zone 1-5 are geographic bands defined in the pricing page FAQ; TB = 1,000 GB for Microsoft (classic) S3.
+plans:
+  - id: microsoft-azure-cdn-standard-microsoft-classic
+    name: Azure Content Delivery Network from Microsoft (classic) — Standard (S3)
+    type: usage
+    description: >-
+      Feature-inclusive standard CDN bundle. Billed on outbound data transfer, tiered by monthly volume
+      and by geographic zone.
+    entries:
+      - label: Outbound data transfer — first 10 TB/month
+        name: egress_band_1
+        type: metered
+        metric: gb_transferred
+        timeFrame: month
+        unit: 1
+        prices:
+          zone_1: '0.081'
+          zone_2: '0.129'
+          zone_3: '0.233'
+          zone_4: '0.13'
+          zone_5: '0.158'
+        currency: USD
+        per: GB
+      - label: Outbound data transfer — next 40 TB (10-50 TB)/month
+        name: egress_band_2
+        type: metered
+        metric: gb_transferred
+        timeFrame: month
+        prices:
+          zone_1: '0.075'
+          zone_2: '0.121'
+          zone_3: '0.186'
+          zone_4: '0.126'
+          zone_5: '0.121'
+        currency: USD
+        per: GB
+      - label: Outbound data transfer — next 100 TB (50-150 TB)/month
+        name: egress_band_3
+        type: metered
+        metric: gb_transferred
+        timeFrame: month
+        prices:
+          zone_1: '0.056'
+          zone_2: '0.112'
+          zone_3: '0.168'
+          zone_4: '0.112'
+          zone_5: '0.102'
+        currency: USD
+        per: GB
+      - label: Outbound data transfer — next 350 TB (150-500 TB)/month
+        name: egress_band_4
+        type: metered
+        metric: gb_transferred
+        timeFrame: month
+        prices:
+          zone_1: '0.037'
+          zone_2: '0.093'
+          zone_3: '0.149'
+          zone_4: '0.093'
+          zone_5: '0.093'
+        currency: USD
+        per: GB
+      - label: Outbound data transfer — next 500 TB (500-1,000 TB)/month
+        name: egress_band_5
+        type: metered
+        metric: gb_transferred
+        timeFrame: month
+        prices:
+          zone_1: '0.028'
+          zone_2: '0.075'
+          zone_3: '0.13'
+          zone_4: '0.088'
+          zone_5: contact-us
+        currency: USD
+        per: GB
+      - label: Outbound data transfer — over 1,000 TB/month
+        name: egress_band_6
+        type: metered
+        metric: gb_transferred
+        timeFrame: month
+        prices:
+          zone_1: contact-us
+          zone_2: contact-us
+          zone_3: contact-us
+          zone_4: contact-us
+          zone_5: contact-us
+    elements:
+      - name: Global edge delivery
+      - name: Azure CDN REST API (Microsoft.Cdn) — no additional charge
+      - name: Five Routing Rules Engine rules included, including the global rule
+  - id: microsoft-azure-cdn-standard-rules-engine
+    name: Azure Standard CDN from Microsoft (classic) — Routing Rules Engine add-on
+    type: usage
+    description: Additional Routing Rules Engine rules beyond the five included free rules.
+    entries:
+      - label: Custom rules per month
+        name: rules_per_month
+        type: metered
+        metric: rules
+        timeFrame: month
+        price: '1'
+        currency: USD
+        note: '$1 per rule per month, identical across Zone 1-5.'
+      - label: Requests processed
+        name: rule_requests
+        type: metered
+        metric: requests
+        unit: 1000000
+        price: '0.6'
+        currency: USD
+        note: '$0.60 per million requests processed, identical across Zone 1-5.'
+  - id: microsoft-azure-cdn-waf
+    name: Azure Standard CDN from Microsoft (classic) — WAF
+    type: usage
+    description: >-
+      Web Application Firewall, charged separately based on WAF policy and rules configuration. Pricing
+      lives on the Azure WAF pricing page ("Global" tab) rather than the CDN page, so no figures are
+      copied here.
+    source: https://azure.microsoft.com/en-us/pricing/details/web-application-firewall/
+related_products:
+  - name: Content Delivery Network Premium
+    note: >-
+      The pricing page also lists a Premium CDN tier with rules engine and real-time analytics. Its
+      per-GB bands were not captured because the Premium tier is delivered by a partner network rather
+      than the Microsoft.Cdn Standard_Microsoft SKU this repo's contract centres on; recorded as a known
+      gap rather than filled in.
+  - name: Azure Front Door
+    url: https://azure.microsoft.com/en-us/pricing/details/frontdoor/
+    note: The successor product Microsoft directs migrating customers to.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - metered
+  units:
+  - data
+  - request
+  plans:
+  - name: Azure Content Delivery Network from Microsoft (classic) — Standard (S3)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - data
+    periods:
+    - month
+  - name: Azure Standard CDN from Microsoft (classic) — Routing Rules Engine add-on
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - other
+    - request
+    periods:
+    - month
+  - name: Azure Standard CDN from Microsoft (classic) — WAF
+    access: other
+    model: metered
+    model_how: stated
+    units: []
+    periods: []
