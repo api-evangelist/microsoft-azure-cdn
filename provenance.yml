@@ -56,6 +56,192 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  hosts/microsoft-azure-cdn-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
+    method: generated
+    evidence: carries an API Evangelist house phrase
+  integrations/microsoft-azure-cdn-integration-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  json-ld/microsoft-azure-cdn-context.jsonld:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afd-purge-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afddomain-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afddomain-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afddomain-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdendpoint-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdendpoint-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdendpoint-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdorigin-group-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdorigin-group-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdorigin-group-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdorigin-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdorigin-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-afdorigin-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-cdn-web-application-firewall-policy-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-cdn-web-application-firewall-policy-patch-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-cdn-web-application-firewall-policy-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-check-endpoint-name-availability-input-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-check-endpoint-name-availability-output-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-check-name-availability-input-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-check-name-availability-output-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-custom-domain-https-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-custom-domain-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-custom-domain-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-custom-domain-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edgenode-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-endpoint-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-endpoint-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-endpoint-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-managed-rule-set-definition-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-migration-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-operations-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-origin-group-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-origin-group-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-origin-group-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-origin-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-origin-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-origin-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-profile-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-profile-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-purge-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-resource-usage-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-route-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-route-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-route-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-rule-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-rule-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-rule-set-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-rule-set-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-rule-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-secret-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-secret-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-security-policy-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-security-policy-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-security-policy-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-usages-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-validate-custom-domain-output-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-validate-probe-output-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-validate-secret-input-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
@@ -131,9 +317,12 @@ artifacts:
   llms/microsoft-azure-cdn-llms-probe.yml:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
+  llms/microsoft-azure-cdn-llms-provenance.yml:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   llms/microsoft-azure-cdn-llms.txt:
-    method: generated
-    evidence: declared in the artifact
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   mcp/microsoft-azure-cdn-learn-mcp-tools.json:
     method: unknown
     evidence: no authorship recorded
@@ -306,6 +495,12 @@ artifacts:
     evidence: declared in the artifact
   sla/microsoft-azure-cdn-sla.yml:
     method: generated
+    evidence: declared in the artifact
+  vendors/microsoft-azure-cdn-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/microsoft-azure-cdn-vocabulary.yml:
+    method: derived
     evidence: declared in the artifact
   well-known/microsoft-azure-cdn-openid-configuration.json:
     method: unknown
