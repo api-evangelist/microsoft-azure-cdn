@@ -5,10 +5,19 @@ artifacts:
   agentic-access/microsoft-azure-cdn-agentic-access.yml:
     method: generated
     evidence: declared in the artifact
+  ai-preferences/microsoft-azure-cdn-ai-preferences.yml:
+    method: harvested
+    evidence: declared in the artifact
   authentication/microsoft-azure-cdn-authentication.yml:
     method: searched
     evidence: declared in the artifact
   capabilities/microsoft-azure-cdn-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
     method: unknown
     evidence: no authorship recorded
   changelog/microsoft-azure-cdn-changelog.yml:
@@ -35,14 +44,23 @@ artifacts:
   collections/microsoft-azure-cdn.postman_collection.json:
     method: derived
     evidence: openapi/microsoft-azure-cdn
+  compliance/microsoft-azure-cdn-compliance.yml:
+    method: harvested
+    evidence: declared in the artifact
   conformance/microsoft-azure-cdn-conformance.yml:
     method: searched
     evidence: declared in the artifact
   conventions/microsoft-azure-cdn-conventions.yml:
     method: searched
     evidence: declared in the artifact
+  data-license/microsoft-azure-cdn-data-license.yml:
+    method: harvested
+    evidence: declared in the artifact
   data-model/microsoft-azure-cdn-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  eligibility/microsoft-azure-cdn-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/microsoft-azure-cdn-problem-types.yml:
     method: derived
@@ -138,6 +156,33 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   json-schema/microsoft-azure-cdn-custom-domain-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-execution-filter-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-execution-filter-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-execution-filter-update-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-update-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-version-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-version-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-edge-action-version-update-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-schema/microsoft-azure-cdn-edgenode-result-schema.json:
@@ -242,10 +287,13 @@ artifacts:
   json-schema/microsoft-azure-cdn-validate-secret-input-schema.json:
     method: unknown
     evidence: no authorship recorded
+  json-schema/microsoft-azure-cdn-version-code-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -311,6 +359,9 @@ artifacts:
   kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/microsoft-azure-cdn-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -331,6 +382,20 @@ artifacts:
     evidence: declared in the artifact
   mcp/microsoft-azure-cdn-tool-crosswalk.yml:
     method: derived
+    evidence: declared in the artifact
+  openapi/_original/microsoft-azure-cdn-cdn-resource-manager-Microsoft.Cdn-Cdn-stable-2026-10-01-openapi.json:
+    method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  openapi/_original/microsoft-azure-cdn-cdn-resource-manager-Microsoft.Cdn-Cdn-stable-2026-10-01-openapi.json.provenance.txt:
+    method: searched
+    evidence: declared in the artifact
+  openapi/_original/microsoft-azure-cdn-cdn-resource-manager-Microsoft.Cdn-EdgeActions-stable-2026-10-01-openapi.json:
+    method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  ? openapi/_original/microsoft-azure-cdn-cdn-resource-manager-Microsoft.Cdn-EdgeActions-stable-2026-10-01-openapi.json.provenance.txt
+  : method: searched
     evidence: declared in the artifact
   openapi/_original/microsoft-azure-cdn-management-openapi.json:
     method: harvested
@@ -358,6 +423,15 @@ artifacts:
   openapi/microsoft-azure-cdn-custom-domains-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/microsoft-azure-cdn-edgeactionexecutionfilters-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/microsoft-azure-cdn-edgeactions-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/microsoft-azure-cdn-edgeactionversions-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/microsoft-azure-cdn-endpoints-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -371,8 +445,8 @@ artifacts:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/microsoft-azure-cdn-profiles-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/microsoft-azure-cdn-providers-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -495,6 +569,9 @@ artifacts:
     evidence: declared in the artifact
   sla/microsoft-azure-cdn-sla.yml:
     method: generated
+    evidence: declared in the artifact
+  terms/microsoft-azure-cdn-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   vendors/microsoft-azure-cdn-vendors.yml:
     method: unknown
